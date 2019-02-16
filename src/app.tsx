@@ -2,19 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { Provider } from '@tarojs/mobx'
 import Index from './pages/index'
 
-import counterStore from './store/counter'
-
 import './app.less'
-
-// 如果需要在 h5 环境中开启 React Devtools
-// 取消以下注释：
-// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
-//   require('nerv-devtools')
-// }
-
-const store = {
-  counterStore
-}
 
 class App extends Component {
 
@@ -27,31 +15,63 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/index/index'
+      'pages/index/index',
+      'pages/equity/index',//权益
+      'pages/home/index',//首页
+      'pages/sale/index',//预售
+      'pages/login/index',//登陆
+      'pages/order/create/index',//订单创建
+      'pages/order/record/index',//订单记录
+      'pages/register/index',//注册
+      'pages/user/address/index',//收货地址
+      'pages/user/card/index',//卡卷
+      'pages/user/core/index',//个人中心
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
+    },
+    tabBar: {
+      color: "#666666",
+      selectedColor: "#43210D",
+      list: [
+        {
+          pagePath: "pages/index/index",
+          text: "首页",
+          iconPath: "img/home.png",
+          selectedIconPath: "img/home-s.png"
+        },
+        {
+          pagePath: "pages/sale/index",
+          text: "购物车",
+          iconPath: "img/sale.png",
+          selectedIconPath: "img/sale-s.png"
+        },
+        {
+          pagePath: "pages/user/core/index",
+          text: "我的",
+          iconPath: "img/user.png",
+          selectedIconPath: "img/user-s.png"
+        }
+      ]
     }
   }
 
-  componentDidMount () {}
+  componentDidMount() { }
 
-  componentDidShow () {}
+  componentDidShow() { }
 
-  componentDidHide () {}
+  componentDidHide() { }
 
-  componentDidCatchError () {}
+  componentDidCatchError() { }
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
-  render () {
+  render() {
     return (
-      <Provider store={store}>
-        <Index />
-      </Provider>
+      <Index />
     )
   }
 }
