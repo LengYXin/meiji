@@ -1,9 +1,7 @@
 import { View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtList, AtListItem } from "taro-ui";
 import './index.less';
-
 
 @observer
 export default class extends Component {
@@ -16,7 +14,7 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '我的'
+    navigationBarTitleText: '首页'
   }
 
   componentWillMount() { }
@@ -35,12 +33,7 @@ export default class extends Component {
   render() {
     return (
       <View className='index'>
-        <AtList>
-          <AtListItem title='标题文字' />
-          <AtListItem title='标题文字' arrow='right' />
-          <AtListItem title='标题文字' extraText='详细信息' />
-          <AtListItem title='禁用状态' disabled extraText='详细信息' />
-        </AtList>
+        page
       </View>
     )
   }

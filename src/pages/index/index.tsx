@@ -1,4 +1,4 @@
-import { View } from '@tarojs/components';
+import { View, Image, Button, Navigator } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
@@ -14,7 +14,7 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '美季'
   }
 
   componentWillMount() { }
@@ -33,7 +33,20 @@ export default class extends Component {
   render() {
     return (
       <View className='index'>
-        page
+        <Image className="img-block img-sp" src="" />
+        <View className="view-padding">
+          <View className="font-title">湖丰阳澄湖大闸蟹螃蟹 </View>
+          <View className="font-lable">产地：阳澄湖</View>
+          <View className="font-text">阳澄湖大闸蟹，江苏省苏州市特产，中国国家地理标志产品。 [1-2]</View>
+        </View>
+        <View style="height:500px"></View>
+        <Image className="img-block" src="" />
+        <View className="view-fixed-bottom">
+          <Navigator url="/pages/home/index" openType="switchTab">
+            <Button>开启味觉之旅</Button>
+          </Navigator>
+        </View>
+
       </View>
     )
   }

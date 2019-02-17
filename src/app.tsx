@@ -1,13 +1,13 @@
-import Taro, { Component, Config } from '@tarojs/taro'
-import { Provider } from '@tarojs/mobx'
-import Index from './pages/index'
+import Taro, { Component, Config } from '@tarojs/taro';
+import 'taro-ui/dist/weapp/css/index.css';
+import './app.less';
+import Index from './pages/index';
 
-import './app.less'
 
 class App extends Component {
 
   /**
-   * 指定config的类型声明为: Taro.Config
+   * 指定config的类型声明为: Taro.Configß
    *
    * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
@@ -23,9 +23,12 @@ class App extends Component {
       'pages/order/create/index',//订单创建
       'pages/order/record/index',//订单记录
       'pages/register/index',//注册
+      'pages/register/Invitation/index',//注册邀请
       'pages/user/address/index',//收货地址
       'pages/user/card/index',//卡卷
       'pages/user/core/index',//个人中心
+      'pages/other/payment/index',//支付提示
+
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -34,18 +37,19 @@ class App extends Component {
       navigationBarTextStyle: 'black'
     },
     tabBar: {
-      color: "#666666",
-      selectedColor: "#43210D",
+      color: "#939393",
+      selectedColor: "#DBC389",
+      backgroundColor: "#0A0A0A",
       list: [
         {
-          pagePath: "pages/index/index",
+          pagePath: "pages/home/index",
           text: "首页",
           iconPath: "img/home.png",
           selectedIconPath: "img/home-s.png"
         },
         {
           pagePath: "pages/sale/index",
-          text: "购物车",
+          text: "美季",
           iconPath: "img/sale.png",
           selectedIconPath: "img/sale-s.png"
         },
