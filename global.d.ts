@@ -23,4 +23,4 @@ declare global {
           'import': React.DetailedHTMLProps<React.EmbedHTMLAttributes<HTMLEmbedElement>, HTMLEmbedElement>
       }
   }
-}
+} 
