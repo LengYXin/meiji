@@ -2,6 +2,7 @@ import { Button, Image, Navigator, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import NiuPai from '../../components/niupai';
+import Equity from '../../components/equity';
 import Imgs from "../../img";
 import './index.less';
 
@@ -25,7 +26,7 @@ export default class extends Component {
   }
 
   componentDidMount() { }
-ß
+  ß
   componentWillUnmount() { }
 
   componentDidShow() { }
@@ -43,6 +44,7 @@ export default class extends Component {
         </View>
         <View className="info">
           <NiuPai />
+          <Equity />
           <View className="code-body">
             <Image src={Imgs.Code} className="c-icon" />
             <View className="c-kf">
