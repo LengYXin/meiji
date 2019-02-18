@@ -1,8 +1,8 @@
-import { View, Image, Button, Navigator } from '@tarojs/components';
+import { Button, Image, Navigator, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
+import NiuPai from '../../components/niupai';
 import Imgs from "../../img";
-import NiuPai from '../../components/niupai'
 import './index.less';
 
 @observer
@@ -25,7 +25,7 @@ export default class extends Component {
   }
 
   componentDidMount() { }
-
+ß
   componentWillUnmount() { }
 
   componentDidShow() { }
@@ -43,8 +43,15 @@ export default class extends Component {
         </View>
         <View className="info">
           <NiuPai />
+          <View className="code-body">
+            <Image src={Imgs.Code} className="c-icon" />
+            <View className="c-kf">
+              <Image src={Imgs.KF} className="c-kf-img" />
+              联系客服
+                </View>
+          </View>
         </View>
-        <Image className="img-block" src={Imgs.Code} mode="aspectFit" />
+
         <View className="view-fixed-bottom">
           <Navigator url="/pages/home/index" openType="switchTab">
             <Button>开启味觉之旅</Button>

@@ -5,9 +5,16 @@ import './index.less';
 export default class extends Component<any, any> {
     render() {
         return (
-            <View className="com-niupai">
-                <Image src={Imgs.Icon}/>
-                <Image src={Imgs.Niupai}/>
+            <View className="niupai-body">
+                <View className="c-title">
+                    <Image src={Imgs.Icon} className="c-icon" />
+                    <Text>美季MEIJI</Text>
+                </View>
+                <View className="c-text">
+                    <Image src={Imgs.Niupai} className="c-niupai" />
+                    <View className="c-text-1">甄选全球食材</View>
+                    <View className="c-text-2">专注提供当季最优选</View>
+                </View>
             </View>
 
         )

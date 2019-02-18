@@ -1,27 +1,47 @@
 @color-1: #DBC389;
 @color-2: #0A0A0A;
-@color-3:#939393;
-.font-title(){
-    color: @color-2;
-    font-size: 48px;
-    font-family:Arial;
-    margin-bottom: 10px;
+@color-3: #939393;
+@color-4: #ffffff;
 
+.font-title(@size:48px) {
+    color: @color-2;
+    font-size: @size;
+    font-family: Arial;
+    margin-bottom: 10px;
 }
-.font-lable(){
+
+.font-lable() {
     color: @color-3;
     font-size: 32px;
-    font-family:Arial;
+    font-family: Arial;
     margin-bottom: 10px;
 }
-.font-text(){
+
+.font-text() {
     color: @color-2;
     font-size: 32px;
-    line-height:60px;
-    font-family:Arial;
+    line-height: 60px;
+    font-family: Arial;
     margin-bottom: 10px;
-
 }
+
+.border-bottom(@col:#DBC389) {
+    &::after {
+        content: '';
+        position: absolute;
+        background-color: @col;
+        display: block !important;
+        // z-index: 1;
+        top: auto;
+        right: auto;
+        width: 100%;
+        height: 1px;
+        transform-origin: 50% 100%;
+        transform: scaleY(0.5);
+        bottom: 0;
+    }
+}
+
 .bg-h() {
     background: @color-2;
     color: @color-1;
