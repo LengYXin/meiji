@@ -1,6 +1,8 @@
 import { View, Image, Button, Navigator } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
+import Imgs from "../../img";
+import NiuPai from '../../components/niupai'
 import './index.less';
 
 @observer
@@ -33,14 +35,16 @@ export default class extends Component {
   render() {
     return (
       <View className='index'>
-        <Image className="img-block img-sp" src="" />
+        <Image className="img-block img-sp" src="" mode="aspectFit" />
         <View className="view-padding">
           <View className="font-title">湖丰阳澄湖大闸蟹螃蟹 </View>
           <View className="font-lable">产地：阳澄湖</View>
           <View className="font-text">阳澄湖大闸蟹，江苏省苏州市特产，中国国家地理标志产品。 [1-2]</View>
         </View>
-        <View style="height:500px"></View>
-        <Image className="img-block" src="" />
+        <View className="info">
+          <NiuPai />
+        </View>
+        <Image className="img-block" src={Imgs.Code} mode="aspectFit" />
         <View className="view-fixed-bottom">
           <Navigator url="/pages/home/index" openType="switchTab">
             <Button>开启味觉之旅</Button>
