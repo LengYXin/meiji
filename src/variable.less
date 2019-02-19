@@ -2,7 +2,7 @@
 @color-2: #0A0A0A;
 @color-3: #939393;
 @color-4: #ffffff;
-
+@color-5:rgba(255, 255, 255, 0.1);
 .font-title(@size:48px) {
     color: @color-2;
     font-size: @size;
@@ -39,6 +39,22 @@
         transform-origin: 50% 100%;
         transform: scaleY(0.5);
         bottom: 0;
+    }
+}
+.border-right(@col:#DBC389) {
+    &::before {
+        content: '';
+        position: absolute;
+        background-color: @col;
+        display: block !important;
+        // z-index: 1;
+        top: auto;
+        left:auto;
+        right: 0;
+        width: 1px;
+        height: 100%;
+        transform-origin: 50% 100%;
+        transform: scaleX(0.5);
     }
 }
 

@@ -24,9 +24,32 @@
             align-items: center;
             justify-content: center;
             height: 100px;
-            .img-g{
+            .img-g {
                 width: 65px;
                 height: 65px;
+            }
+        }
+        .tr-border {
+            position: relative;
+            .border-bottom(@color-5);
+            &::after {
+                width: auto;
+                left: 52px;
+                right: 32px;
+            }
+            &:last-child{
+                &::after{
+                    opacity: 0;
+                }
+            }
+            .at-col {
+                position: relative;
+                .border-right(@color-5);
+                &::after {
+                    width: 1px;
+                    left: 52px;
+                    right: 32px;
+                }
             }
         }
     }
