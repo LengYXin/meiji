@@ -40,6 +40,12 @@ export default class extends Component<any, any> {
                         <View className='at-col at-col-3'>无</View>
                     </View>
                     <View className='at-row at-row--wrap tr-border'>
+                        <View className='at-col at-col-3'>邀请</View>
+                        <View className='at-col at-col-3'></View>
+                        <View className='at-col at-col-3'><Image src={Imgs.Duigou} className="img-g"/></View>
+                        <View className='at-col at-col-3'><Image src={Imgs.Duigou} className="img-g"/></View>
+                    </View>
+                    <View className='at-row at-row--wrap tr-border'>
                         <View className='at-col at-col-3'>限量食材</View>
                         <View className='at-col at-col-3'></View>
                         <View className='at-col at-col-3'><Image src={Imgs.Duigou} className="img-g"/></View>
