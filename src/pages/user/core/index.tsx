@@ -38,7 +38,12 @@ export default class extends Component {
   componentDidShow() { }
 
   componentDidHide() { }
-
+  onClickCard(){
+    Taro.navigateTo({ url: "/pages/user/card/index?key=" })
+  }
+  onClickAddress(){
+    Taro.navigateTo({ url: "/pages/user/address/index?key=" })
+  }
   render() {
     return (
       <View className='user-core'>
@@ -83,8 +88,8 @@ export default class extends Component {
         </View>
         <View className="core-list">
           <AtList hasBorder={false}>
-            <AtListItem title='卡劵' arrow='right' hasBorder={false} />
-            <AtListItem title='收货地址' arrow='right' hasBorder={false} />
+            <AtListItem title='卡劵' arrow='right' hasBorder={false} onClick={this.onClickCard.bind(this)}/>
+            <AtListItem title='收货地址' arrow='right' hasBorder={false}  onClick={this.onClickAddress.bind(this)}/>
             <AtListItem title='账户安全' arrow='right' hasBorder={false} />
           </AtList>
         </View>

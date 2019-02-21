@@ -2,6 +2,7 @@ import { View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
+import { AtList, AtListItem } from 'taro-ui';
 
 @observer
 export default class extends Component {
@@ -14,7 +15,7 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '收货地址'
   }
 
   componentWillMount() { }
@@ -31,9 +32,18 @@ export default class extends Component {
   componentDidHide() { }
 
   render() {
+    const name = "张磊"
+    const phone = "185****3566"
     return (
-      <View className='index'>
-        page
+      <View className='address'>
+        <AtList hasBorder={false}>
+          <AtListItem
+            arrow='right'
+            note='北京市昌平区天通苑'
+            title={name + "  " + phone}
+            hasBorder={false}
+          />
+        </AtList>
       </View>
     )
   }
