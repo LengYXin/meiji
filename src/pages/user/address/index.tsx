@@ -1,4 +1,4 @@
-import { View } from '@tarojs/components';
+import { View, Button } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
@@ -31,19 +31,30 @@ export default class extends Component {
 
   componentDidHide() { }
 
+  onAppend(){
+    Taro.navigateTo({url: "/pages/user/appendAddress/index?key=" })
+  }
   render() {
     const name = "张磊"
     const phone = "185****3566"
+    const data = ['1', '2', '3', '4']
     return (
-      <View className='address'>
-        <AtList hasBorder={false}>
-          <AtListItem
-            arrow='right'
-            note='北京市昌平区天通苑'
-            title={name + "  " + phone}
-            hasBorder={false}
-          />
-        </AtList>
+      <View>
+        <View className='address'>
+          {data.map((x, index) => {
+            return <AtList hasBorder={false} key={index}>
+              <AtListItem
+                arrow='right'
+                note='北京市昌平区天通苑'
+                title={name + "  " + phone}
+                hasBorder={false}
+              />
+            </AtList>
+          })}
+        </View>
+        <View className="address-btn">
+          <Button onClick={this.onAppend.bind(this)}>添加地址</Button>
+        </View>
       </View>
     )
   }

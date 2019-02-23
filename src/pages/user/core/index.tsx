@@ -38,11 +38,17 @@ export default class extends Component {
   componentDidShow() { }
 
   componentDidHide() { }
-  onClickCard(){
+  onClickCard() {
     Taro.navigateTo({ url: "/pages/user/card/index?key=" })
   }
-  onClickAddress(){
+  onClickAddress() {
     Taro.navigateTo({ url: "/pages/user/address/index?key=" })
+  }
+  onClickSecurity() {
+    Taro.navigateTo({ url: "/pages/user/security/index?key=" })
+  }
+  onClickRecord(index) {
+    Taro.navigateTo({ url: `/pages/order/record/index?key=${index}` })
   }
   render() {
     return (
@@ -62,11 +68,11 @@ export default class extends Component {
         <View className="core-tab">
           <Image className="tab-img" src={tabImg} />
           <View className="tab-list">
-            <View className="tab-txt">全部订单</View>
-            <View className="tab-txt">待付款</View>
-            <View className="tab-txt">待发货</View>
-            <View className="tab-txt">已发货</View>
-            <View className="tab-txt">已完成</View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 0)}>全部订单</View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>待付款</View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 2)}>待发货</View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 3)}>已发货</View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 4)}>已完成</View>
           </View>
         </View>
         <View className="invitation">
@@ -88,9 +94,9 @@ export default class extends Component {
         </View>
         <View className="core-list">
           <AtList hasBorder={false}>
-            <AtListItem title='卡劵' arrow='right' hasBorder={false} onClick={this.onClickCard.bind(this)}/>
-            <AtListItem title='收货地址' arrow='right' hasBorder={false}  onClick={this.onClickAddress.bind(this)}/>
-            <AtListItem title='账户安全' arrow='right' hasBorder={false} />
+            <AtListItem title='卡劵' arrow='right' hasBorder={false} onClick={this.onClickCard.bind(this)} />
+            <AtListItem title='收货地址' arrow='right' hasBorder={false} onClick={this.onClickAddress.bind(this)} />
+            <AtListItem title='账户安全' arrow='right' hasBorder={false} onClick={this.onClickSecurity.bind(this)} />
           </AtList>
         </View>
         <View className="core-code">

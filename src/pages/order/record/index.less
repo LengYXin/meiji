@@ -1,0 +1,166 @@
+.record {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 50px;
+
+  .at-tabs__item {
+    padding: 24px 0;
+    font-size: 32px;
+    font-family: Arial;
+    color: rgba(10, 10, 10, 1);
+  }
+
+  .at-tabs__item--active {
+    font-size: 32px;
+    font-family: Arial;
+    font-weight: bold;
+    color: rgba(10, 10, 10, 1);
+  }
+
+  .at-tabs__item-underline {
+    height: 6px;
+    border-radius: 200px;
+    background: rgba(219, 195, 137, 1);
+    width: 60px;
+    margin-left: 30px;
+  }
+
+  .at-tabs__underline {
+    display: none;
+  }
+}
+
+.card {
+  width: 100%;
+  margin-top: 30px;
+
+  .card-orderCode {
+    font-size: 28px;
+    font-family: Arial;
+    font-weight: 400;
+    color: rgba(10, 10, 10, 1);
+    padding-bottom: 14px;
+  }
+
+  .card-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+
+    .content-left {
+      width: 22%;
+      height: 140px;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid rgba(249, 249, 249, 1);
+
+      image {
+        width: 100%;
+        height: 100%;
+
+      }
+    }
+
+    .content-right {
+      width: 78%;
+      margin-left: 10px;
+
+      .right-name {
+        font-size: 32px;
+        line-height: 32px;
+        font-family: Arial;
+        font-weight: 900;
+        color: rgba(10, 10, 10, 1);
+        padding-bottom: 14px;
+      }
+
+      .right-address {
+        font-size: 28px;
+        line-height: 28px;
+        font-family: Arial;
+        font-weight: 400;
+        color: rgba(147, 147, 147, 1);
+        padding-bottom: 18px;
+      }
+
+      .right-money {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .money-left {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+
+          .left-qian {
+            font-size: 32px;
+            line-height: 32px;
+            font-family: Arial;
+            font-weight: bold;
+            color: rgba(10, 10, 10, 1);
+            margin-right: 20px;
+          }
+
+          .left-type {
+            font-size: 24px;
+            line-height: 24px;
+            font-family: Arial;
+            font-weight: bold;
+            color: rgba(219, 195, 137, 1)
+          }
+        }
+
+        .money-rignt {
+          padding-right: 50px;
+
+          .rignt-num {
+            font-size: 32px;
+            line-height: 32px;
+            font-family: Arial;
+            font-weight: 400;
+            color: rgba(10, 10, 10, 1);
+          }
+        }
+      }
+    }
+  }
+
+  .card-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .btn-left {
+      font-size: 28px;
+      font-family: Arial;
+      font-weight: 400;
+      color: rgba(147, 147, 147, 1);
+    }
+
+    .btn-rigtn {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        padding: 0;
+        width: 130px;
+        height: 60px;
+        border-radius: 4px;
+        background: rgba(10, 10, 10, 1);
+        font-size: 28px;
+        font-family: Arial;
+        font-weight: 400;
+        color: rgba(219, 195, 137, 1);
+      }
+    }
+
+  }
+}
