@@ -1,6 +1,7 @@
 import { View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
+import NiuPai from '../../components/niupai';
 import './index.less';
 
 @observer
@@ -14,7 +15,7 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '美季'
   }
 
   componentWillMount() { }
@@ -33,7 +34,7 @@ export default class extends Component {
   render() {
     return (
       <View className='index'>
-        page
+        <NiuPai/>
       </View>
     )
   }

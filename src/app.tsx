@@ -7,6 +7,7 @@ import Index from './pages/index';
 class App extends Component {
 
   /**
+   * 原型：https://org.modao.cc/app/VStcRpaQSN1Czf4zRD4dzeeibeQZ953
    * 指定config的类型声明为: Taro.Configß
    *
    * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型

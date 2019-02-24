@@ -55,7 +55,7 @@ export default class extends Component {
         </View>
 
         <View className="view-fixed-bottom">
-          <Navigator url="/pages/home/index" openType="switchTab">
+          <Navigator url="/pages/login/index">
             <Button>开启味觉之旅</Button>
           </Navigator>
         </View>

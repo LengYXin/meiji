@@ -3,6 +3,7 @@ import Icon from './img/icon.png';
 import Niupai from './img/niupai.png';
 import KF from './img/kf.png';
 import Duigou from './img/duigou.png';
+import Wx from './img/wx.png';
 
 export default {
     Code,
@@ -10,5 +11,6 @@ export default {
     Niupai,
     // 客服
     KF,
-    Duigou
+    Duigou,
+    Wx
 }
