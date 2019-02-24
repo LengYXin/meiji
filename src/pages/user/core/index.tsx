@@ -1,4 +1,4 @@
-import { View, Image } from '@tarojs/components';
+import { View, Image, Navigator } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { AtList, AtListItem } from "taro-ui"
@@ -50,6 +50,10 @@ export default class extends Component {
   onClickRecord(index) {
     Taro.navigateTo({ url: `/pages/order/record/index?key=${index}` })
   }
+  onClickEquity() {
+    console.log("aaa")
+    Taro.navigateTo({ url: "/pages/equity/index?key=" })
+  }
   render() {
     return (
       <View className='user-core'>
@@ -66,7 +70,7 @@ export default class extends Component {
           </View>
         </View>
         <View className="core-tab">
-          <Image className="tab-img" src={tabImg} />
+          <Image className="tab-img" src={tabImg} onClick={this.onClickEquity.bind(this)} />
           <View className="tab-list">
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 0)}>全部订单</View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>待付款</View>

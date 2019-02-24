@@ -31,20 +31,20 @@ export default class extends Component<{ data: any }, any> {
     componentDidHide() { }
     renderState() {
         const data: any = 1
-        switch (data) {
-            case 1:
-                return <View className="btn-left">待付款</View>
-                break;
-            case 2:
-                return <View className="btn-left">待发货</View>
-                break;
-            case 3:
-                return <View className="btn-left">已发货</View>
-                break;
-            case 4:
-                return <View className="btn-left">已完成</View>
-                break;
-        }
+        // switch (data) {
+        //     case 1:
+        //         return <View className="btn-left">待付款</View>
+        //         break;
+        //     case 2:
+        //         return <View className="btn-left">待发货</View>
+        //         break;
+        //     case 3:
+        //         return <View className="btn-left">已发货</View>
+        //         break;
+        //     case 4:
+        //         return <View className="btn-left">已完成</View>
+        //         break;
+        // }
     }
     render() {
         return (
