@@ -1,7 +1,7 @@
-import { Image, Text, View } from '@tarojs/components';
+import { Image, Text, View, Navigator } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtButton, AtForm, AtInput } from 'taro-ui';
+import { AtButton, AtForm, AtInput, AtList, AtListItem } from 'taro-ui';
 import NiuPai from '../../components/niupai';
 import Img from '../../img'
 import './index.less';
@@ -36,6 +36,7 @@ export default class extends Component {
 
   componentDidHide() { }
   onSubmit(event) {
+    Taro.switchTab({ url: "/pages/home/index" })
     console.log(this.state)
   }
   onChange(type, event) {
@@ -49,29 +50,41 @@ export default class extends Component {
         <NiuPai />
         <AtForm className="form-body" onSubmit={this.onSubmit.bind(this)}>
           <AtInput
+            className="form-input"
             name="phone"
             clear
             type='text'
             placeholder='请输入手机号'
+
             value={this.state.phone}
             onChange={this.onChange.bind(this, "phone")}
           />
           <AtInput
+            className="form-input"
             name="code"
             clear
             type='text'
+
             placeholder='验证码'
             value={this.state.code}
             onChange={this.onChange.bind(this, "code")}
           >
-            <AtButton>发送验证码</AtButton>
+            <AtButton className="btn-code">发送验证码</AtButton>
           </AtInput>
-          <AtButton formType='submit'>登陆</AtButton>
+          <AtButton formType='submit' className="btn-submit">登陆</AtButton>
+          <Navigator url="/pages/register/index">
+            <AtList hasBorder={false}>
+              <AtListItem
+                hasBorder={false}
+                extraText='会员注册'
+                arrow='right'
+              />
+            </AtList>
+          </Navigator>
         </AtForm>
-        <View>
-          <Text>会员登录》</Text>
+        <View className="img-view">
+          <Image className="img-wx" mode="aspectFit" src={Img.Wx} />
         </View>
-        <Image src={Img.Wx} />
       </View>
     )
   }

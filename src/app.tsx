@@ -17,10 +17,10 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
+      'pages/login/index',//登陆
       'pages/equity/index',//权益
       'pages/home/index',//首页
       'pages/sale/index',//预售
-      'pages/login/index',//登陆
       'pages/order/create/index',//订单创建
       'pages/order/record/index',//订单记录
       'pages/register/index',//注册
