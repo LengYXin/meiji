@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, runInAction } from 'mobx';
 import { WXRequest } from './native/request'
 import Taro from '@tarojs/taro';
 class UserMobx {
@@ -10,8 +10,13 @@ class UserMobx {
      * 用户信息
      */
     @observable Info = {
-
+        avatarUrl: '',
+        nickName: '',
+        gender: 0,
+        vipType: '',
+        vipExpireTime: 0
     }
+    WxAuto = false;
     /**
      * 认证数据
      */
@@ -23,6 +28,10 @@ class UserMobx {
         "refresh_token": "",
         "registered": 0
     }
+    /**
+     * 设置认证信息
+     * @param auto 
+     */
     onSetAuto(auto) {
         this.AutoData = auto;
         // 设置 token
@@ -34,12 +43,36 @@ class UserMobx {
      * 认证
      */
     async onAuth() {
-        Taro.showLoading({ title: "加载中...", mask: true })
-        const mpAuthCode = await Taro.login().then(x => x.code);
-        const data = await WXRequest.request({ url: "/api/v1/Auth/WxLogin", data: { mpAuthCode }, method: "POST" });
-        Taro.hideLoading()
-        if (data.isSuccess) {
-            this.onSetAuto(data.data)
+        Taro.showLoading({ title: "加载中...", mask: true });
+        try {
+            const getUserInfo = Taro.getUserInfo();
+            const login = Taro.login();
+            // 获取微信用户信息
+            const WxAuto = await getUserInfo.then(x => JSON.parse(x.rawData));
+            // 获取微信 code
+            const mpAuthCode = await login.then(x => x.code);
+            // 登录
+            const data = await WXRequest.request({ url: "/api/v1/Auth/WxLogin", data: { mpAuthCode }, method: "POST" });
+            let UserInfo = {}
+            if (data.isSuccess) {
+                this.onSetAuto(data.data);
+                //  设置用户信息
+                UserInfo = await WXRequest.request({
+                    url: "/api/v1/Accounts/userInfo", data: {
+                        header: WxAuto.avatarUrl,
+                        nickName: WxAuto.nickName,
+                        gender: WxAuto.gender
+                    }, method: "PUT"
+                }).then(x => x.code == 200 && x.data);
+
+            }
+            runInAction(() => {
+                this.Info = { ...WxAuto, ...UserInfo }// WxAuto
+            })
+        } catch (error) {
+            console.log(error)
+        } finally {
+            Taro.hideLoading()
         }
     }
     /**

@@ -10,6 +10,7 @@ import upYesImg from '../../../img/img65.png'
 import SuoImg from '../../../img/img31.png'
 import code from '../../../img/code.png'
 import kf from '../../../img/kf.png'
+import { User, DateFormat } from '../../../store';
 
 
 @observer
@@ -55,18 +56,21 @@ export default class extends Component {
     Taro.navigateTo({ url: "/pages/equity/index?key=" })
   }
   render() {
+    const Info = { ...User.Info }
+    console.log(Info)
     return (
       <View className='user-core'>
         <View className="core-header">
           <View className="header-left">
-            <Image className="left-img" src="" />
+            <Image className="left-img" src={Info.avatarUrl} mode="aspectFit" />
           </View>
           <View className="header-right">
-            <View className="right-name">白叶挽青湖</View>
+            <View className="right-name">{Info.nickName}</View>
             <View className="right-img">
-              <Image src={img} />
+              {/* <Image src={img} /> */}
+              {Info.vipType}
             </View>
-            <View className="right-time">2017.12.11到期</View>
+            <View className="right-time">{Info.vipExpireTime > 0 ? DateFormat(Info.vipExpireTime, "yyyy.mm.dd") + '到期' : ''}</View>
           </View>
         </View>
         <View className="core-tab">
