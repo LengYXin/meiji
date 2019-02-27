@@ -1,3 +1,4 @@
+import '@tarojs/async-await'
 import Taro, { Component, Config } from '@tarojs/taro';
 import 'taro-ui/dist/weapp/css/index.css';
 import './app.less';

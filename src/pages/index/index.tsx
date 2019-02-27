@@ -5,6 +5,7 @@ import NiuPai from '../../components/niupai';
 import Equity from '../../components/equity';
 import Imgs from "../../img";
 import './index.less';
+import { User, Regular } from '../../store';
 
 @observer
 export default class extends Component {
@@ -26,13 +27,15 @@ export default class extends Component {
   }
 
   componentDidMount() { }
-  ß
   componentWillUnmount() { }
 
   componentDidShow() { }
 
   componentDidHide() { }
-
+  onClick() {
+    Taro.showToast({ title: "请求中", icon: "none" })
+    User.onAuth()
+  }
   render() {
     return (
       <View className='index'>
@@ -56,7 +59,7 @@ export default class extends Component {
 
         <View className="view-fixed-bottom">
           <Navigator url="/pages/login/index">
-            <Button>开启味觉之旅</Button>
+            <Button >开启味觉之旅</Button>
           </Navigator>
         </View>
 

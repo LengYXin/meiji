@@ -15,7 +15,7 @@ declare global {
   interface ApiResponse {
     data: any
     message: string
-    errorCode: number
+    code: number
     isSuccess: boolean
 }
   namespace JSX {

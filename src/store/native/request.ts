@@ -1,4 +1,4 @@
-import Taro, { request, uploadFile } from "@tarojs/taro";
+import Taro, { request, uploadFile, saveImageToPhotosAlbum } from "@tarojs/taro";
 import endsWith from 'lodash/endsWith';
 import startsWith from 'lodash/startsWith';
 import trimStart from 'lodash/trimStart';
@@ -8,15 +8,15 @@ export class WXRequestClass {
     constructor() {
 
     }
-    address = "https://shop.jizhigame.com";
+    address = process.env.NODE_ENV === 'development' ? "https://meiji.alienwow.cc" : 'https://api.mumeiji.cn';//
     requestConfig = {
         header: {
-            'shop-token': '',
+            'token': '',
             'content-type': 'application/json'
         }
     }
     setToken(token) {
-        this.requestConfig.header["shop-token"] = token;
+        this.requestConfig.header["token"] = token;
     }
     /**
      * 请求数据
@@ -28,19 +28,22 @@ export class WXRequestClass {
         params.data = this.compatibleData({ ...params.data })
         params.url = this.compatibleUrl(this.address, params.url);
         const res = await Taro.request(params);
+        let isSuccess = true;
         if (res && res.statusCode == 200) {
-            if (!res.data.isSuccess) {
+            if (res.data.code != 200) {
                 Taro.showToast({ title: res.data.message, icon: "none", duration: 4000 })
+                isSuccess = false
             }
-            return res.data;
         } else {
             if (res.statusCode >= 500) {
                 Taro.showToast({ title: "连接超时", icon: "none", duration: 4000 })
             }
-            return {
-                isSuccess: false
-            } as any
+            isSuccess = false
         }
+        return {
+            ...res.data,
+            isSuccess
+        };
     }
     /**
      * 上传文件
