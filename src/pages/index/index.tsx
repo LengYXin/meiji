@@ -26,16 +26,18 @@ export default class extends Component {
   componentWillReact() {
   }
 
-  componentDidMount() { }
+  componentDidMount() {
+    User.onAuth()
+  }
   componentWillUnmount() { }
 
   componentDidShow() { }
 
   componentDidHide() { }
-  onClick() {
-    Taro.showToast({ title: "请求中", icon: "none" })
-    User.onAuth()
-  }
+  // onClick() {
+  //   Taro.showToast({ title: "请求中", icon: "none" })
+  //   User.onAuth()
+  // }
   render() {
     return (
       <View className='index'>

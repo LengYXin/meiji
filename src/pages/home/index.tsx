@@ -34,14 +34,12 @@ export default class extends Component {
 
   componentDidHide() { }
   async onGet() {
-    // const code = await Taro.login()
-    // this.setState({ code: code.code, view: true })
-    User.onTest()
+    User.onPayVip()
   }
   render() {
     return (
       <View className='index'>
-        <Button onClick={this.onGet.bind(this)}>获取</Button>
+        <Button onClick={this.onGet.bind(this)}>测试</Button>
       </View>
     )
   }

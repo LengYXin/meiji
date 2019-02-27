@@ -31,7 +31,9 @@ export class WXRequestClass {
         let isSuccess = true;
         if (res && res.statusCode == 200) {
             if (res.data.code != 200) {
-                Taro.showToast({ title: res.data.message, icon: "none", duration: 4000 })
+                if (res.data.code >= 500) {
+                    Taro.showToast({ title: res.data.msg, icon: "none", duration: 4000 })
+                }
                 isSuccess = false
             }
         } else {

@@ -4,7 +4,7 @@ import 'taro-ui/dist/weapp/css/index.css';
 import './app.less';
 import Index from './pages/index';
 
-
+import { User } from './store'
 class App extends Component {
 
   /**
@@ -67,9 +67,12 @@ class App extends Component {
     }
   }
 
-  componentDidMount() { }
+  componentDidMount() {
+  }
 
-  componentDidShow() { }
+  componentDidShow() {
+
+  }
 
   componentDidHide() { }
 
