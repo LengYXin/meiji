@@ -24,7 +24,7 @@ export default class extends Component {
   }
   state = {
     phone: process.env.NODE_ENV === 'development' ? '1861175286' : '',
-    code: '',
+    code: '0327',
     codeTime: codeTime,//计时时间
     codeTimeStart: false,//计时开始状态
     codeDisabled: true,//按钮可用状态
@@ -50,7 +50,7 @@ export default class extends Component {
     if (!Regular.mobilePhone.test(this.state.phone)) {
 
     }
-    User.onLogin({ phone: this.state.phone, code: this.state.code });
+    User.onLogin({ phone: this.state.phone, loginValidateCode: this.state.code });
   }
   /**
    * 倒计时

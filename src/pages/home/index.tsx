@@ -2,6 +2,7 @@ import { View, Button, Textarea } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
+import { User, Regular } from '../../store';
 
 @observer
 export default class extends Component {
@@ -33,18 +34,14 @@ export default class extends Component {
 
   componentDidHide() { }
   async onGet() {
-    const code = await Taro.login()
-    this.setState({ code: code.code, view: true })
+    // const code = await Taro.login()
+    // this.setState({ code: code.code, view: true })
+    User.onTest()
   }
   render() {
     return (
       <View className='index'>
         <Button onClick={this.onGet.bind(this)}>获取</Button>
-        {this.state.view && <View>
-          <View>🐷：这是您的 Code</View>
-          <Textarea value={this.state.code} />
-        </View>}
-
       </View>
     )
   }

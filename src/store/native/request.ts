@@ -11,12 +11,12 @@ export class WXRequestClass {
     address = process.env.NODE_ENV === 'development' ? "https://meiji.alienwow.cc" : 'https://api.mumeiji.cn';//
     requestConfig = {
         header: {
-            'token': '',
+            'Authorization': '',
             'content-type': 'application/json'
         }
     }
     setToken(token) {
-        this.requestConfig.header["token"] = token;
+        this.requestConfig.header["Authorization"] = token;
     }
     /**
      * 请求数据
