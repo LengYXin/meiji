@@ -1,6 +1,8 @@
 import { observable, runInAction } from 'mobx';
 import { WXRequest } from './native/request'
+import Paging from './paging'
 import Taro from '@tarojs/taro';
+import { Address } from './address'
 class UserMobx {
 
     constructor() {
@@ -16,6 +18,7 @@ class UserMobx {
         vipType: '',
         vipExpireTime: 0
     }
+    // 微信授权
     WxAuto = false;
     /**
      * 认证数据
@@ -37,7 +40,8 @@ class UserMobx {
         // 设置 token
         WXRequest.setToken(this.AutoData.token_type + ' ' + this.AutoData.access_token);
         // 进入首页
-        Taro.switchTab({ url: "/pages/home/index" })
+        // Taro.switchTab({ url: "/pages/home/index" });
+        Taro.navigateTo({ url: "/pages/user/appendAddress/index" })
     }
     /**
      * 认证
@@ -139,8 +143,7 @@ class UserMobx {
             }
             Taro.showToast({ title: "支付失败", icon: "none" })
         }
-
-
     }
 }
+
 export const User = new UserMobx();

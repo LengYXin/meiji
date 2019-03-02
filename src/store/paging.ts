@@ -14,7 +14,7 @@ export default class ServerClass {
         const data = params.data
         this.params.data = {
             page: 1,
-            rows: 10,
+            pageSize: 10,
             ...data
         }
     }
@@ -36,7 +36,7 @@ export default class ServerClass {
     @action.bound
     async getPagingData(refresh = false, showLoading = true) {
         // console.time("getPagingData");
-        console.log( this.PagingLoading, this.PagingRefreshing);
+        // console.log(this.PagingLoading, this.PagingRefreshing);
         if (this.PagingLoading || this.PagingRefreshing) {
             return
         }
@@ -47,7 +47,7 @@ export default class ServerClass {
                 Taro.showLoading({ title: "加载中", mask: true })
             }
             // if (!this.firstLoading) {
-                this.PagingRefreshing = true;
+            this.PagingRefreshing = true;
             // }
             this.params.data.page = 1;
             this.endData = false;
@@ -59,10 +59,8 @@ export default class ServerClass {
                 return console.log("无更多数据");
             }
         }
-        const res = await WXRequest.request(this.params)
-        if (res.isSuccess) {
-            PagingData = res.data.items;
-        }
+        const res = await WXRequest.request(this.params).then(x => (x.isSuccess && x.data.list) || [])
+        PagingData = res;
         const diff = new Date().getTime() - startTime;
         // 等菊花转完
         if (diff < 600) {
@@ -87,7 +85,7 @@ export default class ServerClass {
             this.PagingLoading = false;
             this.PagingRefreshing = false;
             this.firstLoading = false;
-            if (PagingData.length >= this.params.data.rows) {
+            if (PagingData.length >= this.params.data.pageSize) {
                 this.params.data.page++;
             } else {
                 this.endData = true;
@@ -112,7 +110,7 @@ export default class ServerClass {
         this.params.data = {
             ...this.params.data,
             page: 1,
-            rows: 10,
+            pageSize: 10,
             ...param
         }
     }

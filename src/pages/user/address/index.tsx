@@ -3,6 +3,7 @@ import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
 import { AtList, AtListItem } from 'taro-ui';
+import { Address } from '../../../store';
 
 @observer
 export default class extends Component {
@@ -27,12 +28,14 @@ export default class extends Component {
 
   componentWillUnmount() { }
 
-  componentDidShow() { }
+  componentDidShow() {
+    Address.dataSource.getPagingData(true, true)
+  }
 
   componentDidHide() { }
 
-  onAppend(){
-    Taro.navigateTo({url: "/pages/user/appendAddress/index?key=" })
+  onAppend() {
+    Taro.navigateTo({ url: "/pages/user/appendAddress/index?key=" })
   }
   render() {
     const name = "张磊"

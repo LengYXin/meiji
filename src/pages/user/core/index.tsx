@@ -57,7 +57,7 @@ export default class extends Component {
   }
   render() {
     const Info = { ...User.Info }
-    console.log(Info)
+    // console.log(Info)
     return (
       <View className='user-core'>
         <View className="core-header">
