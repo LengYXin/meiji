@@ -1,4 +1,4 @@
-import { View } from '@tarojs/components';
+import { View, Button } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
@@ -33,7 +33,25 @@ export default class extends Component {
   render() {
     return (
       <View className='card'>
-        
+        {/* 蓝湖下载的背景图片有问题 */}
+        <View className="card-box">
+          <View className="card-left">
+            <View className="left-top">
+              加购劵
+          </View>
+            <View className="left-bottom">
+              凭此劵可额外加购商品
+          </View>
+          </View>
+          <View className="card-right">
+            <View className="right-top">
+              <Button>立即使用</Button>
+            </View>
+            <View className="right-bottom">
+              有效期:1019.1.1
+          </View>
+          </View>
+        </View>
       </View>
     )
   }

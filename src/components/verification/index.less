@@ -1,0 +1,62 @@
+.verification {
+    font-family: Arial;
+    background-color: #000;
+    .at-form {
+        padding: 50px 85px;
+        &::after,
+        &::before {
+            opacity: 0;
+        }
+        .form-input {
+            padding: 60px 0 8px;
+            &::after {
+                border: 0 solid #939393;
+                transform: scale(0.5);
+                border-bottom-width: 2PX;
+            }
+            .at-input__input::placeholder {
+                color: #D4D4D4;
+            }
+        }
+        .btn-code {
+            border: none;
+            font-size: 32px;
+            font-weight: bold;
+            color: rgba(10, 10, 10, 1);
+            height: 42px;
+            line-height: 42px;
+            &::after,
+            &::before {
+                opacity: 0;
+            }
+        }
+        .at-input__children {
+            &::after,
+            &::before {
+                opacity: 0;
+            }
+        }
+        .btn-submit {
+            margin-top: 80px;
+            height: 82px;
+            background: rgba(10, 10, 10, 1);
+            opacity: 1;
+            line-height: 82px;
+            font-size: 32px;
+            font-family: Arial;
+            font-weight: 400;
+            color: rgba(219, 195, 137, 1);
+            border-radius: 4px;
+        }
+        .item-extra__info {
+            font-size: 28px;
+            font-weight: bold;
+            color: rgba(10, 10, 10, 1);
+        }
+        .item-extra__icon-arrow {
+            font-size: 40px;
+            font-weight: bold;
+            color: rgba(10, 10, 10, 1);
+        }
+    }
+}

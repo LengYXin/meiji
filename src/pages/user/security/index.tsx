@@ -3,6 +3,7 @@ import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
 import { AtList, AtListItem } from 'taro-ui';
+import { url } from 'inspector';
 
 @observer
 export default class extends Component {
@@ -30,19 +31,22 @@ export default class extends Component {
     componentDidShow() { }
 
     componentDidHide() { }
-
+    onClickPhone() {
+        Taro.navigateTo({ url: '/pages/user/replace/index?key=' })
+    }
     render() {
         return (
             <View className="security">
-                <AtList  hasBorder={false}>
+                <AtList hasBorder={false}>
                     <AtListItem
                         arrow='right'
                         title='手机号'
                         extraText='185****3566'
                         hasBorder={false}
+                        onClick={this.onClickPhone.bind(this)}
                     />
                 </AtList>
-                <AtList  hasBorder={false}>
+                <AtList hasBorder={false}>
                     <AtListItem
                         arrow='right'
                         title='微信'
