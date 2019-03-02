@@ -45,10 +45,31 @@ export default class extends Component {
         default: true,
         range: [0, 0, 0]//选这器
     }
-    onSubmit(e) {
+    async onSubmit(e) {
         e.preventDefault()
         e.stopPropagation()
-        console.log(this.state)
+        if (this.state.receiver && this.state.phone && this.state.province && this.state.address) {
+            Taro.showLoading({ title: '' });
+            const res = await Address.onAddAddress({
+                receiver: this.state.receiver,//收件人
+                phone: this.state.phone,
+                province: this.state.province,
+                city: this.state.city,
+                area: this.state.area,
+                address: this.state.address,
+                default: true,
+            });
+            if (res) {
+                Taro.showToast({ title: "保存成功" });
+                Taro.navigateBack();
+            } else {
+                Taro.showToast({ title: "保存失败", icon: "none" });
+            }
+        } else {
+            Taro.showToast({ title: "请填写完数据", icon: "none" });
+
+        }
+
     }
     onUpdateState(key, value) {
         if (key) {
@@ -140,7 +161,7 @@ export default class extends Component {
                     <AtInput
                         name='phone'
                         title='手机号码'
-                        type='text'
+                        type='phone'
                         placeholder='11位手机号'
                         value={phone}
                         onChange={this.onUpdateState.bind(this, 'phone')}

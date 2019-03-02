@@ -27,6 +27,22 @@ class AddressMobx {
             this.Provinces = res;
         })
     }
+    /**
+     * 保存地址
+     * @param params 
+     */
+    async onAddAddress(params) {
+        try {
+            const res = await WXRequest.request({
+                url: "/api/v1/Address",
+                data: params,
+                method: "POST",
+            });
+            return res.code == 200
+        } catch (error) {
+            return false
+        }
+    }
 }
 
 export const Address = new AddressMobx();

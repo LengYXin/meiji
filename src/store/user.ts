@@ -40,8 +40,8 @@ class UserMobx {
         // 设置 token
         WXRequest.setToken(this.AutoData.token_type + ' ' + this.AutoData.access_token);
         // 进入首页
-        // Taro.switchTab({ url: "/pages/home/index" });
-        Taro.navigateTo({ url: "/pages/user/appendAddress/index" })
+        Taro.switchTab({ url: "/pages/home/index" });
+        // Taro.navigateTo({ url: "/pages/user/appendAddress/index" })
     }
     /**
      * 认证
