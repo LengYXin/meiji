@@ -7,7 +7,8 @@ import NiuPai from '../../components/niupai';
 import Img from '../../img';
 import { User, Regular } from '../../store';
 import './index.less';
-const time = process.env.NODE_ENV === 'development' ? 5 : 60;
+const dev = process.env.NODE_ENV === 'development'
+const time = dev ? 5 : 60;
 let codeTime = time
 @observer
 export default class extends Component {
@@ -23,8 +24,8 @@ export default class extends Component {
     navigationBarTitleText: '美季'
   }
   state = {
-    phone: process.env.NODE_ENV === 'development' ? '1861175286' : '',
-    code: '0327',
+    phone: dev ? '1861175286' : '',
+    code: dev ? '0327' : '',
     codeTime: codeTime,//计时时间
     codeTimeStart: false,//计时开始状态
     codeDisabled: true,//按钮可用状态
@@ -135,7 +136,7 @@ export default class extends Component {
               {this.state.codeTimeStart ? `${this.state.codeTime}s 后发送` : '发送验证码'}
             </AtButton>
           </AtInput>
-          <AtButton formType='submit' disabled={this.state.submitDisabled} className="btn-submit">登陆</AtButton>
+          <AtButton formType='submit' disabled={this.state.submitDisabled} className="btn-submit">登录</AtButton>
           {/* <Navigator url="/pages/register/index">
             <AtList hasBorder={false}>
               <AtListItem
@@ -146,11 +147,11 @@ export default class extends Component {
             </AtList>
           </Navigator> */}
         </AtForm>
-        <View className="img-view">
+        {/* <View className="img-view">
           <Navigator url="/pages/home/index" openType="switchTab">
             <Image className="img-wx" mode="aspectFit" src={Img.Wx} />
           </Navigator>
-        </View>
+        </View> */}
       </View>
     )
   }

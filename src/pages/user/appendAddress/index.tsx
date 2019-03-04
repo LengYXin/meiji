@@ -31,11 +31,15 @@ export default class extends Component {
 
     componentDidShow() {
         Address.onGetProvinces();
+        if (!lodash.isEmpty(Address.Details)) {
+            this.setState({ ...Address.Details })
+        }
     }
 
     componentDidHide() { }
 
     state = {
+        id: '',
         receiver: '',//收件人
         phone: '',
         province: '',
@@ -50,7 +54,8 @@ export default class extends Component {
         e.stopPropagation()
         if (this.state.receiver && this.state.phone && this.state.province && this.state.address) {
             Taro.showLoading({ title: '' });
-            const res = await Address.onAddAddress({
+            const res = await Address.onSaveAddress({
+                id: this.state.id,
                 receiver: this.state.receiver,//收件人
                 phone: this.state.phone,
                 province: this.state.province,
@@ -73,7 +78,6 @@ export default class extends Component {
     }
     onUpdateState(key, value) {
         if (key) {
-            console.log(key, value)
             if (key === 'addressObj') {
                 return this.setState({
                     ...value

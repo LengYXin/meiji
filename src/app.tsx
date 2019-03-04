@@ -17,7 +17,6 @@ class App extends Component {
    */
   config: Config = {
     pages: [
-      'pages/user/replace/index',//更换手机号  
       'pages/index/index',
       'pages/login/index',//登陆
       'pages/equity/index',//权益
@@ -32,7 +31,7 @@ class App extends Component {
       'pages/user/security/index',//账户安全
       'pages/user/card/index',//卡卷
       'pages/user/core/index',//个人中心   
-         
+      'pages/user/replace/index',//更换手机号  
       'pages/other/payment/index',//支付提示
 
 

@@ -2,6 +2,7 @@ import { observable, action, decorate, runInAction } from 'mobx'
 import { WXRequest } from './native/request';
 import { request } from '@tarojs/taro';
 import Taro from '@tarojs/taro';
+import lodash, { ListIteratee } from 'lodash';
 
 /**
  * 分页函数
@@ -112,6 +113,17 @@ export default class ServerClass {
             page: 1,
             pageSize: 10,
             ...param
+        }
+    }
+    /**
+     * 移除某个数组
+     * @param predicate 
+     */
+    @action.bound
+    onRemove(predicate?: ListIteratee<any>) {
+        lodash.remove(this.PagingData, predicate);
+        if (this.params.data.page == 1) {
+            this.getPagingData(true)
         }
     }
 }

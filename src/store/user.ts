@@ -40,8 +40,8 @@ class UserMobx {
         // 设置 token
         WXRequest.setToken(this.AutoData.token_type + ' ' + this.AutoData.access_token);
         // 进入首页
-        Taro.switchTab({ url: "/pages/home/index" });
-        // Taro.navigateTo({ url: "/pages/user/appendAddress/index" })
+        // Taro.switchTab({ url: "/pages/home/index" });
+        Taro.navigateTo({ url: "/pages/user/address/index" })
     }
     /**
      * 认证
@@ -87,7 +87,7 @@ class UserMobx {
         Taro.showLoading({ title: "", mask: true })
         const mpAuthCode = await Taro.login().then(x => x.code);
         //  注册
-        if (this.AutoData.registered == 0) {
+        // if (this.AutoData.registered == 0) {
             const data = await WXRequest.request({
                 url: "/api/v1/Auth/Login",
                 data: {
@@ -99,7 +99,7 @@ class UserMobx {
             if (data.isSuccess) {
                 this.onSetAuto(data.data)
             }
-        }
+        // }
         Taro.hideLoading();
     }
     /**

@@ -2,8 +2,9 @@ import { View, Button } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
-import { AtList, AtListItem } from 'taro-ui';
+import { AtList, AtListItem, AtSwipeAction } from 'taro-ui';
 import { Address } from '../../../store';
+import Loading from '../../../components/loading';
 
 @observer
 export default class extends Component {
@@ -16,9 +17,23 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '收货地址'
+    navigationBarTitleText: '收货地址',
+    // 下拉刷新
+    enablePullDownRefresh: true,
+    backgroundTextStyle: "dark"
   }
-
+  // 下拉刷新
+  async onPullDownRefresh() {
+    await Address.dataSource.getPagingData(true, true)
+    Taro.stopPullDownRefresh()
+  }
+  // 滚动加载
+  onReachBottom() {
+    Address.dataSource.getPagingData()
+  }
+  state = {
+    isOpened: -1
+  }
   componentWillMount() { }
 
   componentWillReact() {
@@ -29,34 +44,63 @@ export default class extends Component {
   componentWillUnmount() { }
 
   componentDidShow() {
+    Taro.pageScrollTo({ scrollTop: 0 })
     Address.dataSource.getPagingData(true, true)
   }
 
   componentDidHide() { }
 
-  onAppend() {
+  onAppend(item) {
+    Address.Details = item;
     Taro.navigateTo({ url: "/pages/user/appendAddress/index?key=" })
   }
+  onOpened(index) {
+    this.setState({ isOpened: index })
+  }
+  onClosed(index) {
+    this.setState({ isOpened: -1 })
+  }
+  onClick(item) {
+    console.log(item)
+    Address.onDelete(item.id)
+  }
   render() {
-    const name = "张磊"
-    const phone = "185****3566"
-    const data = ['1', '2', '3', '4']
+    const data = [...Address.dataSource.PagingData];
+    const loadingVis = Address.dataSource.PagingLoading;
     return (
       <View>
         <View className='address'>
-          {data.map((x, index) => {
-            return <AtList hasBorder={false} key={index}>
-              <AtListItem
-                arrow='right'
-                note='北京市昌平区天通苑'
-                title={name + "  " + phone}
-                hasBorder={false}
-              />
-            </AtList>
-          })}
+          <AtList hasBorder={false} >
+            {data.map((item, index) => {
+              return <AtSwipeAction
+                onClick={this.onClick.bind(this, item)}
+                onOpened={this.onOpened.bind(this, index)}
+                onClosed={this.onClosed.bind(this, index)}
+                isOpened={this.state.isOpened === index}
+                autoClose
+                key={item.id}
+                options={[
+                  {
+                    text: '删除',
+                    style: {
+                      backgroundColor: '#FF4949'
+                    }
+                  }
+                ]}>
+                <AtListItem
+                  onClick={this.onAppend.bind(this, item)}
+                  arrow='right'
+                  note={`${item.province} ${item.city} ${item.area} `}
+                  title={item.receiver + "  " + item.phone}
+                  hasBorder={false}
+                />
+              </AtSwipeAction>
+            })}
+          </AtList>
+          <Loading visible={loadingVis} />
         </View>
         <View className="address-btn">
-          <Button onClick={this.onAppend.bind(this)}>添加地址</Button>
+          <Button onClick={this.onAppend.bind(this,{})}>添加地址</Button>
         </View>
       </View>
     )
