@@ -40,9 +40,16 @@ export default class extends Component<{ key: any }, any>{
   componentDidMount() { }
 
   componentWillUnmount() { }
-
+  urls = [
+    '/api/v1/Orders',
+    '/api/v1/Orders/Status/pendingPayment',
+    '/api/v1/Orders/Status/shipped',
+    '/api/v1/Orders/Status/toBeDelivered',
+    '/api/v1/Orders/Status/completed',
+  ]
   componentDidShow() {
     Taro.pageScrollTo({ scrollTop: 0 })
+    Orders.dataSource.onReset({}, this.urls[lodash.get(this.$router, 'params.key', 0)])
     Orders.dataSource.getPagingData(true, true)
   }
 
@@ -57,17 +64,20 @@ export default class extends Component<{ key: any }, any>{
     this.setState({
       current: value
     });
+    Orders.dataSource.onReset({}, this.urls[value])
     Orders.dataSource.getPagingData(true, true)
   }
   render() {
     const tabList = [{ title: '全部订单' }, { title: '待付款' }, { title: '待发货' }, { title: '待收货' }, { title: '已完成' }];
-    const data = [...Orders.dataSource.PagingData];
+    const PagingData = [...Orders.dataSource.PagingData];
     const loadingVis = Orders.dataSource.PagingLoading;
     return (
       <View className="record">
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
         </AtTabs>
-        <Card data={this.state.current} />
+        {PagingData.map(data => {
+          return <Card data={data} key={data.id} />
+        })}
         <Loading visible={loadingVis} />
       </View>
     )

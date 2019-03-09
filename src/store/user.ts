@@ -1,8 +1,7 @@
-import { observable, runInAction } from 'mobx';
-import { WXRequest } from './native/request'
-import Paging from './paging'
 import Taro from '@tarojs/taro';
-import { Address } from './address'
+import { observable, runInAction } from 'mobx';
+import { WXRequest } from './native/request';
+import { Products } from './products'
 class UserMobx {
 
     constructor() {
@@ -39,9 +38,10 @@ class UserMobx {
         this.AutoData = auto;
         // 设置 token
         WXRequest.setToken(this.AutoData.token_type + ' ' + this.AutoData.access_token);
+        // Products.onTest()
         // 进入首页
-        // Taro.switchTab({ url: "/pages/home/index" });
-        Taro.navigateTo({ url: "/pages/register/Invitation/index" })
+        Taro.switchTab({ url: "/pages/sale/index" });
+        // Taro.navigateTo({ url: "/pages/register/Invitation/index" })
     }
     /**
      * 认证
@@ -88,17 +88,17 @@ class UserMobx {
         const mpAuthCode = await Taro.login().then(x => x.code);
         //  注册
         // if (this.AutoData.registered == 0) {
-            const data = await WXRequest.request({
-                url: "/api/v1/Auth/Login",
-                data: {
-                    ...param,
-                    mpAuthCode,
-                },
-                method: "POST"
-            });
-            if (data.isSuccess) {
-                this.onSetAuto(data.data)
-            }
+        const data = await WXRequest.request({
+            url: "/api/v1/Auth/Login",
+            data: {
+                ...param,
+                mpAuthCode,
+            },
+            method: "POST"
+        });
+        if (data.isSuccess) {
+            this.onSetAuto(data.data)
+        }
         // }
         Taro.hideLoading();
     }

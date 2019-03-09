@@ -45,7 +45,7 @@ export default class ServerClass {
         // 刷新 or 第一次请求
         if (refresh) {
             if (showLoading) {
-                Taro.showLoading({ title: "加载中", mask: true })
+                Taro.showLoading({ title: "加载中~", mask: true })
             }
             // if (!this.firstLoading) {
             this.PagingRefreshing = true;
@@ -62,18 +62,9 @@ export default class ServerClass {
         }
         const res = await WXRequest.request(this.params).then(x => (x.isSuccess && x.data.list) || [])
         PagingData = res;
-        const diff = new Date().getTime() - startTime;
-        // 等菊花转完
-        if (diff < 600) {
-            await new Promise((resole, reject) => {
-                setTimeout(() => {
-                    this.runInAction(refresh, PagingData)
-                    resole();
-                }, 600 - diff);
-            })
-        } else {
+        lodash.delay(() => {
             this.runInAction(refresh, PagingData)
-        }
+        }, 600 - (new Date().getTime() - startTime))
     }
     /**
      * 设置数据状态
@@ -105,7 +96,7 @@ export default class ServerClass {
      * @param param 
      */
     @action.bound
-    onReset(param?) {
+    onReset(param?, url?: string) {
         this.firstLoading = true;
         // this.PagingData = [];
         this.params.data = {
@@ -113,6 +104,9 @@ export default class ServerClass {
             page: 1,
             pageSize: 10,
             ...param
+        }
+        if (url) {
+            this.params.url = url;
         }
     }
     /**

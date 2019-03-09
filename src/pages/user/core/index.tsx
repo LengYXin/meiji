@@ -55,6 +55,11 @@ export default class extends Component {
     console.log("aaa")
     Taro.navigateTo({ url: "/pages/equity/index?key=" })
   }
+  previewImage() {
+    Taro.previewImage({
+      urls: [code]
+    })
+  }
   render() {
     const Info = { ...User.Info }
     // console.log(Info)
@@ -74,7 +79,7 @@ export default class extends Component {
           </View>
         </View>
         <View className="core-tab">
-          <Image className="tab-img" src={tabImg} onClick={this.onClickEquity.bind(this)} />
+          {/* <Image className="tab-img" src={tabImg} onClick={this.onClickEquity.bind(this)} /> */}
           <View className="tab-list">
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 0)}>全部订单</View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>待付款</View>
@@ -108,7 +113,7 @@ export default class extends Component {
           </AtList>
         </View>
         <View className="core-code">
-          <Image className="code-img" src={code} />
+          <Image className="code-img" src={code} onClick={this.previewImage.bind(this)} />
           <View className="code-txt">
             <Image className="txt-img" src={kf} />联系客服
         </View>

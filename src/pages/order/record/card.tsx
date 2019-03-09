@@ -29,24 +29,22 @@ export default class extends Component<{ data: any }, any> {
     componentDidShow() { }
 
     componentDidHide() { }
-    renderState() {
-        const data: any = 1
-        // switch (data) {
-        //     case 1:
-        //         return <View className="btn-left">待付款</View>
-        //         break;
-        //     case 2:
-        //         return <View className="btn-left">待发货</View>
-        //         break;
-        //     case 3:
-        //         return <View className="btn-left">已发货</View>
-        //         break;
-        //     case 4:
-        //         return <View className="btn-left">已完成</View>
-        //         break;
-        // }
-    }
     render() {
+        let state = <View className="btn-left">已完成</View>
+        switch (this.props.data.status) {
+            case 1:
+                state = <View className="btn-left">待付款</View>
+                break;
+            case 2:
+                state = <View className="btn-left">待发货</View>
+                break;
+            case 3:
+                state = <View className="btn-left">已发货</View>
+                break;
+            case 4:
+                state = <View className="btn-left">已完成</View>
+                break;
+        }
         return (
             <View className="card">
                 <View className="card-orderCode"><Text>订单编号：</Text>34765676543456</View>
@@ -69,7 +67,7 @@ export default class extends Component<{ data: any }, any> {
                     </View>
                 </View>
                 <View className="card-btn">
-                    {this.renderState()}
+                    {state}
                     <View className="btn-rigtn">
                         <Button>取消</Button>
                     </View>
