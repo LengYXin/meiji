@@ -80,10 +80,7 @@ export default class extends Component {
       this.onTime(() => {
         Taro.hideLoading()
       })
-    } else {
-      Taro.hideLoading();
-      Taro.showToast({ title: "验证码发送失败，请重试", icon: "none" })
-    }
+    } 
 
   }
   /**

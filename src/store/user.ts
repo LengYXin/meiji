@@ -1,7 +1,8 @@
 import Taro from '@tarojs/taro';
-import { observable, runInAction } from 'mobx';
+import { observable, runInAction, computed } from 'mobx';
 import { WXRequest } from './native/request';
 import { Products } from './products'
+import lodash from 'lodash'
 class UserMobx {
 
     constructor() {
@@ -15,6 +16,7 @@ class UserMobx {
         nickName: '',
         gender: 0,
         vipType: '',
+        phone: '',
         vipExpireTime: 0
     }
     // 微信授权
@@ -31,6 +33,13 @@ class UserMobx {
         "registered": 0
     }
     /**
+     * 隐藏手机号
+     */
+    @computed
+    public get HidePhone() {
+        return lodash.fill(this.Info.phone.split(''), "*", 3, 7).join('')
+    }
+    /**
      * 设置认证信息
      * @param auto 
      */
@@ -40,7 +49,7 @@ class UserMobx {
         WXRequest.setToken(this.AutoData.token_type + ' ' + this.AutoData.access_token);
         // Products.onTest()
         // 进入首页
-        Taro.switchTab({ url: "/pages/sale/index" });
+        Taro.switchTab({ url: "/pages/home/index" });
         // Taro.navigateTo({ url: "/pages/register/Invitation/index" })
     }
     /**
@@ -72,6 +81,7 @@ class UserMobx {
             }
             runInAction(() => {
                 this.Info = { ...WxAuto, ...UserInfo }// WxAuto
+                console.log(this)
             })
         } catch (error) {
             console.log(error)
@@ -106,17 +116,46 @@ class UserMobx {
      * 发送验证码
      * @param phone 
      */
-    async onSendCode(phone: string) {
+    async onSendCode(phone: string, validateCodeType: "login" | "register" | "verification" | "changePhone" = "login") {
         const res = await WXRequest.request({
             url: "/api/v1/ValidateCode",
             data: {
                 "phone": phone,
-                "validateCodeType": "login"
+                "validateCodeType": validateCodeType
             },
             method: "POST"
         })
+        if (res.isSuccess) {
+            Taro.showToast({ title: "发送成功，请注意查收", icon: "none" })
+        } else {
+            Taro.hideLoading();
+            Taro.showToast({ title: res.msg, icon: "none" })
+        }
         return res.isSuccess
     }
+    /**
+     * 修改手机号
+     * @param params 
+     */
+    async onUpdatePhone(params) {
+        Taro.showLoading({ title: "提交中~" })
+        const res = await WXRequest.request({
+            url: `/api/v1/Accounts/${this.Info.phone}/Phone`,
+            data: {
+                oldPhone: this.Info.phone,
+                ...params
+            },
+            method: "PUT"
+        })
+        if (res.isSuccess) {
+            runInAction(() => {
+                this.Info.phone = params.newPhone;
+            })
+        }
+        Taro.hideLoading()
+        return res
+    }
+
     /**
      * 购买会员
      * @param vipType 

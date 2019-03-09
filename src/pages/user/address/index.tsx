@@ -1,10 +1,11 @@
-import { View, Button } from '@tarojs/components';
+import { Button, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import './index.less';
+import lodash from 'lodash';
 import { AtList, AtListItem, AtSwipeAction } from 'taro-ui';
-import { Address } from '../../../store';
 import Loading from '../../../components/loading';
+import { Address } from '../../../store';
+import './index.less';
 
 @observer
 export default class extends Component {
@@ -64,6 +65,9 @@ export default class extends Component {
     console.log(item)
     Address.onDelete(item.id)
   }
+  hide(phone) {
+    return lodash.fill(phone.split(''), "*", 3, 7).join('')
+  }
   render() {
     const data = [...Address.dataSource.PagingData];
     const loadingVis = Address.dataSource.PagingLoading;
@@ -91,7 +95,7 @@ export default class extends Component {
                   onClick={this.onAppend.bind(this, item)}
                   arrow='right'
                   note={`${item.province} ${item.city} ${item.area} `}
-                  title={item.receiver + "  " + item.phone}
+                  title={item.receiver + "  " + this.hide(item.phone)}
                   hasBorder={false}
                 />
               </AtSwipeAction>
@@ -100,7 +104,7 @@ export default class extends Component {
           <Loading visible={loadingVis} />
         </View>
         <View className="address-btn">
-          <Button onClick={this.onAppend.bind(this,{})}>添加地址</Button>
+          <Button onClick={this.onAppend.bind(this, {})}>添加地址</Button>
         </View>
       </View>
     )

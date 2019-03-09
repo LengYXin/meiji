@@ -1,9 +1,10 @@
-import { View, Image } from '@tarojs/components';
+import { Image, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
+import lodash from 'lodash';
+import { toJS } from 'mobx';
 import { Products } from '../..//store';
 import './index.less';
-import { toJS } from 'mobx';
 
 @observer
 export default class extends Component {
@@ -37,7 +38,7 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    Products.onGetProducts()
+    Products.onNewData()
   }
 
   componentWillUnmount() { }
@@ -62,11 +63,11 @@ export default class extends Component {
               data.list.map(item => {
                 return (
                   <View className='products-item' key={item.id}>
-                    <View className="title">{item.summary}</View>
-                    <View className="cd">产地：阳澄湖</View>
-                    <View className="info">阳澄湖大闸蟹，江苏省苏州市特产，中国国家地理标志产品。 [1-2]</View>
+                    <View className="title">{item.productName}</View>
+                    <View className="cd">产地：{item.productOrigin}</View>
+                    <View className="info">{item.summary}</View>
                     <View className="img">
-                      <Image src="" mode="aspectFit" />
+                      <Image src={lodash.get(item, 0, '')} mode="aspectFit" />
                     </View>
                   </View>
                 )

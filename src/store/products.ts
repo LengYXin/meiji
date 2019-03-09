@@ -9,6 +9,7 @@ import { DateFormat } from './Regular';
 class ProductsMobx {
     constructor() {
     }
+    oldData = [];
     @observable dataSource: {
         title: string,
         start: number,
@@ -17,7 +18,7 @@ class ProductsMobx {
         list: any[]
     }[] = [];
     @action.bound
-    onPush(list: { salesDateEnd: number, salesDateStart: number }[], type: "new" | 'old' = "new") {
+    onPush(list: { id: string, salesDateEnd: number, salesDateStart: number }[], type: "new" | 'old' = "new") {
         const dataSource = toJS(this.dataSource);
         list.map(data => {
             const key = `${data.salesDateStart}-${data.salesDateEnd}`
@@ -25,7 +26,11 @@ class ProductsMobx {
             // 已经存在 直接添加
             const sale = lodash.find(dataSource, ['key', key]);
             if (sale) {
-                sale.list.push(data);
+                // 数据已经存在
+                if (lodash.some(sale.list, ['id', data.id])) {
+                } else {
+                    sale.list.push(data);
+                }
             } else {
                 // 不存在 创建 插入
                 dataSource.unshift({
@@ -58,52 +63,29 @@ class ProductsMobx {
     /**
      * 商品列表
      */
-    async onGetProducts() {
-        // timeStamp
-        Taro.showLoading({ title: "加载中~" })
-        const time = Date.now();
-        try {
-            const res = await WXRequest.request({ url: '/api/v1/Products', data: { pageSize: 99 } });
-            if (res.isSuccess) {
-                this.onPush(res.data.list);
-            }
-        } catch (error) {
-        } finally {
-            lodash.delay(Taro.hideLoading, 600 - (Date.now() - time))
-        }
-    }
+    // async onGetProducts() {
+    //     // timeStamp
+    //     Taro.showLoading({ title: "加载中~" })
+    //     const time = Date.now();
+    //     try {
+    //         const res = await WXRequest.request({ url: '/api/v1/Products', data: { pageSize: 99 } });
+    //         if (res.isSuccess) {
+    //             this.onPush(res.data.list);
+    //         }
+    //     } catch (error) {
+    //     } finally {
+    //         lodash.delay(Taro.hideLoading, 600 - (Date.now() - time))
+    //     }
+    // }
     /**
      * 下来 历史
      */
     async onOldData(timeStamp?: number) {
-        Taro.showLoading({ title: "加载中~" })
-        const time = Date.now();
+        Taro.showLoading({ title: "加载中~", mask: true })
         try {
             const data = lodash.head(this.dataSource);
             if (data) {
-                const res = await WXRequest.request({ url: '/api/v1/Products/OldData', data: { timeStamp: data.start } });
-                if (res.isSuccess && res.data.length > 0) {
-                    this.onPush(res.data)
-                } else {
-                    // lodash.delay(() => { Taro.showToast({ title: "没有更多商品了", icon: "none" }) }, 600 - (Date.now() - time))
-                }
-            }
-        } catch (error) {
-            
-        } finally {
-            lodash.delay(Taro.hideLoading, 600 - (Date.now() - time))
-        }
-    }
-    /**
-     * 上拉 最新
-     */
-    async onNewData(timeStamp?: number) {
-        Taro.showLoading({ title: "加载中~" })
-        const time = Date.now();
-        try {
-            const data = lodash.last(this.dataSource);
-            if (data) {
-                const res = await WXRequest.request({ url: '/api/v1/Products/NewData', data: { timeStamp: data.start } });
+                const res = await WXRequest.request({ url: '/api/v1/Products/OldData', data: { timeStamp: data.start } }, true);
                 if (res.isSuccess && res.data.length > 0) {
                     this.onPush(res.data)
                 } else {
@@ -113,13 +95,29 @@ class ProductsMobx {
         } catch (error) {
 
         }
-        finally {
-            lodash.delay(Taro.hideLoading, 600 - (Date.now() - time))
+        Taro.hideLoading()
+    }
+    /**
+     * 上拉 最新
+     */
+    async onNewData(timeStamp?: number) {
+        Taro.showLoading({ title: "加载中~", mask: true })
+        try {
+            const timeStamp = lodash.get(lodash.last(this.dataSource), 'start');
+            const res = await WXRequest.request({ url: '/api/v1/Products/NewData', data: { timeStamp } }, true);
+            if (res.isSuccess && res.data.length > 0) {
+                this.onPush(res.data)
+            } else {
+                // lodash.delay(() => { Taro.showToast({ title: "没有更多商品了", icon: "none" }) }, 600 - (Date.now() - time))
+            }
+        } catch (error) {
+
         }
+        Taro.hideLoading()
     }
     onTest() {
         this.onGetRecommendPruduct()
-        this.onGetProducts()
+        // this.onGetProducts()
         this.onOldData()
         this.onNewData()
     }

@@ -1,9 +1,10 @@
-import { View, Button } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import './index.less';
 import { AtList, AtListItem } from 'taro-ui';
-import { url } from 'inspector';
+import { User } from '../../..//store';
+
+import './index.less';
 
 @observer
 export default class extends Component {
@@ -35,25 +36,26 @@ export default class extends Component {
         Taro.navigateTo({ url: '/pages/user/replace/index?key=' })
     }
     render() {
+        const Phone = User.HidePhone
         return (
             <View className="security">
                 <AtList hasBorder={false}>
                     <AtListItem
                         arrow='right'
                         title='手机号'
-                        extraText='185****3566'
+                        extraText={Phone}
                         hasBorder={false}
                         onClick={this.onClickPhone.bind(this)}
                     />
                 </AtList>
-                <AtList hasBorder={false}>
+                {/* <AtList hasBorder={false}>
                     <AtListItem
                         arrow='right'
                         title='微信'
                         extraText='Leo'
                         hasBorder={false}
                     />
-                </AtList>
+                </AtList> */}
             </View>
 
         )

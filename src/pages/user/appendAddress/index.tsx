@@ -135,6 +135,9 @@ export default class extends Component {
         }
         this.setState({ range })
     }
+    hide(phone) {
+        return lodash.fill(phone.split(''), "*", 3, 7).join('')
+    }
     render() {
         const { receiver, phone, range, province, city, area, address } = this.state;
         const PCAStr = province ? `${province} ${city} ${area}` : ''

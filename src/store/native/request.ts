@@ -3,6 +3,7 @@ import endsWith from 'lodash/endsWith';
 import startsWith from 'lodash/startsWith';
 import trimStart from 'lodash/trimStart';
 import cloneDeep from 'lodash/cloneDeep';
+import lodash from 'lodash';
 
 export class WXRequestClass {
     constructor() {
@@ -22,12 +23,18 @@ export class WXRequestClass {
      * 请求数据
      * @param params 
      */
-    async request(params: request.Param, loading = true): Promise<ApiResponse> {
+    async request(params: request.Param, delay = false): Promise<ApiResponse> {
+        const time = Date.now();
         params = cloneDeep(params);
         params.header = { ...this.requestConfig.header, ...params.header }
         params.data = this.compatibleData({ ...params.data })
         params.url = this.compatibleUrl(this.address, params.url);
         const res = await Taro.request(params);
+        if (delay) {
+            await new Promise((res, rej) => {
+                lodash.delay(res, 600 - (Date.now() - time));
+            })
+        }
         let isSuccess = true;
         if (res && res.statusCode == 200) {
             if (res.data.code != 200) {

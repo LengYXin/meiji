@@ -15,6 +15,7 @@ declare global {
   interface ApiResponse {
     data: any
     message: string
+    msg: string
     code: number
     isSuccess: boolean
 }
