@@ -18,38 +18,22 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页',
-    // 下拉刷新
-    enablePullDownRefresh: true,
-    backgroundTextStyle: "dark"
-  }
-  // 下拉刷新
-  async onPullDownRefresh() {
-    await Products.onGetRecommendPruduct(true)
-    Taro.stopPullDownRefresh()
+    navigationBarTitleText: '美季',
   }
   componentWillMount() { }
 
   componentWillReact() {
   }
-
-  async componentDidMount() {
-    Products.onGetRecommendPruduct()
-  }
-
   componentWillUnmount() { }
 
-  componentDidShow() { }
+  componentDidShow() {
+    const key = get(this.$router, 'params.key', '')
+    Products.onGetProducts(key);
+  }
 
   componentDidHide() { }
-  onToCreateOrder() {
-    const productCode = get(Products, 'RecommendPruduct.productCode')
-    if (productCode) {
-      Taro.navigateTo({ url: "/pages/order/create/index?key=" + productCode })
-    }
-  }
   render() {
-    const products = toJS(Products.RecommendPruduct);
+    const products = toJS(Products.details)
     return (
       <Details data={products} />
     )

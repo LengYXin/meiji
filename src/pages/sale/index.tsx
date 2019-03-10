@@ -1,10 +1,11 @@
 import { Image, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import lodash from 'lodash';
+import get from 'lodash/get';
 import { toJS } from 'mobx';
 import { Products } from '../..//store';
 import './index.less';
+import Loading from '../../components/loading';
 
 @observer
 export default class extends Component {
@@ -46,10 +47,12 @@ export default class extends Component {
   componentDidShow() { }
 
   componentDidHide() { }
-
+  onToDetails(productCode) {
+    Taro.navigateTo({ url: "/pages/details/index?key=" + productCode })
+  }
   render() {
     const dataSource = toJS(Products.dataSource)
-    console.log(dataSource)
+    const loadingVis = Products.PagingLoading;
     return (
       <View className='index'>
         {dataSource.map(data => {
@@ -62,12 +65,12 @@ export default class extends Component {
             {
               data.list.map(item => {
                 return (
-                  <View className='products-item' key={item.id}>
+                  <View className='products-item' key={item.id} onClick={this.onToDetails.bind(this, item.productCode)}>
                     <View className="title">{item.productName}</View>
                     <View className="cd">产地：{item.productOrigin}</View>
                     <View className="info">{item.summary}</View>
                     <View className="img">
-                      <Image src={lodash.get(item, 0, '')} mode="aspectFit" />
+                      <Image src={get(item.pictures, 0, '')} mode="aspectFit" />
                     </View>
                   </View>
                 )
@@ -75,6 +78,7 @@ export default class extends Component {
             }
           </View>
         })}
+        <Loading visible={loadingVis} />
       </View>
     )
   }

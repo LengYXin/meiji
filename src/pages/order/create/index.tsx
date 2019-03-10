@@ -1,10 +1,16 @@
-import { View, Image, Text, Button } from '@tarojs/components';
+import { Button, Image, Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import './index.less';
+import get from 'lodash/get';
+import fill from 'lodash/fill';
+
 import { AtList, AtListItem } from 'taro-ui';
-import jia from '../../../img/img50.png'
-import jian from '../../../img/img51.png'
+import jia from '../../../img/img50.png';
+import jian from '../../../img/img51.png';
+import { Orders, Products, Address } from '../../../store';
+import './index.less';
+import { toJS } from 'mobx';
+
 @observer
 export default class extends Component {
 
@@ -28,34 +34,57 @@ export default class extends Component {
 
   componentWillUnmount() { }
 
-  componentDidShow() { }
+  componentDidShow() {
+    const key = get(this.$router, 'params.key', '')
+    Products.onGetProducts(key);
+  }
 
   componentDidHide() { }
-
+  onClickAddress() {
+    Taro.navigateTo({ url: "/pages/user/address/index?key=" })
+  }
+  onCreate() {
+    const address = Address.Default
+    Orders.onCreateOrder({
+      cardCoupomCount: 0,
+      productCode: get(Products, 'details.productCode', ''),
+      productCount: 1,
+      shippingAddresseId: address.id
+    })
+  }
+  hide(phone = '') {
+    return fill(phone.split(''), "*", 3, 7).join('')
+  }
   render() {
+    const product = toJS(Products.details)
+    const Price = Products.toPrice(product.price);
+    const address = Address.Default;
+    const Total = Products.toPrice(product.price * 1.5);
     return (
       <View className='create'>
         <View className="create-header">
-          <AtList hasBorder={false}>
+          <AtList hasBorder={false} >
             <AtListItem
+              onClick={this.onClickAddress.bind(this)}
               hasBorder={false}
               arrow='right'
-              note='描述信息'
-              title='标题文字标题文字标题文字标题文字标题文字'
+              title={address.receiver + "  " + this.hide(address.phone)}
+              // note={address.address}
+              note={`${address.province} ${address.city} ${address.area} `}
             />
           </AtList>
         </View>
         <View className="create-line"></View>
         <View className="create-content">
           <View className="content-left">
-            <Image src="" />
+            <Image src={get(product.pictures, 0, '')} mode="aspectFit" />
           </View>
           <View className="content-right">
-            <View className="right-name">湖丰阳澄湖大闸蟹螃蟹</View>
-            <View className="right-address"><Text>产地：</Text>阳澄湖</View>
+            <View className="right-name">{product.productName}</View>
+            <View className="right-address"><Text>产地：</Text>{product.productOrigin}</View>
             <View className="right-money">
               <View className="money-left">
-                <View className="left-qian">￥2.300</View>
+                <View className="left-qian">{Price}</View>
                 <View className="left-type">全款预付</View>
               </View>
               <View className="money-rignt">
@@ -88,7 +117,7 @@ export default class extends Component {
         </View>
         <View className="create-btn">
           <View className="btn-txt">￥2300</View>
-          <Button>去支付</Button>
+          <Button onClick={this.onCreate.bind(this)}>去支付</Button>
         </View>
       </View>
     )

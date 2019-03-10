@@ -1,11 +1,12 @@
 import { View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
+import get from 'lodash/get';
+import toInteger from 'lodash/toInteger';
 import { AtTabs } from 'taro-ui';
 import Loading from '../../../components/loading';
 import { Orders } from '../../../store';
 import Card from './card';
-import lodash from 'lodash';
 import './index.less';
 @observer
 export default class extends Component<{ key: any }, any>{
@@ -49,13 +50,13 @@ export default class extends Component<{ key: any }, any>{
   ]
   componentDidShow() {
     Taro.pageScrollTo({ scrollTop: 0 })
-    Orders.dataSource.onReset({}, this.urls[lodash.get(this.$router, 'params.key', 0)])
+    Orders.dataSource.onReset({}, this.urls[get(this.$router, 'params.key', 0)])
     Orders.dataSource.getPagingData(true, true)
   }
 
   componentDidHide() { }
   state = {
-    current: lodash.toInteger(lodash.get(this.$router, 'params.key', 0))
+    current: toInteger(get(this.$router, 'params.key', 0))
 
   }
   //  待付款            待收货            代发货   已完成       关闭   取消      用户取消
@@ -76,7 +77,7 @@ export default class extends Component<{ key: any }, any>{
         <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
         </AtTabs>
         {PagingData.map(data => {
-          return <Card data={data} key={data.id} />
+          return <Card data={data} key={data.orderNO} />
         })}
         <Loading visible={loadingVis} />
       </View>

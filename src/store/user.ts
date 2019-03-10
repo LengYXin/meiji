@@ -1,8 +1,9 @@
 import Taro from '@tarojs/taro';
-import { observable, runInAction, computed } from 'mobx';
+import fill from 'lodash/fill';
+import { computed, observable, runInAction } from 'mobx';
+import { Address } from './address';
 import { WXRequest } from './native/request';
-import { Products } from './products'
-import lodash from 'lodash'
+
 class UserMobx {
 
     constructor() {
@@ -37,7 +38,7 @@ class UserMobx {
      */
     @computed
     public get HidePhone() {
-        return lodash.fill(this.Info.phone.split(''), "*", 3, 7).join('')
+        return fill(this.Info.phone.split(''), "*", 3, 7).join('')
     }
     /**
      * 设置认证信息
@@ -48,9 +49,10 @@ class UserMobx {
         // 设置 token
         WXRequest.setToken(this.AutoData.token_type + ' ' + this.AutoData.access_token);
         // Products.onTest()
+        Address.dataSource.getPagingData()
         // 进入首页
         Taro.switchTab({ url: "/pages/home/index" });
-        // Taro.navigateTo({ url: "/pages/register/Invitation/index" })
+        // Taro.navigateTo({ url: "/pages/order/record/index" })
     }
     /**
      * 认证
@@ -81,7 +83,6 @@ class UserMobx {
             }
             runInAction(() => {
                 this.Info = { ...WxAuto, ...UserInfo }// WxAuto
-                console.log(this)
             })
         } catch (error) {
             console.log(error)

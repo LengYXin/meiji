@@ -1,9 +1,9 @@
-import { View, Navigator, Input } from '@tarojs/components';
+import { Input, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
+import get from 'lodash/get';
+import { AtButton, AtForm } from 'taro-ui';
 import './index.less';
-import { AtButton, AtForm, AtDivider, AtIcon, AtList, AtListItem } from 'taro-ui';
-import lodash from 'lodash';
 
 @observer
 export default class extends Component {
@@ -41,7 +41,7 @@ export default class extends Component {
     // console.log(this.state)
   }
   onInput(type, value) {
-    this.setState({ [type]: lodash.get(value, 'detail.value', '') })
+    this.setState({ [type]: get(value, 'detail.value', '') })
   }
   render() {
     const disabled = this.state.code1 && this.state.code2 && this.state.code3 && this.state.code4;

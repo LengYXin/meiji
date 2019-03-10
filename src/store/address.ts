@@ -2,7 +2,7 @@ import { observable, runInAction, computed } from 'mobx';
 import { WXRequest } from './native/request'
 import Paging from './paging'
 import Taro from '@tarojs/taro';
-import lodash from 'lodash';
+import get from 'lodash/get';
 class AddressMobx {
     constructor() {
     }
@@ -34,6 +34,12 @@ class AddressMobx {
      * 地址分页
      */
     dataSource = new Paging({ url: "/api/v1/Address" });
+    /**
+     * 默认地址
+     */
+    @computed get Default() {
+        return get(this.dataSource.PagingData, 0, false);
+    }
     /**
      * 获取省市区
      */

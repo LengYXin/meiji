@@ -1,10 +1,15 @@
 import { Button, Form, Picker, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import lodash from 'lodash';
+import fill from 'lodash/fill';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
+import update from 'lodash/update';
 import { AtInput } from 'taro-ui';
 import { Address } from '../../../store';
 import './index.less';
+
 
 @observer
 export default class extends Component {
@@ -31,7 +36,7 @@ export default class extends Component {
 
     componentDidShow() {
         Address.onGetProvinces();
-        if (!lodash.isEmpty(Address.Details)) {
+        if (!isEmpty(Address.Details)) {
             this.setState({ ...Address.Details })
         }
     }
@@ -101,10 +106,10 @@ export default class extends Component {
         let keys: any[] = [];
         if (this.AddressMap.has(key)) {
             const address = this.AddressMap.get(key)
-            values = lodash.get(address, 'values', []);
-            keys = lodash.get(address, 'keys', []);
+            values = get(address, 'values', []);
+            keys = get(address, 'keys', []);
         } else {
-            lodash.map(lodash.get(Address.Provinces, key, {}), (value, key) => {
+            map(get(Address.Provinces, key, {}), (value, key) => {
                 values.push(value);
                 keys.push(key);
             });
@@ -119,24 +124,24 @@ export default class extends Component {
         }
     }
     onAddressKey(keys, index = 0) {
-        return lodash.get(keys, index, 0);
+        return get(keys, index, 0);
     }
     onChange(event) {
         let { range } = this.state;
-        const column = lodash.get(event, 'detail.column', null)
-        const value = lodash.get(event, 'detail.value', null);
-        range = lodash.update(range, column, x => value);
+        const column = get(event, 'detail.column', null)
+        const value = get(event, 'detail.value', null);
+        range = update(range, column, x => value);
         if (column == 0) {
-            range = lodash.update(range, 1, x => 0);
-            range = lodash.update(range, 2, x => 0);
+            range = update(range, 1, x => 0);
+            range = update(range, 2, x => 0);
         }
         if (column == 1) {
-            range = lodash.update(range, 2, x => 0);
+            range = update(range, 2, x => 0);
         }
         this.setState({ range })
     }
     hide(phone) {
-        return lodash.fill(phone.split(''), "*", 3, 7).join('')
+        return fill(phone.split(''), "*", 3, 7).join('')
     }
     render() {
         const { receiver, phone, range, province, city, area, address } = this.state;
@@ -147,10 +152,10 @@ export default class extends Component {
         const cityKey = this.onAddressKey(cityList.keys, this.state.range[1]);
         const areaList = this.onGetAddress(cityKey);
         const addressObj = {
-            province: lodash.get(provinceList.values, this.state.range[0]),
-            city: lodash.get(cityList.values, this.state.range[1]),
-            area: lodash.get(areaList.values, this.state.range[2]),
-        }//`${lodash.get(province.values, this.state.range[0])} ${lodash.get(city.values, this.state.range[1])} ${lodash.get(area.values, this.state.range[2])}`
+            province: get(provinceList.values, this.state.range[0]),
+            city: get(cityList.values, this.state.range[1]),
+            area: get(areaList.values, this.state.range[2]),
+        }//`${get(province.values, this.state.range[0])} ${get(city.values, this.state.range[1])} ${get(area.values, this.state.range[2])}`
         // console.log(addressObj)
         return (
             <View className="appendAddress">

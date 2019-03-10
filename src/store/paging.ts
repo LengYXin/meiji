@@ -1,8 +1,10 @@
-import { observable, action, decorate, runInAction } from 'mobx'
+import Taro, { request } from '@tarojs/taro';
+import delay from 'lodash/delay';
+// import ListIteratee from 'lodash/listit';
+import remove from 'lodash/remove';
+
+import { action, observable, runInAction } from 'mobx';
 import { WXRequest } from './native/request';
-import { request } from '@tarojs/taro';
-import Taro from '@tarojs/taro';
-import lodash, { ListIteratee } from 'lodash';
 
 /**
  * 分页函数
@@ -62,7 +64,7 @@ export default class ServerClass {
         }
         const res = await WXRequest.request(this.params).then(x => (x.isSuccess && x.data.list) || [])
         PagingData = res;
-        lodash.delay(() => {
+        delay(() => {
             this.runInAction(refresh, PagingData)
         }, 600 - (new Date().getTime() - startTime))
     }
@@ -114,8 +116,8 @@ export default class ServerClass {
      * @param predicate 
      */
     @action.bound
-    onRemove(predicate?: ListIteratee<any>) {
-        lodash.remove(this.PagingData, predicate);
+    onRemove(predicate?: any) {
+        remove(this.PagingData, predicate);
         if (this.params.data.page == 1) {
             this.getPagingData(true)
         }

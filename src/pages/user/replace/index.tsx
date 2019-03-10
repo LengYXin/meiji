@@ -1,7 +1,7 @@
 import { Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config, navigateTo } from '@tarojs/taro';
-import lodash from 'lodash';
+import delay from 'lodash/delay';
 import { AtButton, AtForm, AtInput } from 'taro-ui';
 import { User } from '../../..//store';
 import './index.less';
@@ -53,7 +53,7 @@ export default class extends Component {
         }
         codeTime--;
         this.setState({ codeTime, codeTimeStart: true }, () => {
-            lodash.delay(this.onTime, 1000);
+            delay(this.onTime, 1000);
             callback && callback()
         })
     }
@@ -82,7 +82,7 @@ export default class extends Component {
         })
         if (res.isSuccess) {
             Taro.showToast({ title: "修改成功", icon: "none", mask: true })
-            lodash.delay(Taro.navigateBack, 2000);
+            delay(Taro.navigateBack, 2000);
         } else {
             Taro.showToast({ title: res.msg, icon: "none", })
         }

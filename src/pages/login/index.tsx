@@ -1,11 +1,10 @@
-import { Image, Navigator, View } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtButton, AtForm, AtInput, AtList, AtListItem } from 'taro-ui';
-import lodash from 'lodash';
+import delay from 'lodash/delay';
+import { AtButton, AtForm, AtInput } from 'taro-ui';
 import NiuPai from '../../components/niupai';
-import Img from '../../img';
-import { User, Regular } from '../../store';
+import { Regular, User } from '../../store';
 import './index.less';
 const dev = process.env.NODE_ENV === 'development'
 const time = dev ? 5 : 60;
@@ -63,7 +62,7 @@ export default class extends Component {
     }
     codeTime--;
     this.setState({ codeTime, codeTimeStart: true }, () => {
-      lodash.delay(this.onTime, 1000);
+      delay(this.onTime, 1000);
       callback && callback()
     })
   }

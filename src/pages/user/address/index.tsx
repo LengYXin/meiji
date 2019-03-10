@@ -1,7 +1,7 @@
 import { Button, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import lodash from 'lodash';
+import fill from 'lodash/fill';
 import { AtList, AtListItem, AtSwipeAction } from 'taro-ui';
 import Loading from '../../../components/loading';
 import { Address } from '../../../store';
@@ -66,7 +66,7 @@ export default class extends Component {
     Address.onDelete(item.id)
   }
   hide(phone) {
-    return lodash.fill(phone.split(''), "*", 3, 7).join('')
+    return fill(phone.split(''), "*", 3, 7).join('')
   }
   render() {
     const data = [...Address.dataSource.PagingData];
