@@ -2,6 +2,8 @@ import Taro, { request } from '@tarojs/taro';
 import delay from 'lodash/delay';
 // import ListIteratee from 'lodash/listit';
 import remove from 'lodash/remove';
+import update from 'lodash/update';
+import findIndex from 'lodash/findIndex';
 
 import { action, observable, runInAction } from 'mobx';
 import { WXRequest } from './native/request';
@@ -40,33 +42,37 @@ export default class ServerClass {
     async getPagingData(refresh = false, showLoading = true) {
         // console.time("getPagingData");
         // console.log(this.PagingLoading, this.PagingRefreshing);
-        if (this.PagingLoading || this.PagingRefreshing) {
-            return
-        }
-        let PagingData = [], startTime = new Date().getTime();
-        // 刷新 or 第一次请求
-        if (refresh) {
-            if (showLoading) {
-                Taro.showLoading({ title: "加载中~", mask: true })
+        try {
+            if (this.PagingLoading || this.PagingRefreshing) {
+                return
             }
-            // if (!this.firstLoading) {
-            this.PagingRefreshing = true;
-            // }
-            this.params.data.page = 1;
-            this.endData = false;
-        } else {
-            !this.PagingLoading && (this.PagingLoading = true);
-            if (this.endData) {
-                this.PagingLoading = false;
-                this.PagingRefreshing = false;
-                return console.log("无更多数据");
+            let PagingData = [], startTime = new Date().getTime();
+            // 刷新 or 第一次请求
+            if (refresh) {
+                if (showLoading) {
+                    Taro.showLoading({ title: "加载中~", mask: true })
+                }
+                // if (!this.firstLoading) {
+                this.PagingRefreshing = true;
+                // }
+                this.params.data.page = 1;
+                this.endData = false;
+            } else {
+                !this.PagingLoading && (this.PagingLoading = true);
+                if (this.endData) {
+                    this.PagingLoading = false;
+                    this.PagingRefreshing = false;
+                    return console.log("无更多数据");
+                }
             }
+            const res = await WXRequest.request(this.params).then(x => (x.isSuccess && x.data.list) || [])
+            PagingData = res;
+            delay(() => {
+                this.runInAction(refresh, PagingData)
+            }, 600 - (new Date().getTime() - startTime))
+        } catch (error) {
+            Taro.hideLoading()
         }
-        const res = await WXRequest.request(this.params).then(x => (x.isSuccess && x.data.list) || [])
-        PagingData = res;
-        delay(() => {
-            this.runInAction(refresh, PagingData)
-        }, 600 - (new Date().getTime() - startTime))
     }
     /**
      * 设置数据状态
@@ -120,6 +126,20 @@ export default class ServerClass {
         remove(this.PagingData, predicate);
         if (this.params.data.page == 1) {
             this.getPagingData(true)
+        }
+    }
+    /**
+     * 修改 参数
+     */
+    @action.bound
+    onUpdate(predicate: any, updater: (value: any) => any) {
+        const PagingData = [...this.PagingData]
+        const index = findIndex(PagingData, predicate)
+        if (index != -1) {
+            runInAction(() => {
+                update(PagingData, findIndex(PagingData, predicate), updater)
+                this.PagingData = PagingData;
+            })
         }
     }
 }

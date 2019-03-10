@@ -3,7 +3,7 @@ import fill from 'lodash/fill';
 import { computed, observable, runInAction } from 'mobx';
 import { Address } from './address';
 import { WXRequest } from './native/request';
-
+import { DateFormat } from './Regular'
 class UserMobx {
 
     constructor() {
@@ -18,7 +18,8 @@ class UserMobx {
         gender: 0,
         vipType: '',
         phone: '',
-        vipExpireTime: 0
+        vipExpireTime: 0,
+        vipExpireTimeStr: '',
     }
     // 微信授权
     WxAuto = false;
@@ -48,42 +49,36 @@ class UserMobx {
         this.AutoData = auto;
         // 设置 token
         WXRequest.setToken(this.AutoData.token_type + ' ' + this.AutoData.access_token);
-        // Products.onTest()
-        Address.dataSource.getPagingData()
-        // 进入首页
-        Taro.switchTab({ url: "/pages/home/index" });
-        // Taro.navigateTo({ url: "/pages/order/record/index" })
+    }
+    onNavigate() {
+        if (this.AutoData.token_type) {
+            if (this.Info.vipType === "nonVip") {
+                return Taro.navigateTo({ url: "/pages/register/Invitation/index" })
+            } else {
+                Address.dataSource.getPagingData()
+                Taro.switchTab({ url: "/pages/home/index" });
+            }
+        }
     }
     /**
      * 认证
      */
     async onAuth() {
+        if (this.AutoData.token_type) {
+            return this.onNavigate()
+        }
         Taro.showLoading({ title: "加载中...", mask: true });
         try {
-            const getUserInfo = Taro.getUserInfo();
-            const login = Taro.login();
-            // 获取微信用户信息
-            const WxAuto = await getUserInfo.then(x => JSON.parse(x.rawData));
             // 获取微信 code
-            const mpAuthCode = await login.then(x => x.code);
+            const mpAuthCode = await Taro.login().then(x => x.code);
             // 登录
             const data = await WXRequest.request({ url: "/api/v1/Auth/WxLogin", data: { mpAuthCode }, method: "POST" });
-            let UserInfo = {}
             if (data.isSuccess) {
                 this.onSetAuto(data.data);
-                //  设置用户信息
-                UserInfo = await WXRequest.request({
-                    url: "/api/v1/Accounts/userInfo", data: {
-                        header: WxAuto.avatarUrl,
-                        nickName: WxAuto.nickName,
-                        gender: WxAuto.gender
-                    }, method: "PUT"
-                }).then(x => x.code == 200 && x.data);
-
+                await this.onGetUserInfo();
+            } else {
+                // Taro.showToast({ title: data.msg, icon: "none" })
             }
-            runInAction(() => {
-                this.Info = { ...WxAuto, ...UserInfo }// WxAuto
-            })
         } catch (error) {
             console.log(error)
         } finally {
@@ -91,11 +86,33 @@ class UserMobx {
         }
     }
     /**
+     * 获取用户信息
+     */
+    async onGetUserInfo() {
+        // 获取微信用户信息
+        const WxAuto = await Taro.getUserInfo().then(x => JSON.parse(x.rawData));
+        //  设置用户信息
+        const UserInfo = await WXRequest.request({
+            url: "/api/v1/Accounts/userInfo", data: {
+                header: WxAuto.avatarUrl,
+                nickName: WxAuto.nickName,
+                gender: WxAuto.gender
+            }, method: "PUT"
+        }).then(x => x.code == 200 && x.data);
+        runInAction(() => {
+            const info = { ...WxAuto, ...UserInfo };
+            info.vipExpireTimeStr = DateFormat(info.vipExpireTime, "yyyy.MM.dd")
+            this.Info = info// WxAuto
+        })
+        this.onNavigate()
+        return this.Info;
+    }
+    /**
      * 登陆
      * @param param 
      */
     async  onLogin(param: { phone: string, loginValidateCode: string }) {
-        Taro.showLoading({ title: "", mask: true })
+        Taro.showLoading({ title: "加载中...", mask: true })
         const mpAuthCode = await Taro.login().then(x => x.code);
         //  注册
         // if (this.AutoData.registered == 0) {
@@ -107,17 +124,21 @@ class UserMobx {
             },
             method: "POST"
         });
+        Taro.hideLoading();
         if (data.isSuccess) {
-            this.onSetAuto(data.data)
+            await this.onAuth()
+            // this.onSetAuto(data.data)
+        } else {
+            Taro.showToast({ title: data.msg, icon: "none" })
         }
         // }
-        Taro.hideLoading();
     }
     /**
      * 发送验证码
      * @param phone 
      */
     async onSendCode(phone: string, validateCodeType: "login" | "register" | "verification" | "changePhone" = "login") {
+        Taro.showLoading({ title: "加载中...", mask: true })
         const res = await WXRequest.request({
             url: "/api/v1/ValidateCode",
             data: {
@@ -125,11 +146,11 @@ class UserMobx {
                 "validateCodeType": validateCodeType
             },
             method: "POST"
-        })
+        }, true)
+        Taro.hideLoading()
         if (res.isSuccess) {
             Taro.showToast({ title: "发送成功，请注意查收", icon: "none" })
         } else {
-            Taro.hideLoading();
             Taro.showToast({ title: res.msg, icon: "none" })
         }
         return res.isSuccess
@@ -175,7 +196,8 @@ class UserMobx {
                 ...res.data
             })
             Taro.hideLoading()
-            Taro.showToast({ title: "支付成功" })
+            Taro.showToast({ title: "支付成功" });
+            this.onGetUserInfo()
         } catch (error) {
             Taro.hideLoading()
             if (error.errMsg == 'requestPayment:fail cancel') {

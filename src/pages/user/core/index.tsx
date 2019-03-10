@@ -75,11 +75,11 @@ export default class extends Component {
               {/* <Image src={img} /> */}
               {Info.vipType}
             </View>
-            <View className="right-time">{Info.vipExpireTime > 0 ? DateFormat(Info.vipExpireTime, "yyyy.mm.dd") + '到期' : ''}</View>
+            <View className="right-time">{Info.vipExpireTimeStr}</View>
           </View>
         </View>
         <View className="core-tab">
-          {/* <Image className="tab-img" src={tabImg} onClick={this.onClickEquity.bind(this)} /> */}
+          <Image className="tab-img" src={tabImg} onClick={this.onClickEquity.bind(this)} />
           <View className="tab-list">
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 0)}>全部订单</View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>待付款</View>

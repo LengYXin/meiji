@@ -13,6 +13,7 @@ import { DateFormat } from './Regular';
 
 class ProductsMobx {
     constructor() {
+        this.onGetRecommendPruduct()
     }
     oldData = [];
     /**
@@ -70,7 +71,7 @@ class ProductsMobx {
      * 获取推荐商品
      */
     async onGetRecommendPruduct(delay = false) {
-        Taro.showLoading({ title: "加载中~", mask: true })
+        // Taro.showLoading({ title: "加载中~", mask: true })
         try {
             const res = await WXRequest.request({ url: '/api/v1/Products/RecommendPruduct' }, delay);
             if (res.isSuccess) {
@@ -81,9 +82,7 @@ class ProductsMobx {
         } catch (error) {
 
         }
-        Taro.hideLoading()
-
-
+        // Taro.hideLoading()
     }
     /**
      * 商品详情
@@ -108,7 +107,7 @@ class ProductsMobx {
             this.details = {};
         })
         // timeStamp
-        Taro.showLoading({ title: "加载中~" })
+        Taro.showLoading({ title: "加载中~", mask: true })
         const time = Date.now();
         try {
             const res = await WXRequest.request({ url: `/api/v1/Products/${productCode}` }, true);

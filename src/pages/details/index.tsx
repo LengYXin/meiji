@@ -27,6 +27,9 @@ export default class extends Component {
   componentWillUnmount() { }
 
   componentDidShow() {
+    Taro.showShareMenu({
+      withShareTicket: true
+    })
     const key = get(this.$router, 'params.key', '')
     Products.onGetProducts(key);
   }

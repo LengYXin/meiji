@@ -1,8 +1,8 @@
-import { Input, View } from '@tarojs/components';
+import { Input, View, Navigator } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import get from 'lodash/get';
-import { AtButton, AtForm } from 'taro-ui';
+import { AtButton, AtForm, AtDivider, AtList, AtListItem } from 'taro-ui';
 import './index.less';
 
 @observer
@@ -68,7 +68,7 @@ export default class extends Component {
           </View>
           <AtButton disabled={!disabled} formType='submit' className="btn-submit">完成</AtButton>
         </AtForm>
-        {/* <View className="divider">
+        <View className="divider">
           <AtDivider>
             <View className="divider-text">或</View>
           </AtDivider>
@@ -82,7 +82,7 @@ export default class extends Component {
               arrow='right'
             />
           </AtList>
-        </Navigator> */}
+        </Navigator>
       </View>
     )
   }

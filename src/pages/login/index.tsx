@@ -73,12 +73,9 @@ export default class extends Component {
     if (this.state.codeTimeStart) {
       return console.log("冷却中")
     }
-    Taro.showLoading({ title: "", mask: true })
     const res = await User.onSendCode(this.state.phone);
     if (res) {
-      this.onTime(() => {
-        Taro.hideLoading()
-      })
+      this.onTime()
     } 
 
   }

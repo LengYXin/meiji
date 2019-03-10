@@ -39,6 +39,9 @@ export default class extends Component {
   }
 
   componentDidMount() {
+    Taro.showShareMenu({
+      withShareTicket: true
+    })
     Products.onNewData()
   }
 
@@ -53,6 +56,7 @@ export default class extends Component {
   render() {
     const dataSource = toJS(Products.dataSource)
     const loadingVis = Products.PagingLoading;
+    console.log(dataSource)
     return (
       <View className='index'>
         {dataSource.map(data => {

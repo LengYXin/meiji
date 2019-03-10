@@ -4,8 +4,10 @@ import Taro, { Component, Config } from '@tarojs/taro';
 import NiuPai from '../../components/niupai';
 import Equity from '../../components/equity';
 import Imgs from "../../img";
+import head from 'lodash/head';
+
 import './index.less';
-import { User, Regular } from '../../store';
+import { User, Regular, Products } from '../../store';
 
 @observer
 export default class extends Component {
@@ -27,24 +29,33 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    User.onAuth()
+    Taro.showShareMenu({
+      withShareTicket: true
+    })
   }
   componentWillUnmount() { }
 
-  componentDidShow() { }
-
+  componentDidShow() {
+    User.onAuth()
+  }
   componentDidHide() { }
   onClick() {
     User.onAuth()
   }
   render() {
+    if (!(Products.RecommendPruduct && Products.RecommendPruduct.id)) {
+      return <View></View>
+    }
+    const products = { ...Products.RecommendPruduct };
+    const pictures = [...products.pictures];
+    const imghead = head(pictures);
     return (
       <View className='index'>
-        <Image className="img-block img-sp" src="" mode="aspectFit" />
+        <Image className="img-block img-sp" src={imghead} mode="aspectFit" />
         <View className="view-padding">
-          <View className="font-title">湖丰阳澄湖大闸蟹螃蟹 </View>
-          <View className="font-lable">产地：阳澄湖</View>
-          <View className="font-text">阳澄湖大闸蟹，江苏省苏州市特产，中国国家地理标志产品。 [1-2]</View>
+          <View className="font-title">{products.productName} </View>
+          <View className="font-lable">产地：{products.productOrigin}</View>
+          <View className="font-text">{products.summary}</View>
         </View>
         <View className="info">
           <NiuPai />

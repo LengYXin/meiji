@@ -24,7 +24,11 @@ export default class extends Component {
   componentWillReact() {
   }
 
-  componentDidMount() { }
+  componentDidMount() {
+    Taro.showShareMenu({
+      withShareTicket: true
+    })
+  }
 
   componentWillUnmount() { }
 
@@ -41,15 +45,15 @@ export default class extends Component {
         <Equity />
         <View className='at-row at-row--wrap'>
           <View className='at-col at-col-8'><Text>体验会员</Text><Text>￥69</Text><Text>/ 月</Text></View>
-          <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, 1)}>购买</Button></View>
+          <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, 'expVip')}>购买</Button></View>
         </View>
         <View className='at-row at-row--wrap'>
           <View className='at-col at-col-8'><Text>优享会员</Text><Text>￥399</Text><Text>/ 年</Text></View>
-          <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, 2)}>购买</Button></View>
+          <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, 'enjoyVip')}>购买</Button></View>
         </View>
         <View className='at-row at-row--wrap'>
           <View className='at-col at-col-8'><Text>尊享会员</Text><Text>￥3999</Text><Text>/ 年</Text></View>
-          <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, 3)}>购买</Button></View>
+          <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, 'excVip')}>购买</Button></View>
         </View>
       </View>
     )

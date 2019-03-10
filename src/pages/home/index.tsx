@@ -25,8 +25,10 @@ export default class extends Component {
   }
   // 下拉刷新
   async onPullDownRefresh() {
+    Taro.showLoading({ title: "加载中~", mask: true })
     await Products.onGetRecommendPruduct(true)
     Taro.stopPullDownRefresh()
+    Taro.hideLoading()
   }
   componentWillMount() { }
 
@@ -34,7 +36,10 @@ export default class extends Component {
   }
 
   async componentDidMount() {
-    Products.onGetRecommendPruduct()
+    Taro.showShareMenu({
+      withShareTicket: true
+    })
+    // Products.onGetRecommendPruduct()
   }
 
   componentWillUnmount() { }
@@ -49,7 +54,8 @@ export default class extends Component {
     }
   }
   render() {
-    const products = toJS(Products.RecommendPruduct);
+    const products = { ...Products.RecommendPruduct };
+    console.log(products)
     return (
       <Details data={products} />
     )
