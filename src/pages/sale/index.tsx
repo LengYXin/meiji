@@ -42,13 +42,14 @@ export default class extends Component {
     Taro.showShareMenu({
       withShareTicket: true
     })
-    Products.onNewData()
+    // Products.onNewData()
   }
 
   componentWillUnmount() { }
 
-  componentDidShow() { }
-
+  componentDidShow() {
+    Products.onNewData(true)
+  }
   componentDidHide() { }
   onToDetails(productCode) {
     Taro.navigateTo({ url: "/pages/details/index?key=" + productCode })

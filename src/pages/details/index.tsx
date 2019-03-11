@@ -35,7 +35,10 @@ export default class extends Component {
 
   componentWillReact() {
   }
-  componentWillUnmount() { }
+  componentWillUnmount() {
+    // console.log("componentWillUnmount")
+    Products.onUnmountProducts()
+  }
 
   componentDidShow() {
     Taro.showShareMenu({
@@ -47,9 +50,10 @@ export default class extends Component {
 
   componentDidHide() { }
   render() {
+    const key = get(this.$router, 'params.key', '')
     const products = toJS(Products.details)
     return (
-      <Details data={products} />
+      <Details data={products} key={key} />
     )
   }
 }

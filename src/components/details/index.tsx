@@ -5,6 +5,8 @@ import head from 'lodash/head';
 import remove from 'lodash/remove';
 import { AtProgress } from 'taro-ui';
 import { Products } from '../../store';
+import Imgs from '../../img';
+
 import './index.less';
 import Time from './time';
 export default class extends Component<{ data: any }, any> {
@@ -64,7 +66,7 @@ export default class extends Component<{ data: any }, any> {
                         </View>
                         <Image
                             className='shop-img'
-                            src='https://jdc.jd.com/img/400x400'
+                            src={Imgs.ProSale}
                             mode='widthFix' /></View>
                     <View className="shop-address">产地：{products.productOrigin}</View>
                     <View className="shop-progress">
@@ -79,7 +81,7 @@ export default class extends Component<{ data: any }, any> {
                             <View className="left-type">全款预付</View>
                         </View>
                         <View className="qian-right">
-                            <View className="right-time">剩余 <Time data={products.remainSeconds} /></View>
+                            <View className="right-time">剩余 <Time key={products.remainSeconds} data={products.remainSeconds} /></View>
                             <Button onClick={this.onToCreateOrder.bind(this)} disabled={products.remainSeconds <= 0} className="right-btn">即刻购买</Button>
                         </View>
                     </View>

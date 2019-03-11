@@ -12,7 +12,8 @@ import upYesImg from './img/img65.png';
 import upNoImg from './img/img66.png'
 import tabImg from './img/img70.png'
 import Jia from './img/img50.png';
-import Jian from './img/img51.png';
+import Jian from './img/img51.png'
+import ProSale from './img/proSale.png';
 export default {
     /** 二维码 */
     Code,
@@ -43,5 +44,7 @@ export default {
     /** 加 */
     Jia,
     /** 减 */
-    Jian
+    Jian,
+    /** 商品 预售 */
+    ProSale
 }

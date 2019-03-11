@@ -21,6 +21,9 @@ class UserMobx {
         vipExpireTime: 0,
         vipExpireTimeStr: '',
     }
+    @observable InviteCode = [
+
+    ]
     // 微信授权
     WxAuto = false;
     /**
@@ -60,13 +63,19 @@ class UserMobx {
             }
         }
     }
+    /** 认证中 */
+    isLoadingAuto = false
     /**
      * 认证
      */
     async onAuth() {
+        if (this.isLoadingAuto) {
+            return
+        }
         if (this.AutoData.token_type) {
             return this.onNavigate()
         }
+        this.isLoadingAuto = true;
         Taro.showLoading({ title: "加载中...", mask: true });
         try {
             // 获取微信 code
@@ -83,6 +92,7 @@ class UserMobx {
             console.log(error)
         } finally {
             Taro.hideLoading()
+            this.isLoadingAuto = false
         }
     }
     /**
@@ -101,8 +111,9 @@ class UserMobx {
         }).then(x => x.code == 200 && x.data);
         runInAction(() => {
             const info = { ...WxAuto, ...UserInfo };
-            info.vipExpireTimeStr = DateFormat(info.vipExpireTime, "yyyy.MM.dd")
+            info.vipExpireTimeStr = DateFormat(info.vipExpireTime, "yyyy.MM.dd");
             this.Info = info// WxAuto
+            this.onGetInviteCode()
         })
         this.onNavigate()
         return this.Info;
@@ -133,12 +144,15 @@ class UserMobx {
         });
         Taro.hideLoading();
         if (res.isSuccess) {
-            Taro.showModal({
-                title: "邀请码",
-                content: JSON.stringify(res.data.map(x => {
-                    return x.code
-                })),
-                showCancel: false,
+            // Taro.showModal({
+            //     title: "邀请码",
+            //     content: JSON.stringify(res.data.map(x => {
+            //         return x.code
+            //     })),
+            //     showCancel: false,
+            // })
+            runInAction(() => {
+                this.InviteCode = res.data;
             })
         } else {
             Taro.showToast({ title: res.msg, icon: "none" })

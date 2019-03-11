@@ -12,7 +12,9 @@ export default class extends Component<{ data: any }, any> {
     Unmount = false;
     DateFormat(time) {
         if (time > 86400) {
-            return DateFormat((time - 86400) * 1000, 'dd天hh时');
+            const newTime = 1546272000000 + (time - 86400) * 1000;
+            // console.log(newTime)
+            return DateFormat(newTime, 'dd天hh时');
         }
         return DateFormat(time * 1000, 'hh:mm:ss')
     }

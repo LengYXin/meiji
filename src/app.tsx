@@ -71,6 +71,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    User.onAuth()
+    console.log("componentDidMount")
   }
 
   componentDidShow() {

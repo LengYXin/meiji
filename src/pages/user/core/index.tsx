@@ -55,7 +55,7 @@ export default class extends Component {
     })
   }
   onGetInviteCode() {
-    User.onGetInviteCode()
+    // User.onGetInviteCode()
   }
   render() {
     const Info = { ...User.Info }
@@ -69,8 +69,7 @@ export default class extends Component {
           <View className="header-right">
             <View className="right-name">{Info.nickName}</View>
             <View className="right-img">
-              {/* <Image src={img} /> */}
-              {Info.vipType}
+              <Image src={Imgs[Info.vipType]} />
             </View>
             <View className="right-time">{Info.vipExpireTimeStr}</View>
           </View>

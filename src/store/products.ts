@@ -102,6 +102,10 @@ class ProductsMobx {
         }
         return Math.round(salesCount / stockCount * 100);
     }
+    @action.bound
+    onUnmountProducts() {
+        this.details = {}
+    }
     /**
      * 商品详情
      */
@@ -109,9 +113,9 @@ class ProductsMobx {
         // if (productCode == this.details.productCode) {
         //     return
         // }
-        runInAction(() => {
-            this.details = {};
-        })
+        // runInAction(() => {
+        //     this.details = {};
+        // })
         // timeStamp
         Taro.showLoading({ title: "加载中~", mask: true })
         const time = Date.now();
@@ -168,7 +172,11 @@ class ProductsMobx {
     /**
      * 上拉 最新
      */
-    async onNewData() {
+    async onNewData(componentDidShow = false) {
+        // console.log(componentDidShow, this.dataSource.length)
+        if (componentDidShow && this.dataSource.length > 0) {
+            return
+        }
         try {
             let data = {};
             if (this.firstLoading) {
@@ -185,8 +193,8 @@ class ProductsMobx {
             const res = await WXRequest.request({ url: '/api/v1/Products/NewData', data }, true);
             this.firstLoading && Taro.hideLoading()
             this.PagingLoading = false
-            this.firstLoading = false;
             if (res.isSuccess && res.data.list.length > 0) {
+                this.firstLoading = false;
                 this.onPush(res.data.list);
                 // 当前页码
                 this.newDataPage = res.data.page;

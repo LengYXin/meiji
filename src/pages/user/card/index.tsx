@@ -29,11 +29,12 @@ export default class extends Component {
   componentDidShow() { }
 
   componentDidHide() { }
-
+  onClick() {
+    Taro.switchTab({ url: "/pages/sale/index" });
+  }
   render() {
     return (
       <View className='card'>
-        {/* 蓝湖下载的背景图片有问题 */}
         <View className="card-box">
           <View className="card-left">
             <View className="left-top">
@@ -45,7 +46,7 @@ export default class extends Component {
           </View>
           <View className="card-right">
             <View className="right-top">
-              <Button>立即使用</Button>
+              <Button onClick={this.onClick.bind(this)}>立即使用</Button>
             </View>
             <View className="right-bottom">
               有效期:1019.1.1
