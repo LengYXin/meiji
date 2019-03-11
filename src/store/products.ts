@@ -23,7 +23,7 @@ class ProductsMobx {
     // 加载
     @observable PagingLoading = false;
     // 刷新
-    @observable PagingRefreshing = false;
+    // @observable PagingRefreshing = false;
     @observable dataSource: {
         title: string,
         start: number,
@@ -43,17 +43,17 @@ class ProductsMobx {
                 // 数据已经存在
                 if (some(sale.list, ['id', data.id])) {
                 } else {
-                    sale.list.push(data);
+                    sale.list = orderBy([...sale.list, data], ['sort'], ['asc'])  //.push(data);
                 }
             } else {
                 // 不存在 创建 插入
                 dataSource.unshift({
-                    title: `${DateFormat(data.salesDateStart, 'MM月dd日')}-${DateFormat(data.salesDateEnd, 'MM月dd日')}`,
+                    title: ` ${DateFormat(data.salesDateStart, 'yyyy年')} ${DateFormat(data.salesDateStart, 'MM月dd日')}-${DateFormat(data.salesDateEnd, 'MM月dd日')}`,
                     start: data.salesDateStart,
                     end: data.salesDateEnd,
                     key: key,
                     list: [data]
-                })
+                });
             }
             // }
         })
@@ -94,10 +94,16 @@ class ProductsMobx {
     }
     /** 返回百分比 */
     toProportion(stockCount, salesCount) {
-        return Math.round((stockCount - salesCount) / stockCount * 100);
+        // if (stockCount == salesCount) {
+        //     return 100;
+        // }
+        if (salesCount == 0) {
+            return 0;
+        }
+        return Math.round(salesCount / stockCount * 100);
     }
     /**
-     * 商品列表
+     * 商品详情
      */
     async onGetProducts(productCode) {
         // if (productCode == this.details.productCode) {
@@ -121,43 +127,70 @@ class ProductsMobx {
             delay(Taro.hideLoading, 600 - (Date.now() - time))
         }
     }
+    oldDataPage = 0;
+    oldPageCount = 0;
+    oldfirstLoading = true;
+    // oldPagingLoading = false;
     /**
      * 下来 历史
      */
-    async onOldData(timeStamp?: number) {
-        Taro.showLoading({ title: "加载中~", mask: true })
+    async onOldData() {
         try {
-            const data = head(this.dataSource) || { start: Date.now() };
-            // if (data) {
-            const res = await WXRequest.request({ url: '/api/v1/Products/OldData', data: { timeStamp: data.start } }, true);
-            if (res.isSuccess && res.data.length > 0) {
-                this.onPush(res.data)
+            let data = {}
+            if (this.oldfirstLoading) {
+            } else {
+                const page = this.oldDataPage + 1;
+                data = { page: page };
+                if (this.oldDataPage == this.oldPageCount) {
+                    return true
+                }
+            }
+            Taro.showLoading({ title: "加载中~", mask: true });
+            const res = await WXRequest.request({ url: '/api/v1/Products/OldData', data }, true);
+            this.oldfirstLoading = false;
+            if (res.isSuccess && res.data.list.length > 0) {
+                this.onPush(res.data.list);
+                // 当前页码
+                this.oldDataPage = res.data.page;
+                this.oldPageCount = res.data.pageCount;
             } else {
                 // delay(() => { Taro.showToast({ title: "没有更多商品了", icon: "none" }) }, 600 - (Date.now() - time))
             }
-            // }
         } catch (error) {
             console.log(error)
         }
         Taro.hideLoading()
     }
+
+
+    newDataPage = 0;
+    newPageCount = 0;
     /**
      * 上拉 最新
      */
-    async onNewData(timeStamp?: number) {
+    async onNewData() {
         try {
+            let data = {};
             if (this.firstLoading) {
                 Taro.showLoading({ title: "加载中~", mask: true })
             } else {
-                this.PagingLoading = true
+                const page = this.newDataPage + 1;
+                data = { page: page };
+                if (this.newDataPage == this.newPageCount) {
+                    return true
+                } else {
+                    this.PagingLoading = true;
+                }
             }
-            const timeStamp = get(last(this.dataSource), 'start');
-            const res = await WXRequest.request({ url: '/api/v1/Products/NewData', data: { timeStamp } }, true);
+            const res = await WXRequest.request({ url: '/api/v1/Products/NewData', data }, true);
             this.firstLoading && Taro.hideLoading()
             this.PagingLoading = false
             this.firstLoading = false;
-            if (res.isSuccess && res.data.length > 0) {
-                this.onPush(res.data)
+            if (res.isSuccess && res.data.list.length > 0) {
+                this.onPush(res.data.list);
+                // 当前页码
+                this.newDataPage = res.data.page;
+                this.newPageCount = res.data.pageCount;
             } else {
                 // delay(() => { Taro.showToast({ title: "没有更多商品了", icon: "none" }) }, 600 - (Date.now() - time))
             }

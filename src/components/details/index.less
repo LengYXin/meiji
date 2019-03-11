@@ -1,3 +1,9 @@
+    .home {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
     .home-nav-img {
         width: 100%;
         padding: 64px;
@@ -52,12 +58,18 @@
         // margin-bottom: 20px;
     }
 
+    .div-ider {
+        flex: 1;
+        min-height: 22px;
+    }
+
     .home-shop {
         background: rgba(10, 10, 10, 1); // height:384px;
         width: 100%;
         padding: 40px 40px 20px 40px;
         box-sizing: border-box; // margin-bottom: 100px;
-        margin-top: 22px;
+        // margin-top: 22px;
+        // flex: 1;
         .shop-header {
             display: flex;
             justify-content: space-between;
@@ -116,11 +128,13 @@
         }
         .shop-qian {
             display: flex;
-            justify-content: space-between;
+            // justify-content: space-between;
+            // flex-direction: row;
             align-items: flex-end;
             color: #fff;
             padding-top: 40px;
             .qian-left {
+                flex: 1;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -137,6 +151,7 @@
             }
             .qian-right {
                 text-align: center;
+                flex: 1;
                 .right-time {
                     font-size: 24px;
                     font-family: Arial;

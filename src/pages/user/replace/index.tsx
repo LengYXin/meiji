@@ -1,6 +1,6 @@
 import { Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
-import Taro, { Component, Config, navigateTo } from '@tarojs/taro';
+import Taro, { Component, Config } from '@tarojs/taro';
 import delay from 'lodash/delay';
 import { AtButton, AtForm, AtInput } from 'taro-ui';
 import { User } from '../../..//store';
@@ -14,7 +14,7 @@ export default class extends Component {
     /**
      * 指定config的类型声明为: Taro.Config
      *  
-     * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
+     * 由于 typescript 对于 object 类型推导只能推出 ßKey 的基本类型
      * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
      * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
      */

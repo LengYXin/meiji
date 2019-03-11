@@ -1,15 +1,15 @@
 import { Button, Image, Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import get from 'lodash/get';
 import fill from 'lodash/fill';
-
-import { AtList, AtListItem } from 'taro-ui';
-import jia from '../../../img/img50.png';
-import jian from '../../../img/img51.png';
-import { Orders, Products, Address } from '../../../store';
-import './index.less';
+import get from 'lodash/get';
 import { toJS } from 'mobx';
+import { AtList, AtListItem } from 'taro-ui';
+import { Address, Orders, Products } from '../../../store';
+import Imgs from '../../../img';
+
+import './index.less';
+
 
 @observer
 export default class extends Component {
@@ -89,9 +89,9 @@ export default class extends Component {
               </View>
               <View className="money-rignt">
                 <View className="rignt-top">
-                  <Image className="rignt-jian" src={jian} />
+                  <Image className="rignt-jian" src={Imgs.Jian} />
                   <View className="rignt-num">1</View>
-                  <Image className="rignt-jia" src={jia} />
+                  <Image className="rignt-jia" src={Imgs.Jia} />
                 </View>
                 <View className="rignt-bottom">
                   <View>加购劵<Text>x2</Text></View>

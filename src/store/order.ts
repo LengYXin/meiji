@@ -57,7 +57,7 @@ class OrdersMobx {
         if (res.isSuccess) {
             const payRes = await this.requestPayment(res.data)
             if (payRes) {
-                this.onUpdate(orderNO, 'shipped')
+                this.onUpdate(orderNO, 'toBeDelivered')
             }
         } else {
             Taro.showToast({ title: res.msg, icon: "none" })

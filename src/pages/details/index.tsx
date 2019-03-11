@@ -19,6 +19,17 @@ export default class extends Component {
    */
   config: Config = {
     navigationBarTitleText: '美季',
+    // 下拉刷新
+    enablePullDownRefresh: true,
+    backgroundTextStyle: "dark"
+  }
+  // 下拉刷新
+  async onPullDownRefresh() {
+    Taro.showLoading({ title: "加载中~", mask: true })
+    const key = get(this.$router, 'params.key', '')
+    await Products.onGetProducts(key);
+    Taro.stopPullDownRefresh()
+    Taro.hideLoading()
   }
   componentWillMount() { }
 

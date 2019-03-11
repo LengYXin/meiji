@@ -1,13 +1,14 @@
 import { Button, Image, Navigator, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import NiuPai from '../../components/niupai';
-import Equity from '../../components/equity';
-import Imgs from "../../img";
 import head from 'lodash/head';
-
+import { toJS } from 'mobx';
+import Equity from '../../components/equity';
+import NiuPai from '../../components/niupai';
+import Imgs from "../../img";
+import { Products, User } from '../../store';
 import './index.less';
-import { User, Regular, Products } from '../../store';
+
 
 @observer
 export default class extends Component {
@@ -16,7 +17,7 @@ export default class extends Component {
    * 指定config的类型声明为: Taro.Config
    *  
    * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
-   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
+   * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 stßring
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
@@ -46,7 +47,7 @@ export default class extends Component {
     if (!(Products.RecommendPruduct && Products.RecommendPruduct.id)) {
       return <View></View>
     }
-    const products = { ...Products.RecommendPruduct };
+    const products = toJS(Products.RecommendPruduct);
     const pictures = [...products.pictures];
     const imghead = head(pictures);
     return (

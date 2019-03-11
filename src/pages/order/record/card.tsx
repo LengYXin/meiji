@@ -43,13 +43,13 @@ export default class extends Component<{ data: any }, any> {
             case 'text':
                 Taro.showLoading({ title: "加载中~", mask: true })
                 delay(() => {
-                    Taro.showToast({ title: "操作成功~" })
+                    Taro.showToast({ title: "提醒成功" })
                 }, 600)
                 break;
             case 'wuliu':
                 Taro.showModal({
                     title: "物流信息",
-                    content: `顺丰快递：2634234123525656`,
+                    content: data.deliveryMethod,
                     showCancel: false
                 })
                 break;
@@ -69,17 +69,17 @@ export default class extends Component<{ data: any }, any> {
         const price = Products.toPrice(data.amount);
         const orderStatus = data.orderStatus;
         let stateText = '已完成';
-        //  待付款            待收货            代发货   已完成       关闭   取消      用户取消
+        //  待付款             待发货           待收货   已完成       关闭   取消      用户取消
         // pendingPayment, toBeDelivered, shipped, completed, close, cancel, cancelByUser
         switch (orderStatus) {
             case 'pendingPayment':
                 stateText = '待付款'
                 break;
             case 'toBeDelivered':
-                stateText = '待收货'
+                stateText = '待发货'
                 break;
             case 'shipped':
-                stateText = '待发货'
+                stateText = '待收货'
                 break;
             case 'completed':
                 stateText = '已完成'
@@ -118,9 +118,9 @@ export default class extends Component<{ data: any }, any> {
                     <View className="btn-rigtn">
                         {orderStatus == "pendingPayment" && <Button onClick={this.onActOrder.bind(this, "cancel")}>取消</Button>}
                         {orderStatus == "pendingPayment" && <Button onClick={this.onActOrder.bind(this, "pendingPayment")} >去付款</Button>}
-                        {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'text')}>催一下</Button>}
-                        {orderStatus == "toBeDelivered" && <Button onClick={this.onActOrder.bind(this, 'wuliu')}>查看物流</Button>}
-                        {orderStatus == "toBeDelivered" && <Button onClick={this.onActOrder.bind(this, 'Confirm')}>确认收货</Button>}
+                        {orderStatus == "toBeDelivered" && <Button onClick={this.onActOrder.bind(this, 'text')}>催一下</Button>}
+                        {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'wuliu')}>查看物流</Button>}
+                        {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'Confirm')}>确认收货</Button>}
                     </View>
                 </View>
             </View>

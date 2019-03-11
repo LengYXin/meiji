@@ -54,7 +54,7 @@ export default class extends Component {
     }
   }
   render() {
-    const products = { ...Products.RecommendPruduct };
+    const products = toJS(Products.RecommendPruduct);
     console.log(products)
     return (
       <Details data={products} />

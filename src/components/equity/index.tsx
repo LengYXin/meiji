@@ -1,9 +1,9 @@
-import { View,Image } from '@tarojs/components';
+import { Image, View } from '@tarojs/components';
 import Taro, { Component } from '@tarojs/taro';
-import Imgs from '../../img';
-
 import 'taro-ui/dist/weapp/css/index.css';
+import Imgs from '../../img';
 import './index.less';
+
 export default class extends Component<any, any> {
     render() {
         return (
@@ -22,7 +22,7 @@ export default class extends Component<any, any> {
                         </View>
                         <View className='at-col at-col-3'>
                             <View>尊享会员  </View>
-                            <View>￥3999</View>
+                            <View>￥3999</View>ß
                         </View>
                     </View>
                 </View>

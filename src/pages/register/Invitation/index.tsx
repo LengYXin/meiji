@@ -4,6 +4,7 @@ import Taro, { Component, Config } from '@tarojs/taro';
 import get from 'lodash/get';
 import { AtButton, AtForm, AtDivider, AtList, AtListItem } from 'taro-ui';
 import './index.less';
+import { User } from '../../../store';
 
 @observer
 export default class extends Component {
@@ -20,9 +21,9 @@ export default class extends Component {
   }
   state = {
     code1: '',
-    code2: '',
-    code3: '',
-    code4: '',
+    // code2: '',
+    // code3: '',
+    // code4: '',
   }
   componentWillMount() { }
 
@@ -37,20 +38,21 @@ export default class extends Component {
 
   componentDidHide() { }
   onSubmit() {
-    Taro.switchTab({ url: "/pages/home/index" })
+    User.onInviteCode(this.state.code1)
+    // Taro.switchTab({ url: "/pages/home/index" })
     // console.log(this.state)
   }
   onInput(type, value) {
     this.setState({ [type]: get(value, 'detail.value', '') })
   }
   render() {
-    const disabled = this.state.code1 && this.state.code2 && this.state.code3 && this.state.code4;
+    const disabled = this.state.code1.length > 0 //&& this.state.code2 && this.state.code3 && this.state.code4;
     return (
       <View className='index'>
         <View className="title">请输入邀请码</View>
         <AtForm className="form-body" onSubmit={this.onSubmit.bind(this)}>
           <View className='at-row'>
-            <View className='at-col-input'>
+            {/* <View className='at-col-input'>
               <Input type="number" maxLength={1} onInput={this.onInput.bind(this, 'code1')} />
             </View>
             <View className='at-col'></View>
@@ -64,6 +66,9 @@ export default class extends Component {
             <View className='at-col'></View>
             <View className='at-col-input'>
               <Input type="number" maxLength={1} onInput={this.onInput.bind(this, 'code4')} />
+            </View> */}
+            <View className='at-col-input'>
+              <Input type="text" onInput={this.onInput.bind(this, 'code1')} />
             </View>
           </View>
           <AtButton disabled={!disabled} formType='submit' className="btn-submit">完成</AtButton>

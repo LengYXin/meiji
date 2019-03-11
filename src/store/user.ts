@@ -53,7 +53,7 @@ class UserMobx {
     onNavigate() {
         if (this.AutoData.token_type) {
             if (this.Info.vipType === "nonVip") {
-                return Taro.navigateTo({ url: "/pages/register/Invitation/index" })
+                return Taro.reLaunch({ url: "/pages/register/Invitation/index" })
             } else {
                 Address.dataSource.getPagingData()
                 Taro.switchTab({ url: "/pages/home/index" });
@@ -106,6 +106,43 @@ class UserMobx {
         })
         this.onNavigate()
         return this.Info;
+    }
+    /**
+     * 设置邀请码
+     */
+    async onInviteCode(inviteCode) {
+        Taro.showLoading({ title: "加载中...", mask: true })
+        const res = await WXRequest.request({
+            url: "/api/v1/Accounts/InviteCode?inviteCode=" + inviteCode, data: { inviteCode }, method: "PUT"
+        });
+        Taro.hideLoading();
+        if (res.isSuccess) {
+            this.onGetUserInfo()
+        } else {
+            Taro.showToast({ title: res.msg, icon: "none" })
+        }
+    }
+    /**
+     * 获取邀请码
+     */
+    async onGetInviteCode() {
+        Taro.showLoading()
+        // /api/v1/InviteCodes
+        const res = await WXRequest.request({
+            url: "/api/v1/InviteCodes"
+        });
+        Taro.hideLoading();
+        if (res.isSuccess) {
+            Taro.showModal({
+                title: "邀请码",
+                content: JSON.stringify(res.data.map(x => {
+                    return x.code
+                })),
+                showCancel: false,
+            })
+        } else {
+            Taro.showToast({ title: res.msg, icon: "none" })
+        }
     }
     /**
      * 登陆
@@ -182,8 +219,11 @@ class UserMobx {
      * 购买会员
      * @param vipType 
      */
-    async onPayVip(vipType: 1 | 2 | 3 = 1) {
+    async onPayVip(vipType: 'expVip' | 'enjoyVip' | 'excVip' = 'expVip') {
         try {
+            // if (this.Info.vipType != "nonVip" && this.Info.vipType != vipType) {
+            //     return Taro.showToast({ title: "" })
+            // }
             Taro.showLoading({ title: "", mask: true })
             const res = await WXRequest.request({
                 url: "/api/v1/Vip",

@@ -1,12 +1,12 @@
 import { Button, Image, View } from '@tarojs/components';
 import Taro, { Component } from '@tarojs/taro';
 import get from 'lodash/get';
-import remove from 'lodash/remove';
 import head from 'lodash/head';
-
+import remove from 'lodash/remove';
 import { AtProgress } from 'taro-ui';
 import { Products } from '../../store';
 import './index.less';
+import Time from './time';
 export default class extends Component<{ data: any }, any> {
     onToCreateOrder() {
         const productCode = get(this.props.data, 'productCode')
@@ -18,15 +18,16 @@ export default class extends Component<{ data: any }, any> {
         // if (this.props.data) {
         //     return
         // }
-        if (!(this.props.data && this.props.data.id)) {
+        const products = { ...this.props.data };
+        if (!products.id) {
             return <View></View>
         }
-        const products = { ...this.props.data };
         const price = Products.toPrice(products.price);
         const pictures = [...products.pictures];
         const imghead = head(pictures);
         const Proportion = Products.toProportion(products.stockCount, products.salesCount)
         remove(pictures, (value, index) => { return index == 0 })
+        console.log(products)
         return (
             <View className='home'>
                 <View className="home-nav-img">
@@ -55,6 +56,7 @@ export default class extends Component<{ data: any }, any> {
                         src={img}
                         mode='widthFix' />
                 })}
+                <View className="div-ider"></View>
                 <View className="home-shop">
                     <View className="shop-header">
                         <View className="shop-title">
@@ -77,8 +79,8 @@ export default class extends Component<{ data: any }, any> {
                             <View className="left-type">全款预付</View>
                         </View>
                         <View className="qian-right">
-                            <View className="right-time">剩余 12:04:16</View>
-                            <Button onClick={this.onToCreateOrder.bind(this)} className="right-btn">即刻购买</Button>
+                            <View className="right-time">剩余 <Time data={products.remainSeconds} /></View>
+                            <Button onClick={this.onToCreateOrder.bind(this)} disabled={products.remainSeconds <= 0} className="right-btn">即刻购买</Button>
                         </View>
                     </View>
                 </View>
