@@ -44,8 +44,8 @@ export default class extends Component<{ key: any }, any>{
   urls = [
     '/api/v1/Orders',
     '/api/v1/Orders/Status/pendingPayment',
-    '/api/v1/Orders/Status/shipped',
     '/api/v1/Orders/Status/toBeDelivered',
+    '/api/v1/Orders/Status/shipped',
     '/api/v1/Orders/Status/completed',
   ]
   componentDidShow() {

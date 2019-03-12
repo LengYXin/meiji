@@ -16,14 +16,20 @@ class UserMobx {
         avatarUrl: '',
         nickName: '',
         gender: 0,
-        vipType: '',
+        vipType: '',//'expVip' | 'enjoyVip' | 'excVip'
         phone: '',
         vipExpireTime: 0,
         vipExpireTimeStr: '',
     }
-    @observable InviteCode = [
+    /**
+    * 优惠卷
+    */
+    @observable Coupon: any[] = [1,2,3];
+    /**
+     * 邀请码
+     */
+    @observable InviteCode: any[] = [];
 
-    ]
     // 微信授权
     WxAuto = false;
     /**
@@ -55,10 +61,11 @@ class UserMobx {
     }
     onNavigate() {
         if (this.AutoData.token_type) {
+            Address.dataSource.getPagingData()
+            // return Taro.reLaunch({ url: "/pages/order/create/index?key=ME1550762437785" })
             if (this.Info.vipType === "nonVip") {
                 return Taro.reLaunch({ url: "/pages/register/Invitation/index" })
             } else {
-                Address.dataSource.getPagingData()
                 Taro.switchTab({ url: "/pages/home/index" });
             }
         }
@@ -153,6 +160,11 @@ class UserMobx {
             // })
             runInAction(() => {
                 this.InviteCode = res.data;
+                for (let index = 0, length = 3 - this.InviteCode.length; index < length; index++) {
+                    this.InviteCode.push({
+                        status: "null"
+                    })
+                }
             })
         } else {
             Taro.showToast({ title: res.msg, icon: "none" })

@@ -1,14 +1,13 @@
 import { Button, Image, Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import fill from 'lodash/fill';
 import get from 'lodash/get';
 import { toJS } from 'mobx';
 import { AtList, AtListItem } from 'taro-ui';
-import { Address, Orders, Products } from '../../../store';
 import Imgs from '../../../img';
-
+import { Address, Orders, Products, User } from '../../../store';
 import './index.less';
+
 
 
 @observer
@@ -24,7 +23,9 @@ export default class extends Component {
   config: Config = {
     navigationBarTitleText: '首页'
   }
-
+  state = {
+    CouponCount: 0,
+  }
   componentWillMount() { }
 
   componentWillReact() {
@@ -43,23 +44,58 @@ export default class extends Component {
   onClickAddress() {
     Taro.navigateTo({ url: "/pages/user/address/index?key=" })
   }
+  // 提交创建订单
   onCreate() {
     const address = Address.Default
-    Orders.onCreateOrder({
-      cardCoupomCount: 0,
-      productCode: get(Products, 'details.productCode', ''),
-      productCount: 1,
-      shippingAddresseId: address.id
-    })
+    if (address.id) {
+      Orders.onCreateOrder({
+        cardCoupomCount: this.state.CouponCount,
+        productCode: get(Products, 'details.productCode', ''),
+        productCount: 1,
+        shippingAddresseId: address.id
+      })
+    } else {
+      Taro.showToast({ title: "请选择收货地址", icon: "none" })
+    }
   }
-  hide(phone = '') {
-    return fill(phone.split(''), "*", 3, 7).join('')
+  // 修改加购卷数量
+  onUpdateCoupon(type: "plus" | "reduce") {
+    try {
+      let CouponCount = this.state.CouponCount;
+      if (User.Info.vipType == "expVip") {
+        throw "体验会员无法使用加购卷~"
+      }
+
+      if (type == "plus") {
+        if (User.Info.vipType == "enjoyVip" && CouponCount == 1) {
+          throw "优享会员只能使用一张加购~"
+        }
+        if (CouponCount < User.Coupon.length) {
+          CouponCount++
+        } else {
+          // throw "加购卷数量不足~"
+        }
+      } else {
+        if (CouponCount > 0) {
+          CouponCount--
+        }
+      }
+      this.setState({ CouponCount })
+    } catch (error) {
+      Taro.showToast({ title: error, icon: "none" })
+    }
+
   }
   render() {
     const product = toJS(Products.details)
     const Price = Products.toPrice(product.price);
+    // 地址
     const address = Address.Default;
-    const Total = Products.toPrice(product.price * 1.5);
+    // 合计
+    const Total = Products.toPrice(product.price + product.price * this.state.CouponCount);
+    const Couponlength = User.Coupon.length;
+    const CouCount = Couponlength - this.state.CouponCount;
+    const count = 1 + this.state.CouponCount;
     return (
       <View className='create'>
         <View className="create-header">
@@ -68,9 +104,9 @@ export default class extends Component {
               onClick={this.onClickAddress.bind(this)}
               hasBorder={false}
               arrow='right'
-              title={address.receiver + "  " + this.hide(address.phone)}
+              title={address.receiver + "     " + Address.getHidePhone(address.phone)}
               // note={address.address}
-              note={`${address.province} ${address.city} ${address.area} `}
+              note={address.address}//`${address.province} ${address.city} ${address.area} `}
             />
           </AtList>
         </View>
@@ -89,12 +125,12 @@ export default class extends Component {
               </View>
               <View className="money-rignt">
                 <View className="rignt-top">
-                  <Image className="rignt-jian" src={Imgs.Jian} />
-                  <View className="rignt-num">1</View>
-                  <Image className="rignt-jia" src={Imgs.Jia} />
+                  <Image className="rignt-jian" src={Imgs.Jian} onClick={this.onUpdateCoupon.bind(this, "reduce")} />
+                  <View className="rignt-num">{count}</View>
+                  <Image className="rignt-jia" src={Imgs.Jia} onClick={this.onUpdateCoupon.bind(this, "plus")} />
                 </View>
                 <View className="rignt-bottom">
-                  <View>加购劵<Text>x2</Text></View>
+                  {Couponlength > 0 && <View>加购劵<Text>x{CouCount}</Text></View>}
                 </View>
               </View>
             </View>
@@ -107,16 +143,16 @@ export default class extends Component {
           </View>
           <View className="info-item">
             <View className="item-left">商品实付</View>
-            <View className="item-right">￥2300</View>
+            <View className="item-right">{Total}</View>
           </View>
           <View className="info-item">
             <View className="item-left">配送费</View>
             <View className="item-right">包邮</View>
           </View>
-          <View className="info-total">合计￥2300</View>
+          {/* <View className="info-total">合计 {Total}</View> */}
         </View>
         <View className="create-btn">
-          <View className="btn-txt">￥2300</View>
+          <View className="btn-txt">{Total}</View>
           <Button onClick={this.onCreate.bind(this)}>去支付</Button>
         </View>
       </View>

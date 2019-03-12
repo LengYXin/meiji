@@ -44,6 +44,9 @@
                 font-family:Arial;
                 font-weight:400;
                 color:rgba(255,90,90,1);
+                Text{
+                    margin-left: 10px;
+                }
             }
         }
     }
@@ -51,7 +54,7 @@
         margin-top: 54px;
         position: relative;
         width: 100%;
-        height: 120px;
+        height: 122px;
         .tab-img{
             position: absolute;
             right: 40px;
@@ -79,39 +82,7 @@
             padding-left: 20px;
         }
     }
-    .invitation{
-        width: 100%;
-        margin-top: 28px;
-        .invitation-title{
-            .font-title()
-        }
-        .invitation-updata{
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding-top: 10px;
-            .updata-list{
-                width: 140px;
-                height: 140px;
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                .list-img{
-                    width: 100px;
-                    height: 100px;
-                }
-                .list-img-s{
-                    position: absolute;
-                    right: 0;
-                    top: 20px;
-                    width: 18px;
-                    height: 24px;
-                }
-            }
-            
-        }
-    }
+  
     .core-list{
         width: 100%;
         .item-content__info-title{
@@ -149,5 +120,38 @@
             }
 
         }
+    }
+}
+.invitation{
+    width: 100%;
+    margin-top: 28px;
+    .invitation-title{
+        .font-title()
+    }
+    .invitation-updata{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding-top: 10px;
+        .updata-list{
+            width: 140px;
+            height: 140px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .list-img{
+                width: 100px;
+                height: 100px;
+            }
+            .list-img-s{
+                position: absolute;
+                right: 0;
+                top: 20px;
+                width: 18px;
+                height: 24px;
+            }
+        }
+        
     }
 }

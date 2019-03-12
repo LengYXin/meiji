@@ -40,6 +40,11 @@ export default class extends Component {
     User.onAuth()
   }
   componentDidHide() { }
+  previewImage() {
+    Taro.previewImage({
+      urls: [Imgs.Code]
+    })
+  }
   onClick() {
     User.onAuth()
   }
@@ -61,7 +66,7 @@ export default class extends Component {
         <View className="info">
           <NiuPai />
           <Equity />
-          <View className="code-body">
+          <View className="code-body" onClick={this.previewImage.bind(this)}>
             <Image src={Imgs.Code} className="c-icon" />
             <View className="c-kf">
               <Image src={Imgs.KF} className="c-kf-img" />

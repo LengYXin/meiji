@@ -79,6 +79,7 @@ class ProductsMobx {
                     this.RecommendPruduct = res.data
                 })
             }
+            return res.isSuccess;
         } catch (error) {
 
         }
@@ -118,7 +119,6 @@ class ProductsMobx {
         // })
         // timeStamp
         Taro.showLoading({ title: "加载中~", mask: true })
-        const time = Date.now();
         try {
             const res = await WXRequest.request({ url: `/api/v1/Products/${productCode}` }, true);
             if (res.isSuccess) {
@@ -126,9 +126,10 @@ class ProductsMobx {
                     this.details = res.data;
                 })
             }
+            return res.isSuccess
         } catch (error) {
         } finally {
-            delay(Taro.hideLoading, 600 - (Date.now() - time))
+            Taro.hideLoading()
         }
     }
     oldDataPage = 0;

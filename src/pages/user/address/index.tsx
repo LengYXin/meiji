@@ -1,7 +1,6 @@
 import { Button, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import fill from 'lodash/fill';
 import { AtList, AtListItem, AtSwipeAction } from 'taro-ui';
 import Loading from '../../../components/loading';
 import { Address } from '../../../store';
@@ -65,9 +64,6 @@ export default class extends Component {
     console.log(item)
     Address.onDelete(item.id)
   }
-  hide(phone) {
-    return fill(phone.split(''), "*", 3, 7).join('')
-  }
   render() {
     const data = [...Address.dataSource.PagingData];
     const loadingVis = Address.dataSource.PagingLoading;
@@ -94,8 +90,8 @@ export default class extends Component {
                 <AtListItem
                   onClick={this.onAppend.bind(this, item)}
                   arrow='right'
-                  note={`${item.province} ${item.city} ${item.area} `}
-                  title={item.receiver + "  " + this.hide(item.phone)}
+                  note={item.address}// `${item.province} ${item.city} ${item.area} `}
+                  title={item.receiver + "  " + Address.getHidePhone(item.phone)}
                   hasBorder={false}
                 />
               </AtSwipeAction>

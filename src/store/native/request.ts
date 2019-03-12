@@ -32,7 +32,7 @@ export class WXRequestClass {
         const res = await Taro.request(params);
         if (isdelay) {
             await new Promise((res, rej) => {
-                delay(res, 600 - (Date.now() - time));
+                delay(res, 400 - (Date.now() - time));
             })
         }
         let isSuccess = true;

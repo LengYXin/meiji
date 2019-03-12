@@ -1,4 +1,4 @@
-import { Button, Image, View } from '@tarojs/components';
+import { Button, Image, View, Text } from '@tarojs/components';
 import Taro, { Component } from '@tarojs/taro';
 import get from 'lodash/get';
 import head from 'lodash/head';
@@ -28,8 +28,9 @@ export default class extends Component<{ data: any }, any> {
         const pictures = [...products.pictures];
         const imghead = head(pictures);
         const Proportion = Products.toProportion(products.stockCount, products.salesCount)
+        const disabled = (!products.canBuy) || products.remainSeconds <= 0;
+
         remove(pictures, (value, index) => { return index == 0 })
-        console.log(products)
         return (
             <View className='home'>
                 <View className="home-nav-img">
@@ -76,13 +77,17 @@ export default class extends Component<{ data: any }, any> {
                         <View className='stockCount'>{products.stockCount}份</View>
                     </View>
                     <View className="shop-qian">
-                        <View className="qian-left">
-                            <View className="left-num">{price}</View>
-                            <View className="left-type">全款预付</View>
+                        <View >
+                            <View className="time"><Text className="text">剩余</Text> <Time key={products.remainSeconds} data={products.remainSeconds} /></View>
                         </View>
-                        <View className="qian-right">
-                            <View className="right-time">剩余 <Time key={products.remainSeconds} data={products.remainSeconds} /></View>
-                            <Button onClick={this.onToCreateOrder.bind(this)} disabled={products.remainSeconds <= 0} className="right-btn">即刻购买</Button>
+                        <View className="bottom-btn">
+                            <View className="qian-left">
+                                <View className="left-num">{price}</View>
+                                <View className="left-type">全款预付</View>
+                            </View>
+                            <View className="qian-right">
+                                <Button onClick={this.onToCreateOrder.bind(this)} disabled={disabled} className="right-btn">即刻购买</Button>
+                            </View>
                         </View>
                     </View>
                 </View>

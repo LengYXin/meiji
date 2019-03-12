@@ -1,7 +1,6 @@
 import { Button, Form, Picker, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import fill from 'lodash/fill';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
@@ -139,9 +138,6 @@ export default class extends Component {
             range = update(range, 2, x => 0);
         }
         this.setState({ range })
-    }
-    hide(phone) {
-        return fill(phone.split(''), "*", 3, 7).join('')
     }
     render() {
         const { receiver, phone, range, province, city, area, address } = this.state;

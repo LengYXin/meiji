@@ -1,11 +1,11 @@
-import { Image, View } from '@tarojs/components';
+import { Image, Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { AtList, AtListItem } from "taro-ui";
 import Imgs from '../../../img';
 import { User } from '../../../store';
 import './index.less';
-
+import Invitation from './invitation';
 
 @observer
 export default class extends Component {
@@ -71,11 +71,11 @@ export default class extends Component {
             <View className="right-img">
               <Image src={Imgs[Info.vipType]} />
             </View>
-            <View className="right-time">{Info.vipExpireTimeStr}</View>
+            <View className="right-time">{Info.vipExpireTimeStr}  <Text>到期</Text></View>
           </View>
         </View>
         <View className="core-tab">
-          <Image className="tab-img" src={Imgs.tabImg} onClick={this.onClickEquity.bind(this)} />
+          {/* <Image className="tab-img" src={Imgs.tabImg} onClick={this.onClickEquity.bind(this)} /> */}
           <View className="tab-list">
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 0)}>全部订单</View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>待付款</View>
@@ -84,23 +84,7 @@ export default class extends Component {
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 4)}>已完成</View>
           </View>
         </View>
-        <View className="invitation">
-          <View className="invitation-title">
-            邀请码
-          </View>
-          <View className="invitation-updata">
-            <View className="updata-list">
-              <Image className="list-img" src={Imgs.upYesImg} onClick={this.onGetInviteCode.bind(this)} />
-            </View>
-            <View className="updata-list">
-              <Image className="list-img" src={Imgs.upYesImg} onClick={this.onGetInviteCode.bind(this)} />
-            </View>
-            <View className="updata-list">
-              <Image className="list-img" src={Imgs.upNoImg} onClick={this.onGetInviteCode.bind(this)} />
-              <Image className="list-img-s" src={Imgs.SuoImg} />
-            </View>
-          </View>
-        </View>
+        <Invitation />
         <View className="core-list">
           <AtList hasBorder={false}>
             <AtListItem title='卡劵' arrow='right' hasBorder={false} onClick={this.onClickCard.bind(this)} />

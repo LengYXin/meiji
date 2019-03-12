@@ -44,7 +44,7 @@ export default class extends Component<{ data: any }, any> {
                 Taro.showLoading({ title: "加载中~", mask: true })
                 delay(() => {
                     Taro.showToast({ title: "提醒成功" })
-                }, 600)
+                }, 400)
                 break;
             case 'wuliu':
                 Taro.showModal({

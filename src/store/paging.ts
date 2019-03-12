@@ -69,7 +69,7 @@ export default class ServerClass {
             PagingData = res;
             delay(() => {
                 this.runInAction(refresh, PagingData)
-            }, 600 - (new Date().getTime() - startTime))
+            }, 400 - (new Date().getTime() - startTime))
         } catch (error) {
             Taro.hideLoading()
         }

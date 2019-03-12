@@ -1,5 +1,7 @@
 import { observable, runInAction, computed } from 'mobx';
 import { WXRequest } from './native/request'
+import fill from 'lodash/fill';
+
 import Paging from './paging'
 import Taro from '@tarojs/taro';
 import get from 'lodash/get';
@@ -38,7 +40,23 @@ class AddressMobx {
      * 默认地址
      */
     @computed get Default() {
-        return get(this.dataSource.PagingData, 0, false);
+        return get(this.dataSource.PagingData, 0, {
+            receiver: "请选择送货地址",
+            phone: '',
+            province: '未设置',
+            city: '',
+            area: '',
+        });
+    }
+    /**
+     * 隐藏电话
+     * @param phone 
+     */
+    getHidePhone(phone = '') {
+        if (phone) {
+            return fill(phone.split(''), "*", 3, 7).join('')
+        }
+        return phone
     }
     /**
      * 获取省市区
