@@ -1,4 +1,4 @@
-import { View } from '@tarojs/components';
+import { View, Button } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
@@ -32,8 +32,16 @@ export default class extends Component {
 
   render() {
     return (
-      <View className='index'>
-        page
+      <View className='payment'>
+        <View className='payment-box'>
+          <View className='box-title'>恭喜您，支付成功啦~</View>
+          <View className='box-txt'>您已成功支付￥2.300元</View>
+          <View className='box-txt'>订单编号：34765676543456</View>
+        </View>
+        <View className="payment-btn">
+          <Button>返回首页</Button>
+          <Button>查看订单</Button>
+        </View>
       </View>
     )
   }
