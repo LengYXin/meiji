@@ -57,7 +57,7 @@ export default class extends Component {
     const imghead = head(pictures);
     return (
       <View className='index'>
-        <Image className="img-block img-sp" src={imghead} mode="aspectFit" />
+        <Image className="img-block img-sp" src={imghead} mode="widthFix" />
         <View className="view-padding">
           <View className="font-title">{products.productName} </View>
           <View className="font-lable">产地：{products.productOrigin}</View>

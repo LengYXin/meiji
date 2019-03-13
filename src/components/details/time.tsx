@@ -14,7 +14,7 @@ export default class extends Component<{ data: any }, any> {
         if (time > 86400) {
             const newTime = 1546272000000 + (time - 86400) * 1000;
             // console.log(newTime)
-            return DateFormat(newTime, 'dd天hh时');
+            return DateFormat(newTime, 'dd天');
         }
         return DateFormat(time * 1000, 'hh:mm:ss')
     }

@@ -29,24 +29,25 @@ export default class extends Component<{ data: any }, any> {
         const imghead = head(pictures);
         const Proportion = Products.toProportion(products.stockCount, products.salesCount)
         const disabled = (!products.canBuy) || products.remainSeconds <= 0;
-
+        const imgSrc = products.remainSeconds <= 0 ? Imgs.TimeOut : Imgs.ProSale
         remove(pictures, (value, index) => { return index == 0 })
         return (
             <View className='home'>
                 <View className="home-nav-img">
                     <Image
                         src={imghead}
-                        mode="aspectFit" />
+                        mode="widthFix" />
                 </View>
                 <View className="home-content">
                     <View className="content-header">
                         <View className="header-title">
                             {products.productName}
+
                         </View>
                         <Image
-                            className='header-img'
-                            src={get(products, '')}
-                            mode='aspectFit' />
+                            className='shop-img'
+                            src={imgSrc}
+                            mode='widthFix' />
                     </View>
                     <View className="content-address">产地：{products.productOrigin}</View>
                     <View className="content-text">
@@ -68,7 +69,7 @@ export default class extends Component<{ data: any }, any> {
                         </View>
                         <Image
                             className='shop-img'
-                            src={products.remainSeconds <= 0 ? Imgs.TimeOut : Imgs.ProSale}
+                            src={imgSrc}
                             mode='widthFix' /></View>
                     <View className="shop-address">产地：{products.productOrigin}</View>
                     <View className="shop-progress">
@@ -92,6 +93,7 @@ export default class extends Component<{ data: any }, any> {
                         </View>
                     </View>
                 </View>
+                <View className="div-ider"></View>
             </View>
         )
     }

@@ -22,7 +22,7 @@ export default class extends Component<any, any> {
                         </View>
                         <View className='at-col at-col-3'>
                             <View>尊享会员  </View>
-                            <View>￥3999</View>ß
+                            <View>￥3999</View>
                         </View>
                     </View>
                 </View>

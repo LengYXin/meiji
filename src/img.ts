@@ -38,7 +38,7 @@ export default {
     /** 对勾 */
     Duigou,
     /** 微信 */
-    Wx,
+    // Wx,
     /** 体验会员 */
     expVip,
     /** 尊享会员 */

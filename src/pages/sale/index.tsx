@@ -50,7 +50,9 @@ export default class extends Component {
   componentDidShow() {
     Products.onNewData(true)
   }
-  componentDidHide() { }
+  componentDidHide() {
+    Products.onRemove()
+  }
   onToDetails(productCode) {
     Taro.navigateTo({ url: "/pages/details/index?key=" + productCode })
   }
@@ -77,7 +79,7 @@ export default class extends Component {
                     <View className="cd">产地：{item.productOrigin}</View>
                     <View className="info">{item.summary}</View>
                     <View className="img">
-                      <Image src={get(item.pictures, 0, '')} mode="aspectFit" />
+                      <Image src={get(item.pictures, 0, '')} mode="widthFix" />
                     </View>
                   </View>
                 )

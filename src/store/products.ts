@@ -16,12 +16,7 @@ class ProductsMobx {
         this.onGetRecommendPruduct()
     }
     oldData = [];
-    /**
-      * 首次加载
-      */
-    @observable firstLoading = true;
-    // 加载
-    @observable PagingLoading = false;
+
     // 刷新
     // @observable PagingRefreshing = false;
     @observable dataSource: {
@@ -167,7 +162,12 @@ class ProductsMobx {
         Taro.hideLoading()
     }
 
-
+    /**
+         * 首次加载
+         */
+    @observable firstLoading = true;
+    // 加载
+    @observable PagingLoading = false;
     newDataPage = 0;
     newPageCount = 0;
     /**
@@ -207,6 +207,18 @@ class ProductsMobx {
             console.log(error)
         }
         // 
+    }
+    @action.bound
+    onRemove() {
+        this.dataSource = [];
+        this.oldDataPage = 0;
+        this.oldPageCount = 0;
+        this.oldfirstLoading = true;
+        this.firstLoading = true;
+        // 加载
+        this.PagingLoading = false;
+        this.newDataPage = 0;
+        this.newPageCount = 0;
     }
     onTest() {
         this.onGetRecommendPruduct()
