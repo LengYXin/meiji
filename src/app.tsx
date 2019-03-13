@@ -72,7 +72,7 @@ class App extends Component {
 
   componentDidMount() {
     User.onAuth()
-    console.log("componentDidMount")
+    // console.log("componentDidMount")
   }
 
   componentDidShow() {

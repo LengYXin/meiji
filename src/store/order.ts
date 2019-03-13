@@ -1,7 +1,8 @@
 import Taro from '@tarojs/taro';
-import update from 'lodash/update';
+import { observable, runInAction } from 'mobx';
 import { WXRequest } from './native/request';
 import Paging from './paging';
+import isBoolean from 'lodash/isBoolean';
 class OrdersMobx {
     constructor() {
 
@@ -10,6 +11,11 @@ class OrdersMobx {
      * 订单分页
      */
     dataSource = new Paging({ url: "/api/v1/Orders" });
+    /**
+     * 订单信息
+     */
+    @observable
+    OrderInfo: any = {};
     async requestPayment(data) {
         try {
             const payRes = await Taro.requestPayment(data)
@@ -35,11 +41,16 @@ class OrdersMobx {
         shippingAddresseId: string//地址id
     }) {
         Taro.showLoading({ title: "加载中~", mask: true })
-        const res = await WXRequest.request({ url: '/api/v1/Orders', method: "POST", data: params });
+        const res = await WXRequest.request({ url: '/api/v1/Orders', method: "POST", data: params }, true);
         if (res.isSuccess) {
-            const payRes = await this.requestPayment(res.data)
+            runInAction(() => { this.OrderInfo = res.data; });
+            const payRes = await this.requestPayment(res.data.wxPayInfo);
+            if (isBoolean(payRes)) {
+                Taro.redirectTo({ url: "/pages/other/payment/index" })
+            }
         } else {
             Taro.showToast({ title: res.msg, icon: "none" })
+            // Taro.redirectTo({ url: "/pages/other/payment/index" })
         }
     }
     onUpdate(orderNO, orderStatus) {
@@ -53,10 +64,11 @@ class OrdersMobx {
      */
     async onPayment(orderNO) {
         Taro.showLoading({ title: "加载中~", mask: true })
-        const res = await WXRequest.request({ url: '/api/v1/Orders/' + orderNO, method: "POST", });
+        const res = await WXRequest.request({ url: '/api/v1/Orders/' + orderNO, method: "POST", }, true);
         if (res.isSuccess) {
-            const payRes = await this.requestPayment(res.data)
-            if (payRes) {
+            runInAction(() => { this.OrderInfo = res.data; })
+            const payRes = await this.requestPayment(res.data.wxPayInfo);
+            if (isBoolean(payRes)) {
                 this.onUpdate(orderNO, 'toBeDelivered')
             }
         } else {

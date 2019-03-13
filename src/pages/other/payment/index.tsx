@@ -1,7 +1,8 @@
-import { View, Button,Text } from '@tarojs/components';
+import { View, Button, Text } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import './index.less';
+import { Orders, Products } from '../../../store';
 
 @observer
 export default class extends Component {
@@ -14,7 +15,7 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '支付成功'
   }
 
   componentWillMount() { }
@@ -29,18 +30,27 @@ export default class extends Component {
   componentDidShow() { }
 
   componentDidHide() { }
-
+  onClick(type: "home" | "order") {
+    if (type == "home") {
+      Taro.switchTab({ url: "/pages/home/index" })
+    } else {
+      Taro.redirectTo({ url: "/pages/order/record/index" })
+    }
+  }
   render() {
+    const { OrderInfo } = Orders;
+    const Amount = Products.toPrice(OrderInfo.amount || 0)
+    const OrderNO = OrderInfo.orderNO || ''
     return (
       <View className='payment'>
         <View className='payment-box'>
           <View className='box-title'>恭喜您，支付成功啦~</View>
-          <View className='box-txt'>您已成功支付<Text>￥2.300</Text>元</View>
-          <View className='box-txt'>订单编号：<Text>34765676543456</Text></View>
+          <View className='box-txt'>您已成功支付<Text>{Amount}</Text>元</View>
+          <View className='box-txt'>订单编号：<Text>{OrderNO}</Text></View>
         </View>
         <View className="payment-btn">
-          <Button>返回首页</Button>
-          <Button>查看订单</Button>
+          <Button onClick={this.onClick.bind(this, "home")}>返回首页</Button>
+          <Button onClick={this.onClick.bind(this, "order")}>查看订单</Button>
         </View>
       </View>
     )

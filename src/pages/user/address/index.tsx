@@ -1,6 +1,7 @@
 import { Button, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
+import get from 'lodash/get';
 import { AtList, AtListItem, AtSwipeAction } from 'taro-ui';
 import Loading from '../../../components/loading';
 import { Address } from '../../../store';
@@ -51,8 +52,18 @@ export default class extends Component {
   componentDidHide() { }
 
   onAppend(item) {
-    Address.Details = item;
-    Taro.navigateTo({ url: "/pages/user/appendAddress/index?key=" })
+    if (item == "add") {
+      Address.Details = {};
+      return Taro.navigateTo({ url: "/pages/user/appendAddress/index?key=" })
+    } else {
+      Address.Details = item;
+      const key = get(this.$router, 'params.key', '')
+      if (key == "Select") {
+        return Taro.navigateBack()
+      } else {
+        Taro.navigateTo({ url: "/pages/user/appendAddress/index?key=" })
+      }
+    }
   }
   onOpened(index) {
     this.setState({ isOpened: index })
@@ -100,7 +111,7 @@ export default class extends Component {
           <Loading visible={loadingVis} />
         </View>
         <View className="address-btn">
-          <Button onClick={this.onAppend.bind(this, {})}>添加地址</Button>
+          <Button onClick={this.onAppend.bind(this, "add")}>添加地址</Button>
         </View>
       </View>
     )

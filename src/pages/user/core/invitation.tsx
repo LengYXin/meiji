@@ -58,8 +58,9 @@ export default class extends Component {
                 <View className="invitation-title">邀请码 </View>
                 <View className="invitation-updata">
                     {InviteCode.map((data, index) => {
+                        const src = data.beUsedMemberHeader || (data.status == "unUsed" ? Imgs.upYesImg : Imgs.upNoImg)
                         return <View className="updata-list" key={index}>
-                            <Image className="list-img" src={data.status == "unUsed" ? Imgs.upYesImg : Imgs.upNoImg} onClick={this.onGetInviteCode.bind(this, data)} />
+                            <Image className="list-img" src={src} onClick={this.onGetInviteCode.bind(this, data)} />
                             {data.status == 'null' && <Image className="list-img-s" src={Imgs.SuoImg} />}
                         </View>
                     })}

@@ -53,6 +53,7 @@ export default class extends Component<{ data: any }, any> {
                         {products.introduction}
                     </View>
                 </View>
+                <View className="div-ider"></View>
                 {pictures.map((img) => {
                     return <Image key={img}
                         className='home-bottom-img'
@@ -67,7 +68,7 @@ export default class extends Component<{ data: any }, any> {
                         </View>
                         <Image
                             className='shop-img'
-                            src={Imgs.ProSale}
+                            src={products.remainSeconds <= 0 ? Imgs.TimeOut : Imgs.ProSale}
                             mode='widthFix' /></View>
                     <View className="shop-address">产地：{products.productOrigin}</View>
                     <View className="shop-progress">

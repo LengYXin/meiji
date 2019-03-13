@@ -42,7 +42,7 @@ export default class extends Component {
 
   componentDidHide() { }
   onClickAddress() {
-    Taro.navigateTo({ url: "/pages/user/address/index?key=" })
+    Taro.navigateTo({ url: "/pages/user/address/index?key=Select" })
   }
   // 提交创建订单
   onCreate() {

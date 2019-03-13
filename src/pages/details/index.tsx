@@ -36,19 +36,25 @@ export default class extends Component {
   componentWillReact() {
   }
   componentWillUnmount() {
-    // console.log("componentWillUnmount")
+    console.log("componentWillUnmount")
     Products.onUnmountProducts()
   }
 
   componentDidShow() {
+    if (this.isDidHide) {
+      return
+    }
     Taro.showShareMenu({
       withShareTicket: true
     })
     const key = get(this.$router, 'params.key', '')
     Products.onGetProducts(key);
   }
-
-  componentDidHide() { }
+  isDidHide = false;
+  componentDidHide() {
+    console.log("componentDidHide")
+    this.isDidHide = true;
+  }
   render() {
     const key = get(this.$router, 'params.key', '')
     const products = toJS(Products.details)

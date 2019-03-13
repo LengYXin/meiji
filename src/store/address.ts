@@ -40,6 +40,9 @@ class AddressMobx {
      * 默认地址
      */
     @computed get Default() {
+        if (this._Details && this._Details.id) {
+            return this._Details
+        }
         return get(this.dataSource.PagingData, 0, {
             receiver: "请选择送货地址",
             phone: '',

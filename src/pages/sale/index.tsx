@@ -6,7 +6,7 @@ import { toJS } from 'mobx';
 import { Products } from '../..//store';
 import './index.less';
 import Loading from '../../components/loading';
-
+import Imgs from '../../img';
 @observer
 export default class extends Component {
 
@@ -63,6 +63,7 @@ export default class extends Component {
         {dataSource.map(data => {
           return <View key={data.key}>
             <View className="time-title" >
+              <Image src={Imgs.Time} mode="aspectFit" />
               <View >
                 {data.title}
               </View>
@@ -71,6 +72,7 @@ export default class extends Component {
               data.list.map(item => {
                 return (
                   <View className='products-item' key={item.id} onClick={this.onToDetails.bind(this, item.productCode)}>
+                    <Image src={Imgs.Lable} mode="aspectFit" />
                     <View className="title">{item.productName}</View>
                     <View className="cd">产地：{item.productOrigin}</View>
                     <View className="info">{item.summary}</View>

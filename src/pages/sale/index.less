@@ -1,5 +1,6 @@
 @import "../../variable.less";
 .index {
+    padding: 24px 34px 24px 58px;
     .time-title {
         height: 110px;
         View {
@@ -12,30 +13,42 @@
         }
     }
     .time-title {
-        padding-left: 76px;
+        padding-left: 56px;
         position: relative;
-        overflow: hidden;
         .border-right();
         &::before {
-            top: 35px;
+            top: 58px;
             left: 0;
             right: auto;
             height: auto;
             bottom: 0;
         }
+        >Image {
+            position: absolute;
+            left: -21px;
+            top: 0;
+            width: 44px;
+            height: 44px;
+        }
     }
     .products-item {
-        padding-left: 76px;
+        padding-left: 42px;
         position: relative;
-        overflow: hidden;
         padding-bottom: 46px;
         .border-right();
         &::before {
             left: 0;
-            top: 56px;
+            top: 50px;
             right: auto;
             height: auto;
-            bottom: 0;
+            bottom: 20px;
+        }
+        >Image {
+            position: absolute;
+            left: -21px;
+            top: 0;
+            width: 44px;
+            height: 48px;
         }
     }
     .products-item {
@@ -72,7 +85,7 @@
             color: rgba(10, 10, 10, 1);
         }
         .img {
-            width: 600px;
+            width: 100%;
             height: 450px;
             background: rgba(255, 255, 255, 1);
             box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.16);
@@ -84,5 +97,4 @@
             }
         }
     }
-    padding: 24px 34px;
 }
