@@ -29,9 +29,9 @@ export default class extends Component<any, any> {
                 <View className="tr">
                     <View className='at-row at-row--wrap tr-border'>
                         <View className='at-col at-col-3'>时间</View>
-                        <View className='at-col at-col-3'>月</View>
-                        <View className='at-col at-col-3'>年</View>
-                        <View className='at-col at-col-3'>年</View>
+                        <View className='at-col at-col-3'>1/月</View>
+                        <View className='at-col at-col-3'>1/年</View> 
+                        <View className='at-col at-col-3'>1/年</View>
                     </View>
                     <View className='at-row at-row--wrap tr-border'>
                         <View className='at-col at-col-3'>限购</View>

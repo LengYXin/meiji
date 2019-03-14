@@ -76,7 +76,7 @@ export default class extends Component<{ data: any }, any> {
                         <View className='proportion'>
                             <AtProgress className='proportion-progress' percent={Proportion} color='#DBC389' isHidePercent />
                         </View>
-                        <View className='stockCount'>{products.stockCount}份</View>
+                        <View className='stockCount'>{products.salesCount}/{products.stockCount}份</View>
                     </View>
                     <View className="shop-qian">
                         <View >

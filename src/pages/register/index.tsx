@@ -17,7 +17,7 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '美季'
+    navigationBarTitleText: '美季MEIJI'
   }
   state = {
     phone: '',
@@ -83,7 +83,7 @@ export default class extends Component {
           </Navigator>
         </AtForm>
         <View className="img-view">
-          <Image className="img-wx" mode="aspectFit" src={Img.Wx} />
+          {/* <Image className="img-wx" mode="aspectFit" src={Img.Wx} /> */}
         </View>
       </View>
     )

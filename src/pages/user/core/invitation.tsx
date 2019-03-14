@@ -49,7 +49,6 @@ export default class extends Component {
         Taro.setClipboardData({
             data: code
         });
-        // this.setState({ isOpened: false })
     }
     render() {
         const InviteCode = toJS(User.InviteCode)

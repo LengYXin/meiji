@@ -31,7 +31,7 @@ export default class extends Component<{ data: any }, any> {
     componentDidShow() { }
 
     componentDidHide() { }
-    onActOrder(status) {
+    async  onActOrder(status) {
         const data = this.props.data;
         switch (status) {
             case 'pendingPayment':
@@ -47,16 +47,25 @@ export default class extends Component<{ data: any }, any> {
                 }, 400)
                 break;
             case 'wuliu':
-                Taro.showModal({
+                const res = await Taro.showModal({
                     title: "物流信息",
                     content: data.deliveryMethod,
-                    showCancel: false
+                    showCancel: false,
+                    confirmText: "复制"
                 })
+                if (res.confirm) {
+                    this.onCopy(data.deliveryMethod)
+                }
                 break;
             case 'Confirm':
                 Orders.onConfirm(data.orderNO)
                 break;
         }
+    }
+    onCopy(code) {
+        Taro.setClipboardData({
+            data: code
+        });
     }
     render() {
         //         待付款状态:取消 去付款

@@ -21,7 +21,7 @@ export default class extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '美季'
+    navigationBarTitleText: '美季MEIJI'
   }
 
   componentWillMount() { }
@@ -33,11 +33,12 @@ export default class extends Component {
     Taro.showShareMenu({
       withShareTicket: true
     })
+    User.onInit()
   }
   componentWillUnmount() { }
 
   componentDidShow() {
-    User.onAuth()
+    User.onWxLogin()
   }
   componentDidHide() { }
   previewImage() {
@@ -45,8 +46,18 @@ export default class extends Component {
       urls: [Imgs.Code]
     })
   }
-  onClick() {
-    User.onAuth()
+  async onClick(e) {
+    // User.onAuth()
+    await User.onGetAuthSetting()
+    console.log(User.isUserInfoAuto, User.AutoData.access_token)
+    if (User.isUserInfoAuto) {
+      if (User.AutoData.access_token) {
+
+        User.onGetUserInfo();
+      } else {
+        Taro.navigateTo({ url: "/pages/login/index" })
+      }
+    }
   }
   render() {
     if (!(Products.RecommendPruduct && Products.RecommendPruduct.id)) {
@@ -76,11 +87,8 @@ export default class extends Component {
         </View>
 
         <View className="view-fixed-bottom">
-          <Navigator url="/pages/login/index">
-            <Button openType="getUserInfo" >开启味觉之旅</Button>
-          </Navigator>
+          <Button openType="getUserInfo" onClick={this.onClick.bind(this)} >开启味觉之旅</Button>
         </View>
-
       </View>
     )
   }

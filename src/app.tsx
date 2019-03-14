@@ -56,7 +56,7 @@ class App extends Component {
         },
         {
           pagePath: "pages/sale/index",
-          text: "美季",
+          text: "美季MEIJI",
           iconPath: "img/sale.png",
           selectedIconPath: "img/sale-s.png"
         },
@@ -71,14 +71,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    User.onAuth()
-    // console.log("componentDidMount")
   }
-
   componentDidShow() {
-
   }
-
   componentDidHide() { }
 
   componentDidCatchError() { }
