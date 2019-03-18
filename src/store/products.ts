@@ -57,7 +57,9 @@ class ProductsMobx {
     /**
      * 推荐商品
      */
-    @observable RecommendPruduct: any = {};
+    @observable RecommendPruduct: any = {
+        pictures: []
+    };
     @observable _SurplusTime = 0;
     @computed get SurplusTime() {
         return DateFormat(this._SurplusTime, "")

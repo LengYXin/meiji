@@ -60,9 +60,9 @@ export default class extends Component {
     }
   }
   render() {
-    if (!(Products.RecommendPruduct && Products.RecommendPruduct.id)) {
-      return <View></View>
-    }
+    // if (!(Products.RecommendPruduct && Products.RecommendPruduct.id)) {
+    //   return <View></View>
+    // }
     const products = toJS(Products.RecommendPruduct);
     const pictures = [...products.pictures];
     const imghead = head(pictures);

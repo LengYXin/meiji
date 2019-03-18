@@ -5,6 +5,16 @@ import { computed, observable, runInAction } from 'mobx';
 import { Address } from './address';
 import { WXRequest } from './native/request';
 import { DateFormat } from './Regular';
+export enum EnumVipType {
+    /** 非会员 */
+    nonVip = "nonVip",
+    /** 体验 */
+    expVip = "expVip",
+    /** 优享 */
+    enjoyVip = "enjoyVip",
+    /** 尊享 */
+    excVip = "excVip",
+}
 class UserMobx {
 
     constructor() {
@@ -34,7 +44,7 @@ class UserMobx {
     /**
     * 优惠卷
     */
-    @observable Coupon: any[] = [1, 2, 3];
+    @observable Coupon: any[] = [];
     /**
      * 邀请码
      */
@@ -152,6 +162,7 @@ class UserMobx {
                 info.vipExpireTimeStr = DateFormat(info.vipExpireTime, "yyyy.MM.dd");
                 this.Info = info// WxAuto
                 this.onGetInviteCode()
+                this.onGetCoupon()
             })
             this.onNavigate()
         } catch (error) {
@@ -186,13 +197,6 @@ class UserMobx {
         });
         Taro.hideLoading();
         if (res.isSuccess) {
-            // Taro.showModal({
-            //     title: "邀请码",
-            //     content: JSON.stringify(res.data.map(x => {
-            //         return x.code
-            //     })),
-            //     showCancel: false,
-            // })
             runInAction(() => {
                 this.InviteCode = res.data;
                 for (let index = 0, length = 3 - this.InviteCode.length; index < length; index++) {
@@ -200,6 +204,26 @@ class UserMobx {
                         status: "null"
                     })
                 }
+            })
+        } else {
+            Taro.showToast({ title: res.msg, icon: "none" })
+        }
+    }
+    async onGetCoupon() {
+        // Taro.showLoading()
+        // /api/v1/InviteCodes
+        const res = await WXRequest.request({
+            url: "/api/v1/CardCoupons"
+        });
+        // Taro.hideLoading();
+        if (res.isSuccess) {
+            runInAction(() => {
+                this.Coupon = res.data.map(x => {
+                    return {
+                        ...x,
+                        endTime: DateFormat(x.expireTime, "yyyy.MM.dd")
+                    }
+                });
             })
         } else {
             Taro.showToast({ title: res.msg, icon: "none" })
@@ -281,7 +305,7 @@ class UserMobx {
      * 购买会员
      * @param vipType 
      */
-    async onPayVip(vipType: 'expVip' | 'enjoyVip' | 'excVip' = 'expVip') {
+    async onPayVip(vipType: EnumVipType) {
         try {
             // if (this.Info.vipType != "nonVip" && this.Info.vipType != vipType) {
             //     return Taro.showToast({ title: "" })

@@ -10,6 +10,7 @@ export class WXRequestClass {
 
     }
     address = process.env.NODE_ENV === 'development' ? "https://meiji.alienwow.cc" : 'https://api.mumeiji.cn';//
+    // address = 'https://api.mumeiji.cn';//
     requestConfig = {
         header: {
             'Authorization': '',

@@ -11,9 +11,18 @@ import './index.less';
 import Time from './time';
 export default class extends Component<{ data: any }, any> {
     onToCreateOrder() {
-        const productCode = get(this.props.data, 'productCode')
-        if (productCode) {
-            Taro.navigateTo({ url: "/pages/order/create/index?key=" + productCode })
+        try {
+            const productCode = get(this.props.data, 'productCode')
+            const salesCount = get(this.props.data, 'salesCount')
+            const stockCount = get(this.props.data, 'stockCount')
+            if (stockCount - salesCount <= 0) {
+                return Taro.showToast({ title: "商品库存不足~", icon: "none" })
+            }
+            if (productCode) {
+                Taro.navigateTo({ url: "/pages/order/create/index?key=" + productCode })
+            }
+        } catch (error) {
+
         }
     }
     render() {

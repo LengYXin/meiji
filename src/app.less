@@ -1,40 +1,53 @@
 @import "./variable.less";
-
-view{
-    font-family:Arial;
+view {
+    font-family: Arial;
 }
-image{
+
+image {
     // background: #ccc;
-    margin: auto;
-    // display: block;
-    &.img-block{
+    margin: auto; // display: block;
+    &.img-block {
         display: block;
     }
 }
 
-button::before, button::after{
+button::before,
+button::after {
     display: none !important;
 }
-.font-title{
+
+.font-title {
     .font-title()
 }
-.font-lable{
-    .font-lable() 
+
+.font-lable {
+    .font-lable()
 }
-.font-text{
+
+.font-text {
     .font-text()
 }
-.view-padding{
+
+.view-padding {
     padding: 0 36px;
 }
-.view-fixed-bottom{
+
+.view-fixed-bottom {
     position: fixed;
     bottom: 0;
     width: 100%;
-} 
-Button{
-    color:@color-1
 }
+
+.text-delete {
+    text-decoration: line-through;
+    margin-right: 10px;
+    font-size: 26px !important;
+}
+
+Button {
+    color: @color-1
+}
+
 Button[disabled] {
     opacity: 0.5 !important;
 }

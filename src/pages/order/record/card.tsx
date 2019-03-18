@@ -49,12 +49,12 @@ export default class extends Component<{ data: any }, any> {
             case 'wuliu':
                 const res = await Taro.showModal({
                     title: "物流信息",
-                    content: data.deliveryMethod,
+                    content: `${data.deliveryMethod} ：${data.shipmentNumber}`,
                     showCancel: false,
                     confirmText: "复制"
                 })
                 if (res.confirm) {
-                    this.onCopy(data.deliveryMethod)
+                    this.onCopy(data.shipmentNumber)
                 }
                 break;
             case 'Confirm':

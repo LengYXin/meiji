@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import { toJS } from 'mobx';
 import { AtList, AtListItem } from 'taro-ui';
 import Imgs from '../../../img';
-import { Address, Orders, Products, User } from '../../../store';
+import { Address, Orders, Products, User, EnumVipType } from '../../../store';
 import './index.less';
 
 
@@ -37,6 +37,7 @@ export default class extends Component {
 
   componentDidShow() {
     const key = get(this.$router, 'params.key', '')
+    User.onGetCoupon()
     Products.onGetProducts(key);
   }
 
@@ -46,7 +47,11 @@ export default class extends Component {
   }
   // 提交创建订单
   onCreate() {
-    const address = Address.Default
+    const address = Address.Default;
+    const product = toJS(Products.details)
+    if ((product.stockCount - product.salesCount) < (this.state.CouponCount + 1)) {
+      return Taro.showToast({ title: "商品库存不足~", icon: "none" })
+    }
     if (address.id) {
       Orders.onCreateOrder({
         cardCoupomCount: this.state.CouponCount,
@@ -62,19 +67,30 @@ export default class extends Component {
   onUpdateCoupon(type: "plus" | "reduce") {
     try {
       let CouponCount = this.state.CouponCount;
-      if (User.Info.vipType == "expVip") {
+      if (User.Info.vipType == EnumVipType.expVip) {
         throw "体验会员无法使用加购卷~"
       }
-
       if (type == "plus") {
-        if (User.Info.vipType == "enjoyVip" && CouponCount == 1) {
-          throw "优享会员只能使用一张加购~"
+        const product = toJS(Products.details)
+        if ((product.stockCount - product.salesCount) < (CouponCount + 2)) {
+          throw "商品库存不足~"
         }
-        if (CouponCount < User.Coupon.length) {
+        // 尊享
+        if (User.Info.vipType == EnumVipType.excVip) {
           CouponCount++
-        } else {
-          // throw "加购卷数量不足~"
+        } else if (User.Info.vipType == EnumVipType.enjoyVip) {  // 优享
+          if (CouponCount == 1) {
+            throw "优享会员只能使用一张加购~"
+          }
+          if (CouponCount < User.Coupon.length) {
+            CouponCount++
+          } else {
+            throw "加购卷数量不足~"
+          }
         }
+
+
+
       } else {
         if (CouponCount > 0) {
           CouponCount--
