@@ -39,20 +39,20 @@ export default class extends Component {
     User.onPayVip(type)
   }
   render() {
-    const expVipdisabled = true;//User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.expVip;
-    const enjoyVipdisabled = User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.enjoyVip;
-    const excVipdisabled = true//User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.excVip;
+    const expVipdisabled = User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.expVip;
+    const enjoyVipdisabled = true// User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.enjoyVip;
+    const excVipdisabled = User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.excVip;
 
     return (
       <View className='index'>
         <NiuPai />
         <Equity />
         <View className='at-row at-row--wrap'>
-          <View className='at-col at-col-8'><Text>体验会员</Text><Text>￥69</Text><Text>/ 月</Text></View>
+          <View className='at-col at-col-8'><Text>体验会员</Text><Text><Text className="text-delete">￥69</Text> ￥20</Text><Text>/ 月</Text></View>
           <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, EnumVipType.expVip)} disabled={expVipdisabled}>购买</Button></View>
         </View>
         <View className='at-row at-row--wrap'>
-          <View className='at-col at-col-8'><Text>优享会员</Text><Text > <Text className="text-delete">￥399</Text>  <Text>￥10</Text></Text><Text>/ 年</Text></View>
+          <View className='at-col at-col-8'><Text>优享会员</Text><Text >  <Text>￥399</Text></Text><Text>/ 年</Text></View>
           <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, EnumVipType.enjoyVip)} disabled={enjoyVipdisabled}>购买</Button></View>
         </View>
         <View className='at-row at-row--wrap'>
