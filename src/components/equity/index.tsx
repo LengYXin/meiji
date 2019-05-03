@@ -3,6 +3,7 @@ import Taro, { Component } from '@tarojs/taro';
 import 'taro-ui/dist/weapp/css/index.css';
 import Imgs from '../../img';
 import './index.less';
+import priceConfig from '../../price.config';
 
 export default class extends Component<any, any> {
     render() {
@@ -14,15 +15,15 @@ export default class extends Component<any, any> {
                         <View className='at-col at-col-3'></View>
                         <View className='at-col at-col-3'>
                             <View>体验会员 </View>
-                            <View>￥69</View>
+                            <View>{priceConfig.expVip.discount && <Text className="text-delete">{priceConfig.expVip.original}</Text>} {priceConfig.expVip.present}</View>
                         </View>
                         <View className='at-col at-col-3'>
                             <View>优享会员  </View>
-                            <View><Text className="text-delete "> ￥399</Text> ￥10</View>
+                            <View>{priceConfig.enjoyVip.discount && <Text className="text-delete">{priceConfig.enjoyVip.original}</Text>} {priceConfig.enjoyVip.present}</View>
                         </View>
                         <View className='at-col at-col-3'>
                             <View>尊享会员  </View>
-                            <View>￥3999</View>
+                            <View>{priceConfig.excVip.discount && <Text className="text-delete">{priceConfig.excVip.original}</Text>} {priceConfig.excVip.present}</View>
                         </View>
                     </View>
                 </View>
@@ -36,7 +37,7 @@ export default class extends Component<any, any> {
                     <View className='at-row at-row--wrap tr-border'>
                         <View className='at-col at-col-3'>限购</View>
                         <View className='at-col at-col-3'>1/份</View>
-                        <View className='at-col at-col-3'>2/份</View>
+                        <View className='at-col at-col-3'>1/份</View>
                         <View className='at-col at-col-3'>无</View>
                     </View>
                     <View className='at-row at-row--wrap tr-border'>

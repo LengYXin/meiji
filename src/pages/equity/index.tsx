@@ -4,6 +4,7 @@ import Taro, { Component, Config } from '@tarojs/taro';
 import Equity from '../../components/equity';
 import NiuPai from '../../components/niupai';
 import { User, EnumVipType } from '../../store';
+import priceConfig from '../../price.config';
 import './index.less';
 @observer
 export default class extends Component {
@@ -39,24 +40,32 @@ export default class extends Component {
     User.onPayVip(type)
   }
   render() {
-    const expVipdisabled = User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.expVip;
-    const enjoyVipdisabled = true// User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.enjoyVip;
-    const excVipdisabled = User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.excVip;
+    const expVipdisabled = priceConfig.expVip.disabled || (User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.expVip);
+    const enjoyVipdisabled = priceConfig.enjoyVip.disabled || (User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.enjoyVip);
+    const excVipdisabled = priceConfig.excVip.disabled || (User.Info.vipType != EnumVipType.nonVip && User.Info.vipType != EnumVipType.excVip);
 
     return (
       <View className='index'>
         <NiuPai />
         <Equity />
         <View className='at-row at-row--wrap'>
-          <View className='at-col at-col-8'><Text>体验会员</Text><Text><Text className="text-delete">￥69</Text> ￥20</Text><Text>/ 月</Text></View>
+          <View className='at-col at-col-8'><Text>体验会员</Text>
+            <Text>{priceConfig.expVip.discount && <Text className="text-delete">{priceConfig.expVip.original}</Text>} {priceConfig.expVip.present}</Text>
+            <Text>/ 月</Text></View>
           <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, EnumVipType.expVip)} disabled={expVipdisabled}>购买</Button></View>
         </View>
         <View className='at-row at-row--wrap'>
-          <View className='at-col at-col-8'><Text>优享会员</Text><Text >  <Text>￥399</Text></Text><Text>/ 年</Text></View>
+          <View className='at-col at-col-8'><Text>优享会员</Text>
+            <Text >{priceConfig.enjoyVip.discount && <Text className="text-delete">{priceConfig.enjoyVip.original}</Text>} {priceConfig.enjoyVip.present}</Text>
+            <Text>/ 年</Text>
+          </View>
           <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, EnumVipType.enjoyVip)} disabled={enjoyVipdisabled}>购买</Button></View>
         </View>
         <View className='at-row at-row--wrap'>
-          <View className='at-col at-col-8'><Text>尊享会员</Text><Text>￥3999</Text><Text>/ 年</Text></View>
+          <View className='at-col at-col-8'><Text>尊享会员</Text>
+            <Text >{priceConfig.excVip.discount && <Text className="text-delete">{priceConfig.excVip.original}</Text>} {priceConfig.excVip.present}</Text>
+            <Text>/ 年</Text>
+          </View>
           <View className='at-col at-col-4'><Button onClick={this.onPayVip.bind(this, EnumVipType.excVip)} disabled={excVipdisabled}>购买</Button></View>
         </View>
       </View>
