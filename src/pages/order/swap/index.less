@@ -1,0 +1,89 @@
+.swap {
+    padding: 0 32px 150px;
+    position: relative;
+    .product-info {
+        display: flex;
+        margin-top: 26px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid #eaeaea;
+        > image {
+            width: 116px;
+            height: 116px;
+            margin-right: 16px;
+            margin-left: 0;
+            border-radius: 50%;
+        }
+        .info-ctx {
+            display: flex;
+            flex-direction: column;
+            // justify-content: space-between;
+            .member {
+                > text {
+                    font-weight: 600;
+                    font-size: 32px;
+                    color: #0a0a0a;
+                }
+            }
+            .maturity {
+                font-size: 28px;
+                color: #939393;
+            }
+        }
+    }
+    .reason {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+        .reason-left {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .reason-right {
+        }
+    }
+    .description {
+        .description-textarea {
+            margin-top: 40px;
+            background-color: #eeeeee;
+            .at-textarea__textarea {
+                width: 100%;
+                height: 336px;
+            }
+        }
+    }
+    .upload {
+        .upload-imgpicker {
+            height: 200px;
+            .at-image-picker__flex-box {
+                padding: 0;
+                .at-image-picker__flex-item {
+                    margin-left: 0;
+                    margin-right: 24px;
+                    height: 200rpx;
+                    width: 200rpx;
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+    .item-title {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        font-size: 28px;
+        font-weight: 400;
+        color: #0a0a0a;
+    }
+    .but-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: #0a0a0a;
+        color: #dbc389;
+        font-size: 32px;
+        border-radius: 0;
+    }
+}

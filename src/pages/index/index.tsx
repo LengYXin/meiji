@@ -47,7 +47,7 @@ export default class extends Component {
     })
   }
   async onClick(e) {
-    // User.onAuth()
+   // User.onAuth()
     await User.onGetAuthSetting()
     console.log(User.isUserInfoAuto, User.AutoData.access_token)
     if (User.isUserInfoAuto) {
@@ -58,6 +58,7 @@ export default class extends Component {
         Taro.navigateTo({ url: "/pages/login/index" })
       }
     }
+    // Taro.navigateTo({ url: "/pages/product/index" })
   }
   render() {
     // if (!(Products.RecommendPruduct && Products.RecommendPruduct.id)) {
@@ -82,7 +83,7 @@ export default class extends Component {
             <View className="c-kf">
               <Image src={Imgs.KF} className="c-kf-img" />
               联系客服
-                </View>
+            </View>
           </View>
         </View>
 

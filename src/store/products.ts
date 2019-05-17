@@ -1,49 +1,61 @@
-import Taro from '@tarojs/taro';
-import delay from 'lodash/delay';
-import find from 'lodash/find';
-import get from 'lodash/get';
-import head from 'lodash/head';
-import last from 'lodash/last';
-import orderBy from 'lodash/orderBy';
-import some from 'lodash/some';
-import { action, computed, observable, runInAction, toJS } from 'mobx';
-import { WXRequest } from './native/request';
-import { DateFormat } from './Regular';
-
+import Taro from "@tarojs/taro";
+import delay from "lodash/delay";
+import find from "lodash/find";
+import get from "lodash/get";
+import head from "lodash/head";
+import last from "lodash/last";
+import orderBy from "lodash/orderBy";
+import some from "lodash/some";
+import { action, computed, observable, runInAction, toJS } from "mobx";
+import { WXRequest } from "./native/request";
+import { DateFormat } from "./Regular";
 
 class ProductsMobx {
     constructor() {
-        this.onGetRecommendPruduct()
+        this.onGetRecommendPruduct();
     }
     oldData = [];
 
     // 刷新
     // @observable PagingRefreshing = false;
     @observable dataSource: {
-        title: string,
-        start: number,
-        end: number,
-        key: string,
-        list: any[]
+        title: string;
+        start: number;
+        end: number;
+        key: string;
+        list: any[];
     }[] = [];
     @action.bound
-    onPush(list: { id: string, salesDateEnd: number, salesDateStart: number }[], type: "new" | 'old' = "new") {
+    onPush(
+        list: { id: string; salesDateEnd: number; salesDateStart: number }[],
+        type: "new" | "old" = "new"
+    ) {
         const dataSource = toJS(this.dataSource);
         list.map(data => {
-            const key = `${data.salesDateStart}-${data.salesDateEnd}`
+            const key = `${data.salesDateStart}-${data.salesDateEnd}`;
             // if (type == "new") {
             // 已经存在 直接添加
-            const sale = find(dataSource, ['key', key]);
+            const sale = find(dataSource, ["key", key]);
             if (sale) {
                 // 数据已经存在
-                if (some(sale.list, ['id', data.id])) {
+                if (some(sale.list, ["id", data.id])) {
                 } else {
-                    sale.list = orderBy([...sale.list, data], ['sort'], ['asc'])  //.push(data);
+                    sale.list = orderBy(
+                        [...sale.list, data],
+                        ["sort"],
+                        ["asc"]
+                    ); //.push(data);
                 }
             } else {
                 // 不存在 创建 插入
                 dataSource.unshift({
-                    title: ` ${DateFormat(data.salesDateStart, 'yyyy年')} ${DateFormat(data.salesDateStart, 'MM月dd日')}-${DateFormat(data.salesDateEnd, 'MM月dd日')}`,
+                    title: ` ${DateFormat(
+                        data.salesDateStart,
+                        "yyyy年"
+                    )} ${DateFormat(
+                        data.salesDateStart,
+                        "MM月dd日"
+                    )}-${DateFormat(data.salesDateEnd, "MM月dd日")}`,
                     start: data.salesDateStart,
                     end: data.salesDateEnd,
                     key: key,
@@ -51,8 +63,8 @@ class ProductsMobx {
                 });
             }
             // }
-        })
-        this.dataSource = orderBy(dataSource, ['start', 'end'], ['asc', 'asc'])
+        });
+        this.dataSource = orderBy(dataSource, ["start", "end"], ["asc", "asc"]);
     }
     /**
      * 推荐商品
@@ -62,7 +74,7 @@ class ProductsMobx {
     };
     @observable _SurplusTime = 0;
     @computed get SurplusTime() {
-        return DateFormat(this._SurplusTime, "")
+        return DateFormat(this._SurplusTime, "");
     }
     /**
      * 获取推荐商品
@@ -70,25 +82,26 @@ class ProductsMobx {
     async onGetRecommendPruduct(delay = false) {
         // Taro.showLoading({ title: "加载中~", mask: true })
         try {
-            const res = await WXRequest.request({ url: '/api/v1/Products/RecommendPruduct' }, delay);
+            const res = await WXRequest.request(
+                { url: "/api/v1/Products/RecommendPruduct" },
+                delay
+            );
             if (res.isSuccess) {
                 runInAction(() => {
-                    this.RecommendPruduct = res.data
-                })
+                    this.RecommendPruduct = res.data;
+                });
             }
             return res.isSuccess;
-        } catch (error) {
-
-        }
+        } catch (error) {}
         // Taro.hideLoading()
     }
     /**
      * 商品详情
      */
-    @observable details: any = {}
+    @observable details: any = {};
     /** 转换金额 */
     toPrice(price) {
-        return `￥${parseFloat(price).toFixed(2)}`
+        return `￥${parseFloat(price).toFixed(2)}`;
     }
     /** 返回百分比 */
     toProportion(stockCount, salesCount) {
@@ -98,11 +111,11 @@ class ProductsMobx {
         if (salesCount == 0) {
             return 0;
         }
-        return Math.round(salesCount / stockCount * 100);
+        return Math.round((salesCount / stockCount) * 100);
     }
     @action.bound
     onUnmountProducts() {
-        this.details = {}
+        this.details = {};
     }
     /**
      * 商品详情
@@ -115,18 +128,21 @@ class ProductsMobx {
         //     this.details = {};
         // })
         // timeStamp
-        Taro.showLoading({ title: "加载中~", mask: true })
+        Taro.showLoading({ title: "加载中~", mask: true });
         try {
-            const res = await WXRequest.request({ url: `/api/v1/Products/${productCode}` }, true);
+            const res = await WXRequest.request(
+                { url: `/api/v1/Products/${productCode}` },
+                true
+            );
             if (res.isSuccess) {
                 runInAction(() => {
                     this.details = res.data;
-                })
+                });
             }
-            return res.isSuccess
+            return res.isSuccess;
         } catch (error) {
         } finally {
-            Taro.hideLoading()
+            Taro.hideLoading();
         }
     }
     oldDataPage = 0;
@@ -138,17 +154,20 @@ class ProductsMobx {
      */
     async onOldData() {
         try {
-            let data = {}
+            let data = {};
             if (this.oldfirstLoading) {
             } else {
                 const page = this.oldDataPage + 1;
                 data = { page: page };
                 if (this.oldDataPage == this.oldPageCount) {
-                    return true
+                    return true;
                 }
             }
             Taro.showLoading({ title: "加载中~", mask: true });
-            const res = await WXRequest.request({ url: '/api/v1/Products/OldData', data }, true);
+            const res = await WXRequest.request(
+                { url: "/api/v1/Products/OldData", data },
+                true
+            );
             this.oldfirstLoading = false;
             if (res.isSuccess && res.data.list.length > 0) {
                 this.onPush(res.data.list);
@@ -159,14 +178,14 @@ class ProductsMobx {
                 // delay(() => { Taro.showToast({ title: "没有更多商品了", icon: "none" }) }, 600 - (Date.now() - time))
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        Taro.hideLoading()
+        Taro.hideLoading();
     }
 
     /**
-         * 首次加载
-         */
+     * 首次加载
+     */
     @observable firstLoading = true;
     // 加载
     @observable PagingLoading = false;
@@ -178,26 +197,77 @@ class ProductsMobx {
     async onNewData(componentDidShow = false) {
         // console.log(componentDidShow, this.dataSource.length)
         if (componentDidShow && this.dataSource.length > 0) {
-            return
+            return;
         }
         try {
             let data = {};
             if (this.firstLoading) {
-                Taro.showLoading({ title: "加载中~", mask: true })
+                Taro.showLoading({ title: "加载中~", mask: true });
             } else {
                 const page = this.newDataPage + 1;
                 data = { page: page };
                 if (this.newDataPage == this.newPageCount) {
-                    return true
+                    return true;
                 } else {
                     this.PagingLoading = true;
                 }
             }
-            const res = await WXRequest.request({ url: '/api/v1/Products/NewData', data }, true);
-            this.firstLoading && Taro.hideLoading()
-            this.PagingLoading = false
+            // let res = await WXRequest.request({ url: '/api/v1/Products/NewData', data }, true);
+            var fnres = () => {
+                const id1 = Math.round(Math.random() * 1000) + "";
+                const id2 = Math.round(Math.random() * 1000) + "";
+                const id3 = Math.round(Math.random() * 1000) + "";
+                const id4 = Math.round(Math.random() * 10000) + "";
+                return {
+                    isSuccess: true,
+                    data: {
+                        title: new Date().getSeconds(),
+                        list: [
+                            {
+                                id: id1,
+                                pictures:
+                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+                                productName: "商品名称",
+                                salesDateEnd: 1557718875873,
+                                salesDateStart: new Date().getTime()
+                            },
+                            {
+                                id: id2,
+                                pictures:
+                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+                                productName: "商品名称",
+                                salesDateEnd: 1557718875873,
+                                salesDateStart: new Date().getTime()
+                            },
+                            {
+                                id: id3,
+                                pictures:
+                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+                                productName: "商品名称",
+                                salesDateEnd: new Date().getTime() + 100000,
+                                salesDateStart: new Date().getTime() - 100000
+                            },
+                            {
+                                id: id4,
+                                pictures:
+                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+                                productName: "阳澄湖大闸蟹",
+                                salesDateEnd: 1557718875873,
+                                salesDateStart: new Date().getTime()
+                            }
+                        ],
+                        page: 1,
+                        pageCount: 10
+                    }
+                };
+            };
+            var res = fnres();
+            this.firstLoading && Taro.hideLoading();
+            this.PagingLoading = false;
             if (res.isSuccess && res.data.list.length > 0) {
                 this.firstLoading = false;
+                this.onPush(res.data.list);
+                res = fnres();
                 this.onPush(res.data.list);
                 // 当前页码
                 this.newDataPage = res.data.page;
@@ -206,9 +276,9 @@ class ProductsMobx {
                 // delay(() => { Taro.showToast({ title: "没有更多商品了", icon: "none" }) }, 600 - (Date.now() - time))
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-        // 
+        //
     }
     @action.bound
     onRemove() {
@@ -223,10 +293,10 @@ class ProductsMobx {
         this.newPageCount = 0;
     }
     onTest() {
-        this.onGetRecommendPruduct()
+        this.onGetRecommendPruduct();
         // this.onGetProducts()
-        this.onOldData()
-        this.onNewData()
+        this.onOldData();
+        this.onNewData();
     }
 }
 

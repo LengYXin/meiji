@@ -17,6 +17,15 @@ import ProSale from './img/proSale.png';
 import Lable from './img/lable.png';
 import Time from './img/time.png';
 import TimeOut from './img/timeOut.png';
+import IconCate from './img/icon-cate.png';
+import IconCoin from './img/icon-coin.png';
+import IconFree from './img/icon-free.png';
+import IconFriend from './img/icon-friend.png';
+import IconLock from './img/icon-lock.png';
+import vipGift from './img/vipGift.png';
+import IconTag from './img/icon-tag.png';
+import Gj from "./img/sale/gj.png";
+import Right from "./img/user/right.png";
 
 export default {
     /** 二维码 */
@@ -54,4 +63,22 @@ export default {
     Lable,
     Time,
     TimeOut,
-}
+    /** Icon 美食 */
+    IconCate,
+    /** Icon 钱包 */
+    IconCoin,
+    /** Icon 免费 */
+    IconFree,
+    /** Icon 朋友 */
+    IconFriend,
+    /** Icon 锁 */
+    IconLock,
+    // 过季
+    Gj,
+    // 右箭头
+    Right,
+    /** vip礼物图标 */
+    vipGift,
+    /**Icon 标签 */
+    IconTag
+};

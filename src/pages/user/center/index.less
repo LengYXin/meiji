@@ -1,0 +1,192 @@
+@import "../../../variable.less";
+.userinfo-box {
+    background-color: #0a0a0a;
+    height: 354px;
+    position: relative;
+    padding: 0 54px;
+    .input-yzm {
+        width: 100%;
+        height: 80px;
+        background-color: #fff;
+        border-radius: 10px;
+        color: #dbc389;
+        display: flex;
+        margin: 0 auto 64px;
+        position: relative;
+        top: 82px;
+        > input {
+            height: 100%;
+            flex: 1;
+        }
+        > image {
+            width: 40px;
+            height: 40px;
+            margin: auto 24px;
+        }
+    }
+    .orbox {
+        font-size: 28px;
+        color: #292929;
+        position: relative;
+        margin-top: 144px;
+        .or-line {
+            background-color: #292929;
+            height: 1px;
+        }
+        > text {
+            position: absolute;
+            display: inline-block;
+            top: -15px;
+            right: 0;
+            left: 0;
+            margin: auto;
+            bottom: 0;
+            width: 112px;
+            text-align: center;
+            background-color: #0a0a0a;
+        }
+    }
+    .info {
+        display: flex;
+        position: relative;
+        top: 52px;
+        color: #fff;
+        > image {
+            width: 80px;
+            height: 80px;
+            margin-right: 16px;
+            margin-left: 0;
+            border-radius: 50%;
+        }
+        .info-ctx {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #fff;
+            .member {
+                > text {
+                    font-size: 36px;
+                }
+                image {
+                    width: 114px;
+                    height: 32px;
+                }
+            }
+            .maturity {
+                font-size: 24px;
+            }
+        }
+    }
+    .line-box {
+        position: relative;
+        top: 80px;
+        .line-left {
+            width: 50%;
+            height: 6px;
+            position: absolute;
+            top: 32px;
+            left: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(246, 214, 157, 1) 0%,
+                rgba(255, 187, 18, 1) 100%
+            );
+            z-index: 1;
+            border-radius: 100px;
+            .point {
+                width: 30px;
+                height: 18px;
+                background-color: #fff;
+                position: absolute;
+                right: 0;
+                top: -6px;
+                border: 2px solid #dbc389;
+                border-radius: 20px;
+                > text {
+                    color: #ffbb12;
+                    font-size: 24px;
+                    position: absolute;
+                    top: -35px;
+                    width: 100px;
+                    text-align: center;
+                    left: -34px;
+                }
+            }
+        }
+        .line-right {
+            width: 100%;
+            height: 6px;
+            position: absolute;
+            top: 32px;
+            left: 0;
+            background-color: #fff;
+            z-index: 0;
+            border-radius: 100px;
+        }
+    }
+    .line-ctx {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        color: #fff;
+        font-size: 24px;
+        top: 130px;
+        font-weight: 400;
+    }
+    .content-box {
+        position: relative;
+        color: #fff;
+        font-size: 24px;
+        top: 140px;
+    }
+    .triangle {
+        width: 0;
+        height: 0;
+        border-right: 0 solid transparent;
+        border-left: 100vw solid transparent;
+        border-bottom: 43px solid #fff;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+}
+.panel {
+    background-color: rgba(10, 10, 10, 1);
+}
+.example-item {
+    .atnavbar-head {
+        // color:#ffffff;
+        // background-color: rgba(10, 10, 10, 1);
+    }
+}
+
+
+.center-btn {
+    width: 100%;
+    height: 100px;
+    background-color: rgba(219, 195, 137, 1);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .border-bottom(@color-5);
+    &::after {
+        top: 0;
+        bottom: auto;
+        z-index: 99;
+        background-color: rgb(219, 218, 218);
+    }
+    button {
+        width: 560px;
+        height: 80px;
+        font-family:PingFang SC;
+        background: transparent;
+        opacity: 1;
+        border-radius: 2px;
+        color: rgba(10, 10, 10, 1);
+        font-size: 32px;
+        font-weight:600;
+    }
+}

@@ -1,0 +1,73 @@
+@import "../../variable.less";
+.joinmj {
+    background-color: #ffffff;
+  .join-title {
+      height: 64px;
+      position: relative;
+      .join-colorBlock {
+        position: absolute;
+        z-index: 1;
+        top: 28px;
+        right: 246px;
+        width: 172px;
+        height: 22px;
+        background-color: rgba(219, 195, 137, 1);
+      }
+      .join-textBlock {
+        position: absolute;
+        z-index: 2;
+        left: 260px;
+        font-weight:400;
+        color: rgba(10, 10, 10, 1);
+      }
+      .join-text {
+          z-index: 2;
+      }
+  }
+  .join-course {
+      display: flex;
+      
+      .course-left {
+          width: 85px;
+          position: relative;
+          .left-cantainer{
+            position: relative;
+            top: 74px;
+            left: 34px;
+            width:35px;
+            height: 35px;
+            border: 1px dashed #8B8B7A;
+            .course-icon{
+            width: 35px;
+            height: 35px;
+            }
+        }
+      }
+      .course-middle {
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          border-left: 2px dotted rgba(219, 195, 137, 1);
+          margin: 50px 0 80px;
+          .middle-text {
+            position: relative;
+            left:8px;
+            margin-top: 44px;
+            font-size: 28px;
+            color:rgba(10,10,10,1);
+            &:first-child {
+                margin-top: -5px;
+            }
+          }
+      }
+      .course-right {
+          .right-cantainer {
+              border: 1px dashed #8B8B7A;
+              .vip-icon {
+                width: 264px;
+                height: 264px;
+              }
+          }
+      }
+  }
+}
