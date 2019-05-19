@@ -40,6 +40,9 @@ class UserMobx {
         phone: '',
         vipExpireTime: 0,
         vipExpireTimeStr: '',
+        upgradepoints: '', //升级点数
+        TastingCount: '', //品鉴次数
+        RightTasting: '', //决策正确次数
     }
     /**
     * 优惠卷

@@ -69,9 +69,11 @@ export default class extends Component {
           <View className="header-right">
             <View className="right-name">{Info.nickName}</View>
             <View className="right-img">
-              <Image src={Imgs[Info.vipType]} />
+              <Image onClick={()=>{
+               return Taro.reLaunch({ url: "/pages/user/center/index" })
+              }} src={Imgs[Info.vipType]} />
             </View>
-            <View className="right-time">{Info.vipExpireTimeStr}  <Text>到期</Text></View>
+            <View className="right-time">{Info.vipExpireTimeStr} <Text>到期</Text></View>
           </View>
         </View>
         <View className="core-tab">

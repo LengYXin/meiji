@@ -212,56 +212,56 @@ class ProductsMobx {
                     this.PagingLoading = true;
                 }
             }
-            // let res = await WXRequest.request({ url: '/api/v1/Products/NewData', data }, true);
-            var fnres = () => {
-                const id1 = Math.round(Math.random() * 1000) + "";
-                const id2 = Math.round(Math.random() * 1000) + "";
-                const id3 = Math.round(Math.random() * 1000) + "";
-                const id4 = Math.round(Math.random() * 10000) + "";
-                return {
-                    isSuccess: true,
-                    data: {
-                        title: new Date().getSeconds(),
-                        list: [
-                            {
-                                id: id1,
-                                pictures:
-                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
-                                productName: "商品名称",
-                                salesDateEnd: 1557718875873,
-                                salesDateStart: new Date().getTime()
-                            },
-                            {
-                                id: id2,
-                                pictures:
-                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
-                                productName: "商品名称",
-                                salesDateEnd: 1557718875873,
-                                salesDateStart: new Date().getTime()
-                            },
-                            {
-                                id: id3,
-                                pictures:
-                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
-                                productName: "商品名称",
-                                salesDateEnd: new Date().getTime() + 100000,
-                                salesDateStart: new Date().getTime() - 100000
-                            },
-                            {
-                                id: id4,
-                                pictures:
-                                    "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
-                                productName: "阳澄湖大闸蟹",
-                                salesDateEnd: 1557718875873,
-                                salesDateStart: new Date().getTime()
-                            }
-                        ],
-                        page: 1,
-                        pageCount: 10
-                    }
-                };
-            };
-            var res = fnres();
+            let res = await WXRequest.request({ url: '/api/v1/Products/NewData', data }, true);
+            // var fnres = () => {
+            //     const id1 = Math.round(Math.random() * 1000) + "";
+            //     const id2 = Math.round(Math.random() * 1000) + "";
+            //     const id3 = Math.round(Math.random() * 1000) + "";
+            //     const id4 = Math.round(Math.random() * 10000) + "";
+            //     return {
+            //         isSuccess: true,
+            //         data: {
+            //             title: new Date().getSeconds(),
+            //             list: [
+            //                 {
+            //                     id: id1,
+            //                     pictures:
+            //                         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+            //                     productName: "商品名称",
+            //                     salesDateEnd: 1557718875873,
+            //                     salesDateStart: new Date().getTime()
+            //                 },
+            //                 {
+            //                     id: id2,
+            //                     pictures:
+            //                         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+            //                     productName: "商品名称",
+            //                     salesDateEnd: 1557718875873,
+            //                     salesDateStart: new Date().getTime()
+            //                 },
+            //                 {
+            //                     id: id3,
+            //                     pictures:
+            //                         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+            //                     productName: "商品名称",
+            //                     salesDateEnd: new Date().getTime() + 100000,
+            //                     salesDateStart: new Date().getTime() - 100000
+            //                 },
+            //                 {
+            //                     id: id4,
+            //                     pictures:
+            //                         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557731149423&di=65e0979bfa29f1501393f2bee5ca43dd&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F120827%2F214833-120RGK01490.jpg",
+            //                     productName: "阳澄湖大闸蟹",
+            //                     salesDateEnd: 1557718875873,
+            //                     salesDateStart: new Date().getTime()
+            //                 }
+            //             ],
+            //             page: 1,
+            //             pageCount: 10
+            //         }
+            //     };
+            // };
+            // var res = fnres();
             this.firstLoading && Taro.hideLoading();
             this.PagingLoading = false;
             if (res.isSuccess && res.data.list.length > 0) {

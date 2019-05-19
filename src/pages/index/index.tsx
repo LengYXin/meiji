@@ -52,7 +52,6 @@ export default class extends Component {
     console.log(User.isUserInfoAuto, User.AutoData.access_token)
     if (User.isUserInfoAuto) {
       if (User.AutoData.access_token) {
-
         User.onGetUserInfo();
       } else {
         Taro.navigateTo({ url: "/pages/login/index" })

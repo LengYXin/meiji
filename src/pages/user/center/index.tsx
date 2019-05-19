@@ -4,7 +4,7 @@ import Taro, { Component, Config } from "@tarojs/taro";
 import Vipleve from "../../../components/viplevel";
 import Vipequities from "../../../components/vipequities";
 import { AtNavBar } from "taro-ui";
-import get from "lodash/get";
+import { User } from '../../../store';
 import "./index.less";
 import Imgs from "../../../img";
 
@@ -21,7 +21,8 @@ export default class Center extends Component {
         this.state = {
             invitationCode: "请输入邀请码",
             level: 0,
-            pageType: 1
+            pageType: 1,
+            userInfo: User.isGetUserInfo
         };
     }
     componentWillMount() {}
@@ -43,10 +44,38 @@ export default class Center extends Component {
             level
         });
     };
+    
+    vipResult =(type)=> {
+        return Imgs[type];
+    };
+
+    onPayVip =(type)=> {
+        User.onPayVip(type)
+    }
 
     render() {
-        // const data = [...Address.dataSource.PagingData];
+        const Info = { ...User.Info }
         let viewDom = null;
+        let uppoints = function(vipType){
+            let ponint=0;
+            if(vipType === 'expVip') {
+                ponint = 1000-parseInt(Info.upgradepoints);
+            }else if(vipType === 'enjoyVip'){
+                ponint = 4000-parseInt(Info.upgradepoints);
+            }
+            return ponint;
+        }
+        let percent = parseInt(Info.upgradepoints)/4000;
+        let price = function(level) {
+            switch(level){
+                case 0: 
+                    return '20'
+                case 1: 
+                    return '399'
+                case 2:
+                    return '3999'
+            }
+        }
         if (this.state.pageType === 0) {
             viewDom = (
                 <View className="userinfo-box">
@@ -69,21 +98,21 @@ export default class Center extends Component {
             viewDom = (
                 <View className="userinfo-box">
                     <View className="info">
-                        <Image src={Imgs.Right} mode="aspectFit" />
+                        <Image src={Info.avatarUrl} mode="aspectFit" />
                         <View className="info-ctx">
                             <View className="member">
-                                <Text>白叶挽青湖</Text>
-                                <Image src={Imgs.expVip} mode="aspectFit" />
+                                <Text>{Info.nickName}</Text>
+                                <Image src={Imgs[Info.vipType]} mode="aspectFit" />
                             </View>
                             <View className="maturity">
-                                您的会员总时长将在2019-01-02到期
+                                您的会员总时长将在{Info.vipExpireTimeStr} 到期
                             </View>
                         </View>
                     </View>
                     <View className="line-box">
-                        <View className="line-left">
+                        <View className="line-left" style={{width: percent+'%'}}>
                             <View className="point">
-                                <Text>300</Text>
+                                <Text>{Info.upgradepoints}</Text>
                             </View>
                         </View>
                         <View className="line-right" />
@@ -93,7 +122,7 @@ export default class Center extends Component {
                         <Text>优享会员</Text>
                         <Text>尊享会员</Text>
                     </View>
-                    <View className="content-box">还有815点升级</View>
+                    <View className="content-box">还有{uppoints(Info.vipType)}点升级</View>
                     <View className="triangle" />
                 </View>
             );
@@ -115,14 +144,16 @@ export default class Center extends Component {
                 </View>
                 {viewDom}
                 <Vipleve
-                    level={this.state.level}
-                    onChangeLevel={this.changeLevel.bind(this)}
+                    level= {this.state.level}
+                    vipType= {Info.vipType}
+                    upgradepoints= {Info.upgradepoints}
+                    onChangeLevel= {this.changeLevel.bind(this)}
                 />
                 <Vipequities level={this.state.level} />
                 <View className="center-btn">
-                    <Button onClick={() => this.payVip}>立即支付20元</Button>
+                    <Button onClick={() => this.onPayVip(Info.vipType)}>立即支付{ price(this.state.level) }元</Button>
                 </View>
             </View>
-        );
+        ); 
     }
 }

@@ -69,7 +69,7 @@ export default class extends Component {
     render() {
         const dataSource = toJS(Products.dataSource);
         const loadingVis = Products.PagingLoading;
-        console.log(dataSource);
+        console.log("预售："+ JSON.stringify(dataSource));
         return (
             <View className="index">
                 {dataSource.map(data => {
@@ -83,7 +83,7 @@ export default class extends Component {
                                         src={
                                             this.isSeason(data.start, data.end)
                                                 ? Imgs.Gj
-                                                : ""
+                                                : Imgs.ProSale
                                         }
                                         mode="aspectFit"
                                     />
@@ -101,7 +101,8 @@ export default class extends Component {
                                             )}
                                         >
                                             <Image
-                                                src={get(item.pictures, 0, "")}
+                                                // src={get(item.pictures, 0, "")}
+                                                src={item.pictures}
                                                 mode="widthFix"
                                             />
                                             <View className="title">

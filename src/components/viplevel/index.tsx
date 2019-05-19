@@ -6,6 +6,8 @@ export default class Viplevel extends Component{
         super(...arguments)
         this.state = {
           activeLevel: this.props.level,
+          upgradepoints: this.props.upgradepoints,
+          vipType: this.props.vipType,
           data: [
             {
                 title: '体验会员',
@@ -24,7 +26,23 @@ export default class Viplevel extends Component{
     }
 
     setLevel=(index)=> {
-        this.props.onChangeLevel(index);
+        let flag = false;
+        if(this.state.vipType==='expVip') {
+            if(this.state.upgradepoints < 1000 || this.state.upgradepoints === 1000 && index > 1) {
+                return ;
+            }else {
+                flag = true;
+            }
+        }else if(this.state.vipType==='enjoyVip') {
+            if(this.state.upgradepoints < 4000 && index > 1) {
+                return ;
+            }else {
+                flag = true;
+            }
+        }
+        if(flag){
+            this.props.onChangeLevel(index);
+        }
     }
     componentWillReceiveProps(nextProps) {
         if(nextProps.level !== this.state.activeLevel){

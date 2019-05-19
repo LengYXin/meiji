@@ -54,7 +54,7 @@ export default class extends Component{
                 <View className="item-container">
                     {this.state.data.map((item, index)=>{
                         return (<View key={index} className="item">
-                            <View className={this.state.level===0 && index<1||this.state.level===1 && index<3 || this.state.level===2 ? 'item-flag' : ' item-flag item-disable' 
+                            <View className={this.state.level===0 && index<1||this.state.level===1 && index<4 || this.state.level===2 ? 'item-flag' : ' item-flag item-disable' 
                             }><Image className="item-img" src={item.img} /></View>
                             <View className="item-describe">
                                 <View className="item-title"><Text>{item.title}</Text></View>
