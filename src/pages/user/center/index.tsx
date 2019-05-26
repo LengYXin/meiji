@@ -7,6 +7,7 @@ import { AtNavBar } from "taro-ui";
 import { User } from '../../../store';
 import "./index.less";
 import Imgs from "../../../img";
+import get from 'lodash/get';
 
 @observer
 export default class Center extends Component {
@@ -16,66 +17,80 @@ export default class Center extends Component {
         navigationBarTextStyle: "white",
         navigationBarBackgroundColor: "#130c0e"
     };
-    constructor() {
-        super(...arguments);
-        this.state = {
-            invitationCode: "请输入邀请码",
-            level: 0,
-            pageType: 1,
-            userInfo: User.isGetUserInfo
-        };
+    state = {
+        invitationCode: "",
+        level: 0,
+        pageType: 1,
+        userInfo: User.isGetUserInfo,
     }
-    componentWillMount() {}
+    componentWillMount() { }
 
-    componentWillReact() {}
+    componentWillReact() { }
+    componentDidShow() {
+        const key = get(this.$router, 'params.key', 1)
+        this.setState({ pageType: parseInt(key) })
+    }
+    componentDidMount() { }
 
-    componentDidMount() {}
-
-    componentWillUnmount() {}
-
-    searchChange = value => {
+    componentWillUnmount() { }
+    onSubmit() {
+        User.onInviteCode(this.state.invitationCode)
+        // Taro.switchTab({ url: "/pages/home/index" })
+        // console.log(this.state)
+    }
+    searchChange = event => {
         this.setState({
-            invitationCode: value
+            invitationCode: event.target.value
         });
     };
 
     changeLevel = level => {
+        console.log("TCL: Center -> componentWillUnmount -> level", level)
         this.setState({
             level
         });
     };
-    
-    vipResult =(type)=> {
+
+    vipResult = (type) => {
         return Imgs[type];
     };
 
-    onPayVip =(type)=> {
+    onPayVip = (type) => {
         User.onPayVip(type)
     }
-
     render() {
         const Info = { ...User.Info }
-        let viewDom = null;
-        let uppoints = function(vipType){
-            let ponint=0;
-            if(vipType === 'expVip') {
-                ponint = 1000-parseInt(Info.upgradepoints);
-            }else if(vipType === 'enjoyVip'){
-                ponint = 4000-parseInt(Info.upgradepoints);
+        let viewDom;
+        let uppoints = function (vipType) {
+            let ponint = 0;
+            if (vipType === 'expVip') {
+                ponint = 1000 - parseInt(Info.upgradepoints);
+            } else if (vipType === 'enjoyVip') {
+                ponint = 4000 - parseInt(Info.upgradepoints);
+            }
+            if (ponint < 0) {
+                ponint = 0
             }
             return ponint;
         }
-        let percent = parseInt(Info.upgradepoints)/4000;
-        let price = function(level) {
-            switch(level){
-                case 0: 
+        const upgradepoints = parseInt(Info.upgradepoints);
+        let percent = 0
+        if (upgradepoints > 1000) {
+            percent = 50 + (upgradepoints - 1000) / 3000 * 100;
+        } else {
+            percent = upgradepoints / 1000 * 100;
+        }
+        let price = function (level) {
+            switch (level) {
+                case 0:
                     return '20'
-                case 1: 
+                case 1:
                     return '399'
                 case 2:
                     return '3999'
             }
         }
+        console.log("TCL: Center -> render -> this.state.pageType", this.state.pageType)
         if (this.state.pageType === 0) {
             viewDom = (
                 <View className="userinfo-box">
@@ -84,8 +99,9 @@ export default class Center extends Component {
                             type="text"
                             placeholder="请输入邀请码"
                             placeholderStyle="color: #DBC389;text-align: center;"
+                            onInput={this.searchChange}
                         />
-                        <Image src={Imgs.Right} mode="aspectFit" />
+                        <Image onClick={this.onSubmit.bind(this)} src={Imgs.Right} mode="aspectFit" />
                     </View>
                     <View className="orbox">
                         <View className="or-line" />
@@ -110,7 +126,7 @@ export default class Center extends Component {
                         </View>
                     </View>
                     <View className="line-box">
-                        <View className="line-left" style={{width: percent+'%'}}>
+                        <View className="line-left" style={{ width: percent + '%' }}>
                             <View className="point">
                                 <Text>{Info.upgradepoints}</Text>
                             </View>
@@ -130,30 +146,19 @@ export default class Center extends Component {
 
         return (
             <View className="doc-body">
-                <View className="panel">
-                    <View className="panel__content no-padding">
-                        <View className="example-item">
-                            <AtNavBar
-                                className="atnavbar-head"
-                                color="#ffffff"
-                                title="会员中心"
-                                leftIconType="chevron-left"
-                            />
-                        </View>
-                    </View>
-                </View>
+
                 {viewDom}
                 <Vipleve
-                    level= {this.state.level}
-                    vipType= {Info.vipType}
-                    upgradepoints= {Info.upgradepoints}
-                    onChangeLevel= {this.changeLevel.bind(this)}
+                    level={this.state.level}
+                    vipType={Info.vipType}
+                    upgradepoints={upgradepoints}
+                    onChangeLevel={this.changeLevel.bind(this)}
                 />
                 <Vipequities level={this.state.level} />
                 <View className="center-btn">
-                    <Button onClick={() => this.onPayVip(Info.vipType)}>立即支付{ price(this.state.level) }元</Button>
+                    <Button onClick={() => this.onPayVip(['expVip', 'enjoyVip', 'excVip'][this.state.level])}>立即支付{price(this.state.level)}元</Button>
                 </View>
             </View>
-        ); 
+        );
     }
 }

@@ -1,7 +1,7 @@
 import { Image, Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtList, AtListItem } from "taro-ui";
+import { AtList, AtListItem, AtBadge } from "taro-ui";
 import Imgs from '../../../img';
 import { User } from '../../../store';
 import './index.less';
@@ -46,8 +46,7 @@ export default class extends Component {
     Taro.navigateTo({ url: `/pages/order/record/index?key=${index}` })
   }
   onClickEquity() {
-    console.log("aaa")
-    Taro.navigateTo({ url: "/pages/equity/index?key=" })
+    Taro.navigateTo({ url: "/pages/user/center/index" })
   }
   previewImage() {
     Taro.previewImage({
@@ -66,39 +65,60 @@ export default class extends Component {
           <View className="header-left">
             <Image className="left-img" src={Info.avatarUrl} mode="aspectFit" />
           </View>
-          <View className="header-right">
-            <View className="right-name">{Info.nickName}</View>
-            <View className="right-img">
-              <Image onClick={()=>{
-               return Taro.reLaunch({ url: "/pages/user/center/index" })
-              }} src={Imgs[Info.vipType]} />
+          <View className="header-center">
+            <View className="center-name">{Info.nickName}</View>
+            <View className="center-img">
+              <Image onClick={this.onClickEquity.bind(this)} src={Imgs[Info.vipType]} />
             </View>
-            <View className="right-time">{Info.vipExpireTimeStr} <Text>到期</Text></View>
+            <View className="center-time">{Info.vipExpireTimeStr} <Text>到期</Text></View>
+          </View>
+          <View className="header-right">
+            <Image src={Imgs.VipCenter}  onClick={this.onClickEquity.bind(this)} />
+            {/* {process.env.NODE_ENV === 'development' ? <Image className="tab-img" src={Imgs.tabImg} onClick={this.onClickEquity.bind(this)} /> : null} */}
           </View>
         </View>
+        <View className="order-layer">
+          <View className="order-my" onClick={this.onClickRecord.bind(this, 0)} >我的订单</View>
+          <View className="order-full" onClick={this.onClickRecord.bind(this, 0)} >查看全部订单 ></View>
+        </View>
         <View className="core-tab">
-          {process.env.NODE_ENV === 'development' ? <Image className="tab-img" src={Imgs.tabImg} onClick={this.onClickEquity.bind(this)} /> : null}
           <View className="tab-list">
-            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 0)}>全部订单</View>
-            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>待付款</View>
-            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 2)}>待发货</View>
-            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 3)}>已发货</View>
-            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 4)}>已完成</View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>
+              <View>
+                <Image className="icon-obligation" src={Imgs.obligation} />  
+              </View>
+              <View className="tab-label">待付款</View>
+            </View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 2)}>
+              <View>
+                {/* <AtBadge dot> */}
+                  <Image className="icon-overhang" src={Imgs.overhang} />  
+                {/* </AtBadge> */}
+              </View>
+              <View className="tab-label">待发货</View>
+            </View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 3)}>
+              <View>
+                <Image className="icon-receiving" src={Imgs.WaitReceiving} />  
+              </View>
+              <View className="tab-label">待收货</View>
+            </View>
+            <View className="tab-txt" onClick={this.onClickRecord.bind(this, 4)}>
+              <View>
+                <Image className="icon-return" src={Imgs.SalesReturn} />  
+              </View>
+              <View className="tab-label">退换货</View>
+            </View>
           </View>
         </View>
         <Invitation />
         <View className="core-list">
           <AtList hasBorder={false}>
-            <AtListItem title='卡劵' arrow='right' hasBorder={false} onClick={this.onClickCard.bind(this)} />
+            <AtListItem title='我的卡劵' arrow='right' hasBorder={false} onClick={this.onClickCard.bind(this)} />
             <AtListItem title='收货地址' arrow='right' hasBorder={false} onClick={this.onClickAddress.bind(this)} />
             <AtListItem title='账户安全' arrow='right' hasBorder={false} onClick={this.onClickSecurity.bind(this)} />
+            <AtListItem title='联系客服' arrow='right' hasBorder={false} onClick={this.previewImage.bind(this)} />
           </AtList>
-        </View>
-        <View className="core-code">
-          <Image className="code-img" src={Imgs.Code} onClick={this.previewImage.bind(this)} />
-          <View className="code-txt">
-            <Image className="txt-img" src={Imgs.KF} />联系客服
-        </View>
         </View>
       </View>
     )

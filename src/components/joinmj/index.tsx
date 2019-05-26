@@ -1,8 +1,8 @@
-import { Image, Navigator, View, Text, Button } from '@tarojs/components';
+import { Image, View, Text } from '@tarojs/components';
 import Taro, { Component } from '@tarojs/taro';
 import Imgs from '../../img';
 import './index.less';
-export default class extends Component{
+export default class extends Component<any, any>{
     render() {
         return (
             <View className="joinmj">

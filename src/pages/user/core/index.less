@@ -6,8 +6,8 @@
     box-sizing: border-box;
     .core-header{
         display: flex;
-        justify-content: flex-start;
         align-items: center;
+        justify-content: space-between;
         padding-left: 10px;
         .header-left{
             width: 160px;
@@ -22,15 +22,16 @@
                 height: 100%;
             }
         }
-        .header-right{
-            .right-name{
+        .header-center{
+            flex: auto;
+            .center-name{
                 font-size:36px;
                 font-family:Arial;
                 font-weight:bold;
                 color:rgba(10,10,10,1);
                 padding-bottom: 10px;
             }
-            .right-img{
+            .center-img{
                 width: 140px;
                 height: 40px;
                 padding-bottom: 5px;
@@ -39,7 +40,7 @@
                     height: 100%;
                 }
             }
-            .right-time{
+            .center-time{
                 font-size:20px;
                 font-family:Arial;
                 font-weight:400;
@@ -49,9 +50,32 @@
                 }
             }
         }
+        .header-right{
+            // border: 1px dashed black;
+            height: 156px;
+            image{
+                width:226px;
+                height: 156px;
+            }
+        }
+    }
+    .order-layer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 25px 0;
+        .order-my {
+            font-size: 32px;
+            font-weight: 600;
+            color:rgba(10,10,10,1);
+        }
+        .order-full {
+            font-size: 24px;
+            color: rgba(153,153,153,1);
+            padding-right:42px;
+        }
     }
     .core-tab{
-        margin-top: 54px;
         position: relative;
         width: 100%;
         height: 122px;
@@ -67,26 +91,47 @@
             width: 100%;
             height: 100%;
             display: flex;
-            justify-content: flex-start;
+            justify-content:space-around;
             align-items: center;
-            background-image: url(../../../img/img27.png);
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            z-index: 99;
         }
         .tab-txt{
             font-size:28px;
             font-family:Arial;
             font-weight:400;
-            color:rgba(255,255,255,1);
-            padding-left: 20px;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            .icon-obligation {
+                width: 54px;
+                height: 46px
+            }
+            .icon-overhang {
+                width: 53px;
+                height: 47px;
+            }
+            .icon-receiving {
+                width: 53px;
+                height: 53px;
+            }
+            .icon-return {
+                width: 47px;
+                height: 51px;
+            }
+            .tab-label {
+                margin-top: 13px;
+            }
         }
+        
     }
   
     .core-list{
         width: 100%;
+        .at-list__item {
+            padding: 24px 0px;
+        }
         .item-content__info-title{
-            font-size:36px;
+            font-size:32px;
             font-family:Arial;
             font-weight:bold;
             color:rgba(10,10,10,1);
@@ -126,7 +171,9 @@
     width: 100%;
     margin-top: 28px;
     .invitation-title{
-        .font-title()
+        .font-title();
+        font-size: 32px;
+        font-weight: 600;
     }
     .invitation-updata{
         display: flex;

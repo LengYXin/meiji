@@ -26,6 +26,11 @@ import vipGift from './img/vipGift.png';
 import IconTag from './img/icon-tag.png';
 import Gj from "./img/sale/gj.png";
 import Right from "./img/user/right.png";
+import VipCenter from './img/vipCenter.png';
+import obligation from './img/obligation.png';
+import overhang from './img/overhang.png';
+import SalesReturn from './img/return.png';
+import WaitReceiving from './img/waitReceiving.png';
 
 export default {
     /** 二维码 */
@@ -80,5 +85,15 @@ export default {
     /** vip礼物图标 */
     vipGift,
     /**Icon 标签 */
-    IconTag
+    IconTag,
+    /**vip中心图片-我的 */
+    VipCenter,
+    /**待付款-我的 */
+    obligation,
+    /**待发货-我的 */
+    overhang,
+    /**待收货-我的 */
+    WaitReceiving,
+    /**退换货-我的 */
+    SalesReturn,
 };

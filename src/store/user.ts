@@ -88,7 +88,7 @@ class UserMobx {
             Address.dataSource.getPagingData()
             // return Taro.reLaunch({ url: "/pages/order/create/index?key=ME1550762437785" })
             if (this.Info.vipType === "nonVip") {
-                return Taro.reLaunch({ url: "/pages/register/Invitation/index" })
+                return Taro.reLaunch({ url: "/pages/user/center/index?key=0" })
             } else {
                 Taro.switchTab({ url: "/pages/home/index" });
             }
@@ -116,6 +116,7 @@ class UserMobx {
     * 微信登陆
     */
     async onWxLogin() {
+        // return 
         if (this.isWxLogin) {
             return
         }
