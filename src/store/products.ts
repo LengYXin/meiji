@@ -267,8 +267,8 @@ class ProductsMobx {
             if (res.isSuccess && res.data.list.length > 0) {
                 this.firstLoading = false;
                 this.onPush(res.data.list);
-                res = fnres();
-                this.onPush(res.data.list);
+                // res = fnres();
+                // this.onPush(res.data.list);
                 // 当前页码
                 this.newDataPage = res.data.page;
                 this.newPageCount = res.data.pageCount;

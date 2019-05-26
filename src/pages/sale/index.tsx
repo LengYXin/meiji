@@ -69,7 +69,6 @@ export default class extends Component {
     render() {
         const dataSource = toJS(Products.dataSource);
         const loadingVis = Products.PagingLoading;
-        console.log("预售："+ JSON.stringify(dataSource));
         return (
             <View className="index">
                 {dataSource.map(data => {
