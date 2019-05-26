@@ -25,12 +25,16 @@ export default class extends Component<{ data: any }, any> {
 
         }
     }
+    componentDidMount() {
+        console.log(JSON.stringify(this.props.data))
+    }
     render() {
         // if (this.props.data) {
         //     return
         // }
         const products = { ...this.props.data };
         if (!products.id) {
+            console.log("空白页");
             return <View></View>
         }
         const price = Products.toPrice(products.price);

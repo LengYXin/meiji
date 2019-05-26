@@ -49,7 +49,11 @@ export default class extends Component{
             <View className="equities-body">
                 <View className="caption">
                     <Text className="caption-left">会员权益</Text>
-                    <Text className="caption-right">查看详细权益 > </Text>
+                    <Text className="caption-right" onClick={()=>{
+                            Taro.navigateBack();
+                        }
+
+                    }>查看详细权益 > </Text>
                 </View>
                 <View className="item-container">
                     {this.state.data.map((item, index)=>{
