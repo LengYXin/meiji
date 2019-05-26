@@ -116,7 +116,7 @@ class UserMobx {
     * 微信登陆
     */
     async onWxLogin() {
-        // return
+        // return 
         if (this.isWxLogin) {
             return
         }

@@ -27,7 +27,7 @@ export default class Center extends Component {
 
     componentWillReact() { }
     componentDidShow() {
-        const key = get(this.$router, 'params.key', '')
+        const key = get(this.$router, 'params.key', 1)
         this.setState({ pageType: parseInt(key) })
     }
     componentDidMount() { }
@@ -38,9 +38,9 @@ export default class Center extends Component {
         // Taro.switchTab({ url: "/pages/home/index" })
         // console.log(this.state)
     }
-    searchChange = value => {
+    searchChange = event => {
         this.setState({
-            invitationCode: value
+            invitationCode: event.target.value
         });
     };
 
@@ -68,9 +68,18 @@ export default class Center extends Component {
             } else if (vipType === 'enjoyVip') {
                 ponint = 4000 - parseInt(Info.upgradepoints);
             }
+            if (ponint < 0) {
+                ponint = 0
+            }
             return ponint;
         }
-        let percent = parseInt(Info.upgradepoints) / 4000;
+        const upgradepoints = parseInt(Info.upgradepoints);
+        let percent = 0
+        if (upgradepoints > 1000) {
+            percent = 50 + (upgradepoints - 1000) / 3000 * 100;
+        } else {
+            percent = upgradepoints / 1000 * 100;
+        }
         let price = function (level) {
             switch (level) {
                 case 0:
@@ -142,12 +151,12 @@ export default class Center extends Component {
                 <Vipleve
                     level={this.state.level}
                     vipType={Info.vipType}
-                    upgradepoints={Info.upgradepoints}
+                    upgradepoints={upgradepoints}
                     onChangeLevel={this.changeLevel.bind(this)}
                 />
                 <Vipequities level={this.state.level} />
                 <View className="center-btn">
-                    <Button onClick={() => this.onPayVip(this.state.pageType === 0 ? 'expVip' : Info.vipType)}>立即支付{price(this.state.level)}元</Button>
+                    <Button onClick={() => this.onPayVip(['expVip', 'enjoyVip', 'excVip'][this.state.level])}>立即支付{price(this.state.level)}元</Button>
                 </View>
             </View>
         );

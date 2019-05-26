@@ -46,7 +46,7 @@ export default class extends Component {
     Taro.navigateTo({ url: `/pages/order/record/index?key=${index}` })
   }
   onClickEquity() {
-    Taro.navigateTo({ url: "/pages/equity/index?key=" })
+    Taro.navigateTo({ url: "/pages/user/center/index" })
   }
   previewImage() {
     Taro.previewImage({
@@ -68,9 +68,7 @@ export default class extends Component {
           <View className="header-center">
             <View className="center-name">{Info.nickName}</View>
             <View className="center-img">
-              <Image onClick={()=>{
-               return Taro.navigateTo({ url: "/pages/user/center/index" })
-              }} src={Imgs[Info.vipType]} />
+              <Image onClick={this.onClickEquity.bind(this)} src={Imgs[Info.vipType]} />
             </View>
             <View className="center-time">{Info.vipExpireTimeStr} <Text>到期</Text></View>
           </View>
@@ -93,9 +91,9 @@ export default class extends Component {
             </View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 2)}>
               <View>
-                <AtBadge dot>
+                {/* <AtBadge dot> */}
                   <Image className="icon-overhang" src={Imgs.overhang} />  
-                </AtBadge>
+                {/* </AtBadge> */}
               </View>
               <View className="tab-label">待发货</View>
             </View>

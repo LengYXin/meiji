@@ -23,7 +23,7 @@ export default class Viplevel extends Component<any, any>{
     }
     setLevel = (index) => {
         let flag = false;
-        if (this.state.vipType === 'expVip') {
+        if (this.state.vipType === 'expVip' && index < 2) {
             if (this.state.upgradepoints < 1000 || this.state.upgradepoints === 1000 && index > 1) {
                 return;
             } else {

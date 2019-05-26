@@ -91,7 +91,7 @@ export default class extends Component {
         <Joinmj />
         <Vipequities level={0}/>
         <View className="view-fixed-bottom">
-          <Button openType="getUserInfo" onClick={this.onClick.bind(this)} >开启味觉之旅</Button>
+          <Button openType="getUserInfo" onClick={this.onClick.bind(this)} >¥20/月 立即加入体验VIP</Button>
         </View>
       </View>
     )
