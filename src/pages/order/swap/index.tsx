@@ -2,7 +2,7 @@ import { Button, Image, Text, View, Input } from "@tarojs/components";
 import { observer } from "@tarojs/mobx";
 import Taro, { Component, Config } from "@tarojs/taro";
 import { toJS } from "mobx";
-import { AtImagePicker, AtTextarea, AtButton } from "taro-ui";
+import { AtImagePicker, AtTextarea, AtButton, AtList, AtListItem } from "taro-ui";
 import Imgs from "../../../img";
 import { Address, Orders, Products, User, EnumVipType } from "../../../store";
 import "./index.less";
@@ -24,17 +24,17 @@ export default class extends Component {
         value: "",
         loading: false
     };
-    componentWillMount() {}
+    componentWillMount() { }
 
-    componentWillReact() {}
+    componentWillReact() { }
 
-    componentDidMount() {}
+    componentDidMount() { }
 
-    componentWillUnmount() {}
+    componentWillUnmount() { }
 
-    componentDidShow() {}
+    componentDidShow() { }
 
-    componentDidHide() {}
+    componentDidHide() { }
 
     onChange(files) {
         this.setState({
@@ -63,8 +63,11 @@ export default class extends Component {
                     </View>
                 </View>
                 <View className="reason">
-                    <View className="reason-left item-title">退款原因</View>
-                    <View className="reason-right">></View>
+                    {/* <View className="reason-left item-title">退款原因</View>
+                    <View className="reason-right">></View> */}
+                    <AtList hasBorder={false}>
+                        <AtListItem title='退款原因' arrow='right' onClick={()=>Taro.navigateTo({url:"/pages/order/swapType/index"})} hasBorder={false} />
+                    </AtList>
                 </View>
                 <View className="description">
                     <View className="item-title">退款说明</View>

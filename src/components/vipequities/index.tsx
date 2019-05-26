@@ -45,11 +45,7 @@ export default class extends Component<any, any> {
             <View className="equities-body">
                 <View className="caption" onClick={() => Taro.navigateTo({ url: "/pages/equityDetails/index" })}>
                     <Text className="caption-left">会员权益</Text>
-                    <Text className="caption-right" onClick={()=>{
-                            Taro.navigateBack();
-                        }
-
-                    }>查看详细权益 > </Text>
+                    <Text className="caption-right" >查看详细权益 > </Text>
                 </View>
                 <View className="item-container">
                     {this.state.data.map((item, index) => {

@@ -35,6 +35,7 @@ class App extends Component {
             "pages/other/payment/index", //支付提示
             "pages/user/center/index", // 会员中心
             "pages/order/swap/index", // 退换款
+            "pages/order/swapType/index", // 退换款
             "pages/equityDetails/index", //详细权益
         ],
         window: {

@@ -60,6 +60,11 @@ export default class extends Component<{ data: any }, any> {
             case 'Confirm':
                 Orders.onConfirm(data.orderNO)
                 break;
+            case 'refund':
+                Taro.navigateTo({ url: "/pages/order/swap/index?key=" + data.orderNO })
+                break;
+            case 'cancelRefund':
+                break;
         }
     }
     onCopy(code) {
@@ -130,6 +135,8 @@ export default class extends Component<{ data: any }, any> {
                         {orderStatus == "toBeDelivered" && <Button onClick={this.onActOrder.bind(this, 'text')}>催一下</Button>}
                         {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'wuliu')}>查看物流</Button>}
                         {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'Confirm')}>确认收货</Button>}
+                        {true && <Button onClick={this.onActOrder.bind(this, 'refund')}>退款</Button>}
+                        {true && <Button onClick={this.onActOrder.bind(this, 'cancelRefund')}>取消退款</Button>}
                     </View>
                 </View>
             </View>

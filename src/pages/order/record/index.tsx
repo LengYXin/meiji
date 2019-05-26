@@ -50,14 +50,15 @@ export default class extends Component<{ key: any }, any>{
   ]
   componentDidShow() {
     Taro.pageScrollTo({ scrollTop: 0 })
-    Orders.dataSource.onReset({}, this.urls[get(this.$router, 'params.key', 0)])
+    Orders.dataSource.onReset({}, this.urls[this.state.current])
     Orders.dataSource.getPagingData(true, true)
   }
-
+  getKey() {
+    return parseInt(get(this.$router, 'params.key', 0))
+  }
   componentDidHide() { }
   state = {
-    current: toInteger(get(this.$router, 'params.key', 0))
-
+    current: this.getKey()
   }
   //  待付款            待收货            代发货   已完成       关闭   取消      用户取消
   // pendingPayment, toBeDelivered, shipped, completed, close, cancel, cancelByUser
@@ -74,7 +75,7 @@ export default class extends Component<{ key: any }, any>{
     const loadingVis = Orders.dataSource.PagingLoading;
     return (
       <View className="record">
-        <AtTabs current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
+        <AtTabs  current={this.state.current} tabList={tabList} onClick={this.handleClick.bind(this)}>
         </AtTabs>
         {PagingData.map(data => {
           return <Card data={data} key={data.orderNO} />

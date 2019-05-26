@@ -1,7 +1,7 @@
 import { Image, Text, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtList, AtListItem, AtBadge } from "taro-ui";
+import { AtList, AtListItem, AtBadge, AtCheckbox } from "taro-ui";
 import Imgs from '../../../img';
 import { User } from '../../../store';
 import './index.less';
@@ -73,7 +73,7 @@ export default class extends Component {
             <View className="center-time">{Info.vipExpireTimeStr} <Text>到期</Text></View>
           </View>
           <View className="header-right">
-            <Image src={Imgs.VipCenter}  onClick={this.onClickEquity.bind(this)} />
+            <Image src={Imgs.VipCenter} onClick={this.onClickEquity.bind(this)} />
             {/* {process.env.NODE_ENV === 'development' ? <Image className="tab-img" src={Imgs.tabImg} onClick={this.onClickEquity.bind(this)} /> : null} */}
           </View>
         </View>
@@ -85,27 +85,27 @@ export default class extends Component {
           <View className="tab-list">
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>
               <View>
-                <Image className="icon-obligation" src={Imgs.obligation} />  
+                <Image className="icon-obligation" src={Imgs.obligation} />
               </View>
               <View className="tab-label">待付款</View>
             </View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 2)}>
               <View>
                 {/* <AtBadge dot> */}
-                  <Image className="icon-overhang" src={Imgs.overhang} />  
+                <Image className="icon-overhang" src={Imgs.overhang} />
                 {/* </AtBadge> */}
               </View>
               <View className="tab-label">待发货</View>
             </View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 3)}>
               <View>
-                <Image className="icon-receiving" src={Imgs.WaitReceiving} />  
+                <Image className="icon-receiving" src={Imgs.WaitReceiving} />
               </View>
               <View className="tab-label">待收货</View>
             </View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 4)}>
               <View>
-                <Image className="icon-return" src={Imgs.SalesReturn} />  
+                <Image className="icon-return" src={Imgs.SalesReturn} />
               </View>
               <View className="tab-label">退换货</View>
             </View>
