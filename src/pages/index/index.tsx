@@ -5,6 +5,9 @@ import head from 'lodash/head';
 import { toJS } from 'mobx';
 import Equity from '../../components/equity';
 import NiuPai from '../../components/niupai';
+import Joinmj from '../../components/joinmj';
+import Vipequities from '../../components/vipequities';
+
 import Imgs from "../../img";
 import { Products, User } from '../../store';
 import './index.less';
@@ -47,7 +50,7 @@ export default class extends Component {
     })
   }
   async onClick(e) {
-   // User.onAuth()
+    // User.onAuth()
     await User.onGetAuthSetting()
     console.log(User.isUserInfoAuto, User.AutoData.access_token)
     if (User.isUserInfoAuto) {
@@ -74,7 +77,7 @@ export default class extends Component {
           <View className="font-lable">产地：{products.productOrigin}</View>
           <View className="font-text">{products.summary}</View>
         </View>
-        <View className="info">
+        {/* <View className="info">
           <NiuPai />
           <Equity />
           <View className="code-body" onClick={this.previewImage.bind(this)}>
@@ -84,8 +87,9 @@ export default class extends Component {
               联系客服
             </View>
           </View>
-        </View>
-
+        </View> */}
+        <Joinmj />
+        <Vipequities level={0}/>
         <View className="view-fixed-bottom">
           <Button openType="getUserInfo" onClick={this.onClick.bind(this)} >开启味觉之旅</Button>
         </View>

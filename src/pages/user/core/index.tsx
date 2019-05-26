@@ -70,7 +70,7 @@ export default class extends Component {
             <View className="right-name">{Info.nickName}</View>
             <View className="right-img">
               <Image onClick={()=>{
-               return Taro.reLaunch({ url: "/pages/user/center/index" })
+               return Taro.navigateTo({ url: "/pages/user/center/index" })
               }} src={Imgs[Info.vipType]} />
             </View>
             <View className="right-time">{Info.vipExpireTimeStr} <Text>到期</Text></View>
