@@ -46,7 +46,7 @@ export default class extends Component<{ key: any }, any>{
     '/api/v1/Orders/Status/pendingPayment',
     '/api/v1/Orders/Status/toBeDelivered',
     '/api/v1/Orders/Status/shipped',
-    '/api/v1/Orders/Status/completed',
+    '/api/v1/OrderBack',
   ]
   componentDidShow() {
     Taro.pageScrollTo({ scrollTop: 0 })
@@ -70,7 +70,7 @@ export default class extends Component<{ key: any }, any>{
     Orders.dataSource.getPagingData(true, true)
   }
   render() {
-    const tabList = [{ title: '全部订单' }, { title: '待付款' }, { title: '待发货' }, { title: '待收货' }, { title: '已完成' }];
+    const tabList = [{ title: '全部订单' }, { title: '待付款' }, { title: '待发货' }, { title: '待收货' }, { title: '退换货' }];
     const PagingData = [...Orders.dataSource.PagingData];
     const loadingVis = Orders.dataSource.PagingLoading;
     return (

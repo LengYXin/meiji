@@ -9,7 +9,7 @@ import Imgs from '../../img';
 
 import './index.less';
 import Time from './time';
-export default class extends Component<{ data: any }, any> {
+export default class extends Component<{ data: any, hideShop?: boolean }, any> {
     onToCreateOrder() {
         try {
             const productCode = get(this.props.data, 'productCode')
@@ -25,8 +25,8 @@ export default class extends Component<{ data: any }, any> {
 
         }
     }
-    componentDidMount() {
-        console.log(JSON.stringify(this.props.data))
+    componentDidShow() {
+        // console.log("详情", this.props.data)
     }
     render() {
         // if (this.props.data) {
@@ -34,9 +34,9 @@ export default class extends Component<{ data: any }, any> {
         // }
         const products = { ...this.props.data };
         if (!products.id) {
-            console.log("空白页");
             return <View></View>
         }
+        console.log("TCL: extends -> render -> products", products)
         const price = Products.toPrice(products.price);
         const pictures = [...products.pictures];
         const imghead = head(pictures);
@@ -75,7 +75,7 @@ export default class extends Component<{ data: any }, any> {
                         mode='widthFix' />
                 })}
                 <View className="div-ider"></View>
-                <View className="home-shop">
+                {this.props.hideShop ? <View></View> : <View className="home-shop">
                     <View className="shop-header">
                         <View className="shop-title">
                             {products.productName}
@@ -84,7 +84,7 @@ export default class extends Component<{ data: any }, any> {
                             className='shop-img'
                             src={imgSrc}
                             mode='widthFix' /></View>
-                    <View className="shop-address">产地：{products.productOrigin}</View>
+                    <View className="shop-address">产地：{products.productOrigin} <Text style={{ marginLeft: '10px' }}>{products.priceRemark}</Text></View>
                     <View className="shop-progress">
                         <View className='proportion'>
                             <AtProgress className='proportion-progress' percent={Proportion} color='#DBC389' isHidePercent />
@@ -105,7 +105,7 @@ export default class extends Component<{ data: any }, any> {
                             </View>
                         </View>
                     </View>
-                </View>
+                </View>}
                 <View className="div-ider"></View>
             </View>
         )

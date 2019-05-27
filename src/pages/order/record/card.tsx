@@ -64,6 +64,7 @@ export default class extends Component<{ data: any }, any> {
                 Taro.navigateTo({ url: "/pages/order/swap/index?key=" + data.orderNO })
                 break;
             case 'cancelRefund':
+                Orders.onOrderBackCancel(data.orderNO)
                 break;
         }
     }
@@ -82,7 +83,9 @@ export default class extends Component<{ data: any }, any> {
         }
         const price = Products.toPrice(data.amount);
         const orderStatus = data.orderStatus;
-        let stateText = '已完成';
+        const isCanBack = data.isCanBack === 'YES';
+
+        let stateText = '';
         //  待付款             待发货           待收货   已完成       关闭   取消      用户取消
         // pendingPayment, toBeDelivered, shipped, completed, close, cancel, cancelByUser
         switch (orderStatus) {
@@ -100,6 +103,9 @@ export default class extends Component<{ data: any }, any> {
                 break;
             case 'close':
                 stateText = '已关闭'
+                break;
+            case 'returnOrder':
+                stateText = '退换货'
                 break;
             case 'cancel':
             case 'cancelByUser':
@@ -135,8 +141,8 @@ export default class extends Component<{ data: any }, any> {
                         {orderStatus == "toBeDelivered" && <Button onClick={this.onActOrder.bind(this, 'text')}>催一下</Button>}
                         {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'wuliu')}>查看物流</Button>}
                         {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'Confirm')}>确认收货</Button>}
-                        {true && <Button onClick={this.onActOrder.bind(this, 'refund')}>退款</Button>}
-                        {true && <Button onClick={this.onActOrder.bind(this, 'cancelRefund')}>取消退款</Button>}
+                        {(orderStatus == "completed" && isCanBack) && <Button onClick={this.onActOrder.bind(this, 'refund')}>退款</Button>}
+                        {(orderStatus == "returnOrder" && isCanBack) && <Button onClick={this.onActOrder.bind(this, 'cancelRefund')}>取消退款</Button>}
                     </View>
                 </View>
             </View>

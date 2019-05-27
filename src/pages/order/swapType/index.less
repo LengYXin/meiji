@@ -5,9 +5,7 @@
     top: 0;
     left: 0;
     background-color: #fff;
-}
 
-.swap-type-checkbox {
     .at-checkbox::before {
         border-top: 0;
     }
@@ -16,21 +14,41 @@
         border-bottom: 0;
     }
 
-    .at-accordion__content::after,
-    .at-checkbox__option+.at-checkbox__option .at-checkbox__option-wrap::after {
-        border-top-width: 0;
-    }
+    .swap-type-checkbox {
+        padding: 0 52rpx 0 76rpx;
 
-    .at-checkbox__option-cnt {
-        flex-direction: row-reverse;
-        justify-content: space-between;
-    }
+        .at-checkbox__option {
+            padding-left: 0;
+        }
 
-    .at-checkbox__option--selected .at-checkbox__icon-cnt {
-        background-color: #dbc389;
-    }
+        .at-accordion__content::after,
+        .at-checkbox__option+.at-checkbox__option .at-checkbox__option-wrap::after {
+            border-top-width: 0;
+        }
 
-    .at-checkbox__title {
-        font-size: 28rpx;
+        .at-checkbox__option-cnt {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+
+        .at-checkbox__option--selected .at-checkbox__icon-cnt {
+            background-color: #dbc389;
+        }
+
+        .at-checkbox__title {
+            font-size: 28rpx;
+            font-weight: 400;
+        }
+
+        .at-checkbox__icon-cnt {
+            width: 30rpx;
+            min-width: 30rpx;
+            height: 30rpx;
+            font-size: 20rpx;
+            margin-right: 0;
+            border: 1px solid rgba(97, 144, 232, 0.2);
+            border-radius: 50%;
+        }
     }
 }

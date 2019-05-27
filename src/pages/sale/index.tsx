@@ -1,12 +1,11 @@
-import { Image, View, Text } from "@tarojs/components";
+import { View } from "@tarojs/components";
 import { observer } from "@tarojs/mobx";
 import Taro, { Component, Config } from "@tarojs/taro";
-import get from "lodash/get";
 import { toJS } from "mobx";
-import { Products } from "../..//store";
-import "./index.less";
+import { Products, ProductsNew } from "../..//store";
 import Loading from "../../components/loading";
-import Imgs from "../../img";
+import "./index.less";
+import Item from "./item";
 @observer
 export default class extends Component {
     /**
@@ -24,17 +23,19 @@ export default class extends Component {
     };
     // 下拉刷新
     async onPullDownRefresh() {
-        await Products.onOldData();
+        // await Products.onOldData();
+        await ProductsNew.OldData.getPagingData();
         Taro.stopPullDownRefresh();
     }
     // 滚动加载
     onReachBottom() {
-        Products.onNewData();
+        // Products.onNewData();
+        ProductsNew.NewData.getPagingData()
     }
 
-    componentWillMount() {}
+    componentWillMount() { }
 
-    componentWillReact() {}
+    componentWillReact() { }
 
     componentDidMount() {
         Taro.showShareMenu({
@@ -42,12 +43,14 @@ export default class extends Component {
         });
         // Products.onNewData()
         Taro.pageScrollTo({ scrollTop: 100, duration: 0 });
+
     }
 
-    componentWillUnmount() {}
+    componentWillUnmount() { }
 
     componentDidShow() {
-        Products.onNewData(true);
+        // Products.onNewData(true);
+        ProductsNew.NewData.getPagingData(true)
     }
     componentDidHide() {
         Products.onRemove();
@@ -67,62 +70,17 @@ export default class extends Component {
     }
     // Taro.pageScrollTo({scrollTop: 100, duration: 0})
     render() {
-        const dataSource = toJS(Products.dataSource);
-        const loadingVis = Products.PagingLoading;
+        const dataSource = toJS(ProductsNew.NewData.PagingData);
+        const dataSourceOld = toJS(ProductsNew.OldData.PagingData);
+        const loadingVis = ProductsNew.NewData.PagingLoading;
+        console.log("TCL: extends -> render -> dataSource", dataSourceOld)
         return (
             <View className="index">
+                {dataSourceOld.map(data => {
+                    return (<Item data={data} key={data.timeLineName}/>);
+                })}
                 {dataSource.map(data => {
-                    return (
-                        <View key={data.key}>
-                            <View className="time-title">
-                                <Image src={Imgs.Time} mode="aspectFit" />
-                                <View className="title-box">
-                                    <Text>{data.title}</Text>
-                                    <Image
-                                        src={
-                                            this.isSeason(data.start, data.end)
-                                                ? Imgs.Gj
-                                                : Imgs.ProSale
-                                        }
-                                        mode="aspectFit"
-                                    />
-                                </View>
-                            </View>
-                            <View className="products-box">
-                                {data.list.map(item => {
-                                    return (
-                                        <View
-                                            className="products-items"
-                                            key={item.id}
-                                            onClick={this.onToDetails.bind(
-                                                this,
-                                                item.productCode
-                                            )}
-                                        >
-                                            <Image
-                                                // src={get(item.pictures, 0, "")}
-                                                src={item.pictures}
-                                                mode="widthFix"
-                                            />
-                                            <View className="title">
-                                                {item.productName}
-                                            </View>
-                                            <View className="info stock">
-                                                库存
-                                            </View>
-                                            {/* <Image src={Imgs.Lable} mode="aspectFit" />
-                                              <View className="title">{item.productName}</View>
-                                              <View className="cd">产地：{item.productOrigin}</View>
-                                              <View className="info">{item.summary}</View>
-                                              <View className="img">
-                                                <Image src={get(item.pictures, 0, '')} mode="widthFix" />
-                                              </View> */}
-                                        </View>
-                                    );
-                                })}
-                            </View>
-                        </View>
-                    );
+                    return (<Item data={data} key={data.timeLineName}/>);
                 })}
                 <Loading visible={loadingVis} />
             </View>

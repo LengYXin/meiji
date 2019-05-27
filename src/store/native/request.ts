@@ -59,8 +59,8 @@ export class WXRequestClass {
      * 上传文件
      * @param params 
      */
-    async uploadFile(params: uploadFile.Param) {
-        Taro.showLoading({ title: "上传中", mask: true })
+    async uploadFile(params: uploadFile.Param, mask = true) {
+        mask && Taro.showLoading({ title: "上传中", mask: true })
         params.header = {
             "Content-Type": "multipart/form-data"
             , ...params.header
@@ -68,8 +68,8 @@ export class WXRequestClass {
         params.formData = this.compatibleData({ ...params.formData })
         params.url = this.compatibleUrl(this.address, params.url);
         const uploadTask = await Taro.uploadFile(params)
-        Taro.hideLoading()
-        return uploadTask;
+        mask && Taro.hideLoading()
+        return JSON.parse(uploadTask.data);
     }
     /**
      * url 兼容处理 

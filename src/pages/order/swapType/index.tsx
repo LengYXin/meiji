@@ -1,7 +1,10 @@
-import { View } from "@tarojs/components";
+import { Image, Text, View } from "@tarojs/components";
 import { observer } from "@tarojs/mobx";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { AtCheckbox } from "taro-ui";
+import get from "lodash/get";
+import { AtButton, AtImagePicker, AtList, AtListItem, AtTextarea, AtCheckbox } from "taro-ui";
+import Imgs from "../../../img";
+import { Products, Orders } from '../../../store';
 import "./index.less";
 
 @observer
@@ -16,6 +19,9 @@ export default class extends Component<any, any> {
     config: Config = {
         navigationBarTitleText: "退换货"
     };
+    state = {
+        checkbox: Orders.swapType
+    }
     componentWillMount() { }
 
     componentWillReact() { }
@@ -27,39 +33,65 @@ export default class extends Component<any, any> {
     componentDidShow() { }
 
     componentDidHide() { }
-    state = {
-        checkedList: ["list1"]
-    };
-    handleChange(value) {
+
+    handleChange(checkbox) {
         this.setState({
-            checkedList: value
+            checkbox
         });
+        Orders.swapType = checkbox;
     }
     render() {
         const checkboxOption = [
             {
-                value: "list1",
-                label: "iPhone X"
+                value: "有异物",
+                label: "有异物"
+            },
+
+            {
+                value: "克重不足",
+                label: "克重不足"
             },
             {
-                value: "list2",
-                label: "HUAWEI P20"
+                value: "商品变质",
+                label: "商品变质"
             },
             {
-                value: "list3",
-                label: "OPPO Find X"
+                value: "口感不佳",
+                label: "口感不佳"
             },
             {
-                value: "list4",
-                label: "vivo NEX"
-            }
+                value: "成熟度过低",
+                label: "成熟度过低"
+            },
+
+            {
+                value: "收到商品与描述不否",
+                label: "收到商品与描述不否"
+            },
+            {
+                value: "商品破损",
+                label: "商品破损"
+            },
+
+            {
+                value: "商品错发/漏发",
+                label: "商品错发/漏发"
+            },
+            {
+                value: "错拍/多拍/不想要",
+                label: "错拍/多拍/不想要"
+            },
+            {
+                value: "包裹丢失",
+                label: "包裹丢失"
+            },
         ];
         const typelist = this.props.typelist || checkboxOption;
         return (
             <View className='swap-type'>
                 <AtCheckbox
                     options={typelist}
-                    selectedList={this.state.checkedList}
+                    selectedList={this.state.checkbox}
                     onChange={this.handleChange.bind(this)}
                     className='swap-type-checkbox'
                 />

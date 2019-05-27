@@ -1,10 +1,11 @@
-import { Button, Image, Text, View, Input } from "@tarojs/components";
+import { Image, Text, View } from "@tarojs/components";
 import { observer } from "@tarojs/mobx";
 import Taro, { Component, Config } from "@tarojs/taro";
-import { toJS } from "mobx";
-import { AtImagePicker, AtTextarea, AtButton, AtList, AtListItem } from "taro-ui";
+import get from "lodash/get";
+import { AtButton, AtImagePicker, AtList, AtListItem, AtTextarea } from "taro-ui";
 import Imgs from "../../../img";
-import { Address, Orders, Products, User, EnumVipType } from "../../../store";
+import { Products, Orders } from '../../../store';
+
 import "./index.less";
 
 @observer
@@ -30,13 +31,23 @@ export default class extends Component {
 
     componentDidMount() { }
 
-    componentWillUnmount() { }
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+        Orders.swapType = [];
+    }
 
-    componentDidShow() { }
-
+    componentDidShow() {
+        Orders.onDetails(this.onGetKey());
+        // console.log(key)
+    }
+    onGetKey() {
+        const key = get(this.$router, 'params.key');
+        return key
+    }
     componentDidHide() { }
 
-    onChange(files) {
+    onChange(files, operationType) {
+        console.log("TCL: extends -> onChange -> files", operationType, files)
         this.setState({
             files
         });
@@ -49,24 +60,40 @@ export default class extends Component {
             value: event.target.value
         });
     }
+    async onSubmit() {
+        // for (const file of this.state.files) {
+        //     console.log(file)
+        //     await 
+        // }
+        if (Orders.swapType.length <= 0) {
+            return Taro.showToast({ icon: "none", title: "请选择退款原因" })
+        }
+        Orders.onOrderBack({
+            "orderNO": this.onGetKey(),
+            "refundReason": Orders.swapType.join(","),
+            "refundRemark": this.state.value,
+            files: this.state.files
+        })
+    }
     render() {
         const { files, value, loading } = this.state;
+        const info = { ...Orders.OrderDetails };
         return (
             <View className="swap">
                 <View className="product-info">
-                    <Image src={Imgs.Right} mode="aspectFit" />
+                    <Image src={info.productImg} mode="aspectFit" />
                     <View className="info-ctx">
                         <View className="member">
-                            <Text>湖丰阳澄湖大闸蟹螃蟹</Text>
+                            <Text>{info.productName}</Text>
                         </View>
-                        <View className="maturity">产地：阳澄湖</View>
+                        <View className="maturity">产地：{info.productOrigin}</View>
                     </View>
                 </View>
                 <View className="reason">
                     {/* <View className="reason-left item-title">退款原因</View>
                     <View className="reason-right">></View> */}
                     <AtList hasBorder={false}>
-                        <AtListItem title='退款原因' arrow='right' onClick={()=>Taro.navigateTo({url:"/pages/order/swapType/index"})} hasBorder={false} />
+                        <AtListItem title='退款原因' arrow='right' onClick={() => Taro.navigateTo({ url: "/pages/order/swapType/index" })} hasBorder={false} />
                     </AtList>
                 </View>
                 <View className="description">
@@ -84,7 +111,8 @@ export default class extends Component {
                     <AtImagePicker
                         className="upload-imgpicker"
                         length={3}
-                        files={files}
+                        // multiple
+                        files={files as any}
                         onChange={this.onChange.bind(this)}
                     />
                 </View>
@@ -92,6 +120,7 @@ export default class extends Component {
                     className="but-bottom"
                     loading={loading}
                     type="primary"
+                    onClick={this.onSubmit.bind(this)}
                 >
                     提交
                 </AtButton>

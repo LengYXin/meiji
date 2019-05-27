@@ -15,7 +15,7 @@ export default class Center extends Component {
         backgroundTextStyle: "dark",
         navigationBarTitleText: "会员中心",
         navigationBarTextStyle: "white",
-        navigationBarBackgroundColor: "#130c0e"
+        navigationBarBackgroundColor: "#0a0a0a"
     };
     state = {
         invitationCode: "",
@@ -78,7 +78,7 @@ export default class Center extends Component {
         if (upgradepoints > 1000) {
             percent = 50 + (upgradepoints - 1000) / 3000 * 100;
         } else {
-            percent = upgradepoints / 1000 * 100;
+            percent = upgradepoints / 4000 * 100;
         }
         let price = function (level) {
             switch (level) {

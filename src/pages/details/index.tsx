@@ -57,9 +57,11 @@ export default class extends Component {
   }
   render() {
     const key = get(this.$router, 'params.key', '')
+    const canBuy = get(this.$router, 'params.canBuy', true)
+    const hideShop = canBuy === false || canBuy === "false";
     const products = toJS(Products.details)
     return (
-      <Details data={products} key={key} />
+      <Details data={products} hideShop={hideShop} key={key} />
     )
   }
 }

@@ -3,6 +3,7 @@ import { observable, runInAction } from 'mobx';
 import { WXRequest } from './native/request';
 import Paging from './paging';
 import isBoolean from 'lodash/isBoolean';
+import get from 'lodash/get'
 class OrdersMobx {
     constructor() {
 
@@ -16,6 +17,11 @@ class OrdersMobx {
      */
     @observable
     OrderInfo: any = {};
+    // 退款 订单详情
+    @observable
+    OrderDetails: any = {};
+    // 退款类型
+    swapType = [];
     async requestPayment(data) {
         try {
             const payRes = await Taro.requestPayment(data)
@@ -99,6 +105,75 @@ class OrdersMobx {
             this.onUpdate(orderNo, 'completed')
         }
         Taro.showToast({ title: res.isSuccess ? '确认成功' : '确认失败', icon: "none" })
+        return res.isSuccess
+    }
+    /**
+     * 退款
+     * @param  
+     */
+    async onOrderBack(orderBackDto) {
+        console.log("TCL: OrdersMobx -> onOrderBack -> orderBackDto", orderBackDto)
+        Taro.showLoading({ title: "加载中~", mask: true });
+        const files: any[] = [];
+        for (const file of orderBackDto.files) {
+            const resFile = await WXRequest.uploadFile({
+                url: "/api/v1/Files",
+                name: "files",
+                filePath: file.url
+            }, false);
+            if (resFile.code === 200) {
+                files.push(resFile.data)
+            }
+        }
+        const res = await WXRequest.request({
+            url: `/api/v1/OrderBack`, method: "POST", data: {
+                "orderNO": orderBackDto.orderNO,
+                "refundReason": orderBackDto.refundReason,
+                "refundRemark": orderBackDto.refundRemark,
+                "pic1": get(files, '[0]'),
+                "pic2": get(files, '[1]'),
+                "pic3": get(files, '[2]'),
+            }
+        });
+        if (res.isSuccess) {
+            // this.onUpdate(orderNo, 'completed')
+            await Taro.navigateBack()
+        }
+        Taro.showToast({ title: res.isSuccess ? '申请成功' : '申请失败', icon: "none" })
+        return res.isSuccess
+    }
+    /**
+    * 取消退款
+    * @param  
+    */
+    async onOrderBackCancel(orderNo) {
+        Taro.showLoading({ title: "加载中~", mask: true });
+        const res = await WXRequest.request({
+            url: `/api/v1/OrderBack/Cancel/${orderNo}`, method: "PUT"
+        });
+        if (res.isSuccess) {
+            this.onUpdate(orderNo, 'completed')
+        }
+        Taro.showToast({ title: res.isSuccess ? '取消成功' : '取消失败', icon: "none" })
+        return res.isSuccess
+    }
+    // /api/v1/Orders/{orderNO}
+    /**
+     * 详情
+     * @param orderNo 
+     */
+    async onDetails(orderNo) {
+        if (this.OrderDetails.orderNO === orderNo) {
+            return
+        }
+        Taro.showLoading({ title: "加载中~", mask: true })
+        const res = await WXRequest.request({ url: `/api/v1/Orders/${orderNo}` });
+        if (res.isSuccess) {
+            runInAction(() => {
+                this.OrderDetails = res.data;
+            })
+        }
+        Taro.hideLoading();
         return res.isSuccess
     }
 }

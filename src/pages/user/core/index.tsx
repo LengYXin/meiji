@@ -70,7 +70,7 @@ export default class extends Component {
             <View className="center-img">
               <Image onClick={this.onClickEquity.bind(this)} src={Imgs[Info.vipType]} />
             </View>
-            <View className="center-time">{Info.vipExpireTimeStr} <Text>到期</Text></View>
+            {/* <View className="center-time">{Info.vipExpireTimeStr} <Text>到期</Text></View> */}
           </View>
           <View className="header-right">
             <Image src={Imgs.VipCenter} onClick={this.onClickEquity.bind(this)} />
