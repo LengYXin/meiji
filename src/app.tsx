@@ -72,7 +72,9 @@ class App extends Component {
     };
 
     componentDidMount() {}
-    componentDidShow() {}
+    componentDidShow() {
+        User.onInit()
+    }
     componentDidHide() {}
 
     componentDidCatchError() {}

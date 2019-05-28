@@ -20,6 +20,9 @@ class UserMobx {
     constructor() {
     }
     async onInit() {
+        if (this.AutoData.token_type && this.Info.id) {
+            return
+        }
         Taro.showLoading({ title: "加载中...", mask: true })
         await this.onGetAuthSetting()
         await this.onWxLogin();
@@ -33,6 +36,7 @@ class UserMobx {
      * 用户信息
      */
     @observable Info = {
+        id: '',
         avatarUrl: '',
         nickName: '',
         gender: 0,
@@ -84,7 +88,7 @@ class UserMobx {
      * 页面跳转
      */
     onNavigate() {
-        if (this.AutoData.token_type) {
+        if (this.AutoData.token_type && this.Info.id) {
             Address.dataSource.getPagingData()
             // return Taro.reLaunch({ url: "/pages/order/create/index?key=ME1550762437785" })
             if (this.Info.vipType === "nonVip") {
@@ -104,7 +108,14 @@ class UserMobx {
         const setting = await Taro.getSetting();
         const isAutl = get(setting, 'authSetting["scope.userInfo"]');
         if (!isAutl) {
-            console.warn("没有用户授权")
+            const page = Taro.getCurrentPages()[0];
+            if (page) {
+                const route = page.route;
+                console.warn("没有用户授权", route)
+                if (route !== "pages/index/index") {
+                    Taro.reLaunch({ url: "/pages/index/index" })
+                }
+            }
         }
         runInAction(() => {
             this.isUserInfoAuto = isAutl;
@@ -145,32 +156,35 @@ class UserMobx {
      * 获取用户信息
      */
     async onGetUserInfo() {
-        console.log("onGetUserInfo", this.isGetUserInfo)
         if (this.isGetUserInfo) {
             return
         }
         this.isGetUserInfo = true;
         try {
-            // 获取微信用户信息
-            const WxAuto = await Taro.getUserInfo().then(x => JSON.parse(x.rawData));
-            //  设置用户信息
-            const UserInfo = await WXRequest.request({
-                url: "/api/v1/Accounts/userInfo", data: {
-                    header: WxAuto.avatarUrl,
-                    nickName: WxAuto.nickName,
-                    gender: WxAuto.gender
-                }, method: "PUT"
-            }).then(x => x.code == 200 && x.data);
-            runInAction(() => {
-                const info = { ...WxAuto, ...UserInfo };
-                info.vipExpireTimeStr = DateFormat(info.vipExpireTime, "yyyy.MM.dd");
-                this.Info = info// WxAuto
-                this.onGetInviteCode()
-                this.onGetCoupon()
-            })
+            // 已加载用户信息
+            if (!this.Info.id) {
+                // 获取微信用户信息
+                const WxAuto = await Taro.getUserInfo().then(x => JSON.parse(x.rawData));
+                //  设置用户信息
+                const UserInfo = await WXRequest.request({
+                    url: "/api/v1/Accounts/userInfo", data: {
+                        header: WxAuto.avatarUrl,
+                        nickName: WxAuto.nickName,
+                        gender: WxAuto.gender
+                    }, method: "PUT"
+                }).then(x => x.code == 200 && x.data);
+                runInAction(() => {
+                    const info = { ...WxAuto, ...UserInfo };
+                    info.vipExpireTimeStr = DateFormat(info.vipExpireTime, "yyyy.MM.dd");
+                    this.Info = info// WxAuto
+                    this.onGetInviteCode()
+                    this.onGetCoupon()
+                })
+            }
             this.onNavigate()
         } catch (error) {
-            console.error(error)
+            console.error("TCL: UserMobx -> onGetUserInfo -> error", error)
+            // Taro.reLaunch({ url: "/pages/index/index" })
         }
         this.isGetUserInfo = false;
         return this.Info;
