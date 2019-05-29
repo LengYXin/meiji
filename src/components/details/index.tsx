@@ -26,15 +26,12 @@ export default class extends Component<{ data: any, hideShop?: boolean }, any> {
         }
     }
     componentDidShow() {
-        // console.log("详情", this.props.data)
+       
     }
     render() {
-        // if (this.props.data) {
-        //     return
-        // }
         const products = { ...this.props.data };
         if (!products.id) {
-            return <View></View>
+            return <View ></View>
         }
         console.log("TCL: extends -> render -> products", products)
         const price = Products.toPrice(products.price);

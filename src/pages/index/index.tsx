@@ -1,7 +1,7 @@
 import { Button, Image, Navigator, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import head from 'lodash/head';
+import get from 'lodash/get';
 import { toJS } from 'mobx';
 import Equity from '../../components/equity';
 import NiuPai from '../../components/niupai';
@@ -68,7 +68,8 @@ export default class extends Component {
     // }
     const products = toJS(Products.RecommendPruduct);
     const pictures = [...products.pictures];
-    const imghead = head(pictures);
+    const imghead = get(pictures, '[0]', '');
+    const imgTow = get(pictures, '[1]', '');
     return (
       <View className='index'>
         <Image className="img-block img-sp" src={imghead} mode="widthFix" />
@@ -77,6 +78,10 @@ export default class extends Component {
           <View className="font-lable">产地：{products.productOrigin}</View>
           <View className="font-text">{products.summary}</View>
         </View>
+        <Image
+          style={{ width: "100%" }}
+          src={imgTow}
+          mode='widthFix' />
         {/* <View className="info">
           <NiuPai />
           <Equity />
@@ -88,8 +93,11 @@ export default class extends Component {
             </View>
           </View>
         </View> */}
+        <View className="view-ba-top">
+          <View></View>
+        </View>
         <Joinmj />
-        <Vipequities level={0}/>
+        <Vipequities level={0} />
         <View className="view-fixed-bottom">
           <Button openType="getUserInfo" onClick={this.onClick.bind(this)} >¥20/月 立即加入体验VIP</Button>
         </View>

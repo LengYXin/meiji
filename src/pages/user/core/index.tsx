@@ -1,12 +1,13 @@
-import { Image, Text, View } from '@tarojs/components';
+import { Image, View } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
-import { AtList, AtListItem, AtBadge, AtCheckbox } from "taro-ui";
+import { toJS } from 'mobx';
+import { AtList, AtListItem, AtBadge } from "taro-ui";
 import Imgs from '../../../img';
 import { User } from '../../../store';
 import './index.less';
 import Invitation from './invitation';
-
+import get from 'lodash/get';
 @observer
 export default class extends Component {
 
@@ -30,7 +31,9 @@ export default class extends Component {
 
   componentWillUnmount() { }
 
-  componentDidShow() { }
+  componentDidShow() {
+    User.onGetOrderStatusCount()
+  }
 
   componentDidHide() { }
   onClickCard() {
@@ -58,7 +61,11 @@ export default class extends Component {
   }
   render() {
     const Info = { ...User.Info }
-    // console.log(Info)
+    const OrderStatusCount = toJS(User.OrderStatusCount)
+    const obligation = get(OrderStatusCount, "[0].orderCount", 0);
+    const overhang = get(OrderStatusCount, "[1].orderCount", 0);
+    const receiving = get(OrderStatusCount, "[2].orderCount", 0);
+    const returnC = get(OrderStatusCount, "[3].orderCount", 0);
     return (
       <View className='user-core'>
         <View className="core-header">
@@ -85,27 +92,33 @@ export default class extends Component {
           <View className="tab-list">
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 1)}>
               <View>
-                <Image className="icon-obligation" src={Imgs.obligation} />
+                {obligation ? <AtBadge value={obligation}>
+                  <Image className="icon-obligation" src={Imgs.obligation} />
+                </AtBadge> : <Image className="icon-obligation" src={Imgs.obligation} />}
               </View>
               <View className="tab-label">待付款</View>
             </View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 2)}>
               <View>
-                {/* <AtBadge dot> */}
-                <Image className="icon-overhang" src={Imgs.overhang} />
-                {/* </AtBadge> */}
+                {overhang ? <AtBadge value={overhang}>
+                  <Image className="icon-overhang" src={Imgs.overhang} />
+                </AtBadge> : <Image className="icon-overhang" src={Imgs.overhang} />}
               </View>
               <View className="tab-label">待发货</View>
             </View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 3)}>
               <View>
-                <Image className="icon-receiving" src={Imgs.WaitReceiving} />
+                {receiving ? <AtBadge value={receiving}>
+                  <Image className="icon-receiving" src={Imgs.WaitReceiving} />
+                </AtBadge> : <Image className="icon-receiving" src={Imgs.WaitReceiving} />}
               </View>
               <View className="tab-label">待收货</View>
             </View>
             <View className="tab-txt" onClick={this.onClickRecord.bind(this, 4)}>
               <View>
-                <Image className="icon-return" src={Imgs.SalesReturn} />
+                {returnC ? <AtBadge value={returnC}>
+                  <Image className="icon-return" src={Imgs.SalesReturn} />
+                </AtBadge> : <Image className="icon-return" src={Imgs.SalesReturn} />}
               </View>
               <View className="tab-label">退换货</View>
             </View>

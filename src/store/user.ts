@@ -56,6 +56,7 @@ class UserMobx {
      * 邀请码
      */
     @observable InviteCode: any[] = [];
+    @observable OrderStatusCount: any[] = [];
     /**
      * 认证数据
      */
@@ -179,6 +180,7 @@ class UserMobx {
                     this.Info = info// WxAuto
                     this.onGetInviteCode()
                     this.onGetCoupon()
+                    this.onGetOrderStatusCount()
                 })
             }
             this.onNavigate()
@@ -227,6 +229,9 @@ class UserMobx {
             Taro.showToast({ title: res.msg, icon: "none" })
         }
     }
+    /**
+     * 获取卡卷
+     */
     async onGetCoupon() {
         // Taro.showLoading()
         // /api/v1/InviteCodes
@@ -242,6 +247,19 @@ class UserMobx {
                         endTime: DateFormat(x.expireTime, "yyyy.MM.dd")
                     }
                 });
+            })
+        } else {
+            Taro.showToast({ title: res.msg, icon: "none" })
+        }
+    }
+    async onGetOrderStatusCount() {
+        const res = await WXRequest.request({
+            url: `/api/v1/Orders/OrderStatusCount/${this.Info.id}`
+        });
+        // Taro.hideLoading();
+        if (res.isSuccess) {
+            runInAction(() => {
+                this.OrderStatusCount = res.data.list;
             })
         } else {
             Taro.showToast({ title: res.msg, icon: "none" })

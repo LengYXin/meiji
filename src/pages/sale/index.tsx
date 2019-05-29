@@ -21,6 +21,7 @@ export default class extends Component {
         enablePullDownRefresh: true,
         backgroundTextStyle: "dark"
     };
+    navigateToDetails = false;
     // 下拉刷新
     async onPullDownRefresh() {
         // await Products.onOldData();
@@ -49,19 +50,21 @@ export default class extends Component {
     componentWillUnmount() { }
 
     componentDidShow() {
-        // Products.onNewData(true);
+        if (this.navigateToDetails) {
+            return this.navigateToDetails = false
+        }
         ProductsNew.NewData.getPagingData(true)
     }
     componentDidHide() {
-        Products.onRemove();
+        // Products.onRemove();
     }
-    onToDetails(productCode) {
-        Taro.navigateTo({ url: "/pages/details/index?key=" + productCode });
+    onToDetails(item, canBuy) {
+        this.navigateToDetails = true;
+        Taro.navigateTo({ url: `/pages/details/index?key=${item.productCode}&canBuy=${canBuy}` });
     }
     // 判断时间 是否在时间段
     isSeason(start, end) {
         const nowTime = new Date().getTime();
-        console.log("start, end", start, end);
         if (nowTime > start && nowTime < end) {
             return true;
         } else {
@@ -71,16 +74,16 @@ export default class extends Component {
     // Taro.pageScrollTo({scrollTop: 100, duration: 0})
     render() {
         const dataSource = toJS(ProductsNew.NewData.PagingData);
+        console.log("TCL: extends -> render -> dataSource", dataSource)
         const dataSourceOld = toJS(ProductsNew.OldData.PagingData);
         const loadingVis = ProductsNew.NewData.PagingLoading;
-        console.log("TCL: extends -> render -> dataSource", dataSourceOld)
         return (
             <View className="index">
                 {dataSourceOld.map(data => {
-                    return (<Item data={data} key={data.timeLineName}/>);
+                    return (<Item data={data} key={data.startTime} onToDetails={this.onToDetails.bind(this)} />);
                 })}
                 {dataSource.map(data => {
-                    return (<Item data={data} key={data.timeLineName}/>);
+                    return (<Item data={data} key={data.startTime} onToDetails={this.onToDetails.bind(this)} />);
                 })}
                 <Loading visible={loadingVis} />
             </View>
