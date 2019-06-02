@@ -3,7 +3,7 @@ import Taro, { Component } from '@tarojs/taro';
 import './index.less';
 export default class Viplevel extends Component<any, any>{
     state = {
-        activeLevel: this.props.level,
+        // activeLevel: this.props.level,
         upgradepoints: this.props.upgradepoints,
         vipType: this.props.vipType,
         data: [
@@ -22,7 +22,11 @@ export default class Viplevel extends Component<any, any>{
             }]
     }
     setLevel = (index) => {
+        if (index == this.props.level) {
+            return
+        }
         let flag = false;
+        console.log("TCL: Viplevel -> setLevel -> this.state.vipType", this.state.vipType)
         if (this.state.vipType === 'expVip' && index < 2) {
             if (this.state.upgradepoints < 1000 || this.state.upgradepoints === 1000 && index > 1) {
                 return;
@@ -35,25 +39,27 @@ export default class Viplevel extends Component<any, any>{
             } else {
                 flag = true;
             }
+        } else if (this.state.vipType === 'excVip') {
+            flag = true;
         }
         if (flag) {
             this.props.onChangeLevel(index);
         }
     }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.level !== this.state.activeLevel) {
-            this.setState({
-                activeLevel: nextProps.level
-            })
-        }
-    }
-
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.level !== this.state.activeLevel) {
+    //         this.setState({
+    //             activeLevel: nextProps.level
+    //         })
+    //     }
+    // }
     render() {
+        // console.log("TCL: Viplevel -> render -> this.state.activeLevel", this.state.activeLevel)
         return (
             <View className="level-body">
                 {this.state.data.map((item, index) => {
                     return (
-                        <View key={index} className={index === this.state.activeLevel ? 'level-item active' : 'level-item'} onClick={() => {
+                        <View key={index} className={index === this.props.level ? 'level-item active' : 'level-item'} onClick={() => {
                             this.setLevel(index)
                         }}>
                             <View className='item-caption'>

@@ -104,7 +104,20 @@ class OrdersMobx {
         if (res.isSuccess) {
             this.onUpdate(orderNo, 'completed')
         }
-        Taro.showToast({ title: res.isSuccess ? '确认成功' : '确认失败', icon: "none" })
+        Taro.hideLoading();
+        // Taro.showToast({ title: res.isSuccess ? '确认成功' : '确认失败', icon: "none" })
+        return res.isSuccess
+    }
+    /**
+     * 反馈喜欢小样
+     * @param orderNo 
+     */
+    async onSaveEnjoyGifts(orderNo, EnjoyGifts) {
+        // Taro.showLoading({ title: "加载中~", mask: true })
+        const res = await WXRequest.request({ url: `/api/v1/Orders/SaveEnjoyGifts/${orderNo}/${EnjoyGifts}` });
+        // if (res.isSuccess) {
+        // }
+        // Taro.showToast({ title: res.isSuccess ? '确认成功' : '确认失败', icon: "none" })
         return res.isSuccess
     }
     /**

@@ -4,7 +4,7 @@ import Taro, { Component, Config } from "@tarojs/taro";
 import Vipleve from "../../../components/viplevel";
 import Vipequities from "../../../components/vipequities";
 import { AtNavBar } from "taro-ui";
-import { User } from '../../../store';
+import { User, EnumVipType } from '../../../store';
 import "./index.less";
 import Imgs from "../../../img";
 import get from 'lodash/get';
@@ -28,7 +28,18 @@ export default class Center extends Component {
     componentWillReact() { }
     componentDidShow() {
         const key = get(this.$router, 'params.key', 1)
-        this.setState({ pageType: parseInt(key) })
+        let level = 0;
+        switch (User.Info.vipType) {
+            case EnumVipType.expVip:
+                break;
+            case EnumVipType.enjoyVip:
+                level = 1
+                break;
+            case EnumVipType.excVip:
+                level = 2
+                break;
+        }
+        this.setState({ pageType: parseInt(key), level })
     }
     componentDidMount() { }
 
@@ -61,21 +72,21 @@ export default class Center extends Component {
     render() {
         const Info = { ...User.Info }
         let viewDom;
+        const upgradepoints = parseInt(Info.upgradepoints);
         let uppoints = function (vipType) {
             let ponint = 0;
             if (vipType === 'expVip') {
-                ponint = 1000 - parseInt(Info.upgradepoints);
+                ponint = 1000 - upgradepoints;
             } else if (vipType === 'enjoyVip') {
-                ponint = 4000 - parseInt(Info.upgradepoints);
+                ponint = 4000 - upgradepoints;
             }
             if (ponint < 0) {
                 ponint = 0
             }
             return ponint;
         }
-        const upgradepoints = parseInt(Info.upgradepoints);
         let percent = 0
-        if (upgradepoints > 1000) {
+        if (upgradepoints > 1000 && upgradepoints < 4000) {
             percent = 50 + (upgradepoints - 1000) / 3000 * 100;
         } else {
             percent = upgradepoints / 4000 * 100;
@@ -90,7 +101,7 @@ export default class Center extends Component {
                     return '3999'
             }
         }
-        console.log("TCL: Center -> render -> this.state.pageType", this.state.pageType)
+        console.log("TCL: Center -> render -> this.state", this.state)
         if (this.state.pageType === 0) {
             viewDom = (
                 <View className="userinfo-box">
@@ -138,7 +149,7 @@ export default class Center extends Component {
                         <Text>优享会员</Text>
                         <Text>尊享会员</Text>
                     </View>
-                    <View className="content-box">还有{uppoints(Info.vipType)}点升级</View>
+                    {upgradepoints < 4000 && <View className="content-box">还有{uppoints(Info.vipType)}点升级</View>}
                     <View className="triangle" />
                 </View>
             );

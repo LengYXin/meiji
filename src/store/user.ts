@@ -156,14 +156,14 @@ class UserMobx {
     /**
      * 获取用户信息
      */
-    async onGetUserInfo() {
+    async onGetUserInfo(again = false) {
         if (this.isGetUserInfo) {
             return
         }
         this.isGetUserInfo = true;
         try {
             // 已加载用户信息
-            if (!this.Info.id) {
+            if (!this.Info.id || again) {
                 // 获取微信用户信息
                 const WxAuto = await Taro.getUserInfo().then(x => JSON.parse(x.rawData));
                 //  设置用户信息
@@ -359,7 +359,7 @@ class UserMobx {
             })
             Taro.hideLoading()
             Taro.showToast({ title: "支付成功" });
-            this.onGetUserInfo()
+            this.onGetUserInfo(true)
         } catch (error) {
             Taro.hideLoading()
             if (error.errMsg == 'requestPayment:fail cancel') {

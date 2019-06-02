@@ -58,7 +58,17 @@ export default class extends Component<{ data: any }, any> {
                 }
                 break;
             case 'Confirm':
-                Orders.onConfirm(data.orderNO)
+                await Orders.onConfirm(data.orderNO)
+                if (data.gifts === 1) {
+                    const cfres = await Taro.showModal({
+                        title: "",
+                        content: `您收到的小样是否喜欢?`,
+                        // showCancel: false,
+                        cancelText: "不喜欢",
+                        confirmText: "喜欢"
+                    })
+                    Orders.onSaveEnjoyGifts(data.orderNO, cfres.confirm ? 1 : 0);
+                }
                 break;
             case 'refund':
                 Taro.navigateTo({ url: "/pages/order/swap/index?key=" + data.orderNO })
@@ -107,6 +117,12 @@ export default class extends Component<{ data: any }, any> {
             case 'returnOrder':
                 stateText = '退换货'
                 break;
+            case 'refundAccess':
+                stateText = '退款成功'
+                break;
+            case 'refundFailed':
+                stateText = '退款失败'
+                break;
             case 'cancel':
             case 'cancelByUser':
                 stateText = '已取消'
@@ -141,7 +157,7 @@ export default class extends Component<{ data: any }, any> {
                         {orderStatus == "toBeDelivered" && <Button onClick={this.onActOrder.bind(this, 'text')}>催一下</Button>}
                         {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'wuliu')}>查看物流</Button>}
                         {orderStatus == "shipped" && <Button onClick={this.onActOrder.bind(this, 'Confirm')}>确认收货</Button>}
-                        {(orderStatus == "completed" && isCanBack) && <Button onClick={this.onActOrder.bind(this, 'refund')}>退款</Button>}
+                        {((orderStatus == "completed" || orderStatus == "refundFailed") && isCanBack) && <Button onClick={this.onActOrder.bind(this, 'refund')}>退款</Button>}
                         {(orderStatus == "returnOrder" && isCanBack) && <Button onClick={this.onActOrder.bind(this, 'cancelRefund')}>取消退款</Button>}
                     </View>
                 </View>

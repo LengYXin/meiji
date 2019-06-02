@@ -1,4 +1,4 @@
-import { Image, View } from '@tarojs/components';
+import { Image, View,Button } from '@tarojs/components';
 import { observer } from '@tarojs/mobx';
 import Taro, { Component, Config } from '@tarojs/taro';
 import { toJS } from 'mobx';
@@ -130,8 +130,9 @@ export default class extends Component {
             <AtListItem title='我的卡劵' arrow='right' hasBorder={false} onClick={this.onClickCard.bind(this)} />
             <AtListItem title='收货地址' arrow='right' hasBorder={false} onClick={this.onClickAddress.bind(this)} />
             <AtListItem title='账户安全' arrow='right' hasBorder={false} onClick={this.onClickSecurity.bind(this)} />
-            <AtListItem title='联系客服' arrow='right' hasBorder={false} onClick={this.previewImage.bind(this)} />
+            {/* <AtListItem title='联系客服' arrow='right' hasBorder={false} onClick={this.previewImage.bind(this)} /> */}
           </AtList>
+          <Button open-type="contact">客服</Button>
         </View>
       </View>
     )
