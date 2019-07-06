@@ -39,14 +39,21 @@ export default class extends Component {
     console.log("componentWillUnmount")
     Products.onUnmountProducts()
   }
-
+  onShareAppMessage() {
+    return {
+      title: `${get(Products.details, 'productName', '')} 产地：${get(Products.details, 'productOrigin', '')} `
+    }
+  }
   componentDidShow() {
     if (this.isDidHide) {
       return
     }
     Taro.showShareMenu({
-      withShareTicket: true
+      withShareTicket: true,
     })
+    // Taro.updateShareMenu({
+    //   updateShareMenu
+    // })
     const key = get(this.$router, 'params.key', '')
     Products.onGetProducts(key);
   }

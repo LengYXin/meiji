@@ -86,7 +86,7 @@ export default class Center extends Component {
             return ponint;
         }
         let percent = 0
-        if (upgradepoints > 1000 && upgradepoints < 4000) {
+        if (upgradepoints >= 1000 && upgradepoints < 4000) {
             percent = 50 + (upgradepoints - 1000) / 3000 * 100;
         } else {
             percent = upgradepoints / 4000 * 100;
